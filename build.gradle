@@ -32,6 +32,6 @@ sourceSets {
     }
 }
 
-mainClassName = "MainSim"
+mainClassName = "vcreature.MainSim"
 
 
