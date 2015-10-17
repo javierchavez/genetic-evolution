@@ -10,6 +10,8 @@ import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
 import com.jme3.scene.Node;
 import com.jme3.math.Vector3f;
+import vcreature.phenotype.EnumNeuronInput;
+import vcreature.phenotype.Neuron;
 
 
 /**
@@ -121,5 +123,30 @@ public class RandomCreature extends Creature
     }
 
     return getDepth(body.get(block.getIdOfParent()), depth+1);
+  }
+
+  private Neuron genRandNeuron()
+  {
+    Random rand = new Random();
+
+    EnumNeuronInput inputA = getRandInput(rand);
+    EnumNeuronInput inputB = getRandInput(rand);
+    EnumNeuronInput inputC = getRandInput(rand);
+    EnumNeuronInput inputD = getRandInput(rand);
+    EnumNeuronInput inputE = getRandInput(rand);
+
+    Neuron neuron = new Neuron(inputA, inputB, inputC, inputD, inputE);
+    neuron.setInputValue(Neuron.A, rand.nextInt(params.MAX_NEURON_VALUE));
+    neuron.setInputValue(Neuron.B, rand.nextInt(params.MAX_NEURON_VALUE));
+    neuron.setInputValue(Neuron.C, rand.nextInt(params.MAX_NEURON_VALUE));
+    neuron.setInputValue(Neuron.D, rand.nextInt(params.MAX_NEURON_VALUE));
+    neuron.setInputValue(Neuron.E, rand.nextInt(params.MAX_NEURON_VALUE));
+
+    return neuron;
+  }
+
+  private EnumNeuronInput getRandInput(Random rand)
+  {
+    return EnumNeuronInput.values()[rand.nextInt(EnumNeuronInput.values().length)];
   }
 }
