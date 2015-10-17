@@ -33,7 +33,7 @@ public class RandomCreature extends Creature
   {
     clearCreature();
     Block root = generateBlock();
-    addBlocks(root);
+    //addBlocks(root);
   }
 
   public void clearCreature()
@@ -51,12 +51,18 @@ public class RandomCreature extends Creature
   {
     int attempts = 0;
     Random rand = new Random();
+
+    if (getDepth(parent, 0) > params.MAX_DEPTH)
+    {
+      return;
+    }
+
     while (attempts < params.MAX_GENERATION_ATTEMPTS)
     {
       if (getChildren(parent).size() <= params.MAX_CHILDREN && rand.nextFloat() < params.CHILD_SPAWN_CHANCE)
       {
         Block child = generateBlock(parent);
-        if (getDepth(parent, 0) <= params.MAX_DEPTH && rand.nextFloat() < params.RECURSE_CHANCE)
+        if (child != null && rand.nextFloat() < params.RECURSE_CHANCE)
         {
           addBlocks(child);
         }
