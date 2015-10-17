@@ -27,7 +27,19 @@ public class RandomCreature extends Creature
 
   public void generateCreature()
   {
+    clearCreature();
     generateBlock();
+  }
+
+  public void clearCreature()
+  {
+    for (Block block : body)
+    {
+      physicsSpace.remove(block.getGeometry());
+      jMonkeyRootNode.detachChild(block.getGeometry());
+    }
+    jMonkeyRootNode.updateGeometricState();
+    body.clear();
   }
 
   /**

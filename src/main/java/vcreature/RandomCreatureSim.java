@@ -110,11 +110,13 @@ public class RandomCreatureSim extends SimpleApplication implements ActionListen
 
   private void initKeys() {
     inputManager.addMapping("Quit",  new KeyTrigger(KeyInput.KEY_Q));
-    inputManager.addMapping("Toggle Camera Rotation",  new KeyTrigger(KeyInput.KEY_P));
+    inputManager.addMapping("Toggle Camera Rotation", new KeyTrigger(KeyInput.KEY_P));
+    inputManager.addMapping("Generate New Creature", new KeyTrigger(KeyInput.KEY_SPACE));
 
     // Add the names to the action listener.
-    inputManager.addListener(this,"Quit");
-    inputManager.addListener(this,"Toggle Camera Rotation");
+    inputManager.addListener(this, "Quit");
+    inputManager.addListener(this, "Toggle Camera Rotation");
+    inputManager.addListener(this, "Generate New Creature");
   }
 
   public void onAction(String name, boolean isPressed, float timePerFrame)
@@ -127,6 +129,10 @@ public class RandomCreatureSim extends SimpleApplication implements ActionListen
     {
       System.out.format("Creature Fitness (Maximium height of lowest point) = %.3f meters]\n", creature.getFitness());
       System.exit(0);
+    }
+    else if (isPressed && name.equals("Generate New Creature"))
+    {
+      creature.generateCreature();
     }
   }
 

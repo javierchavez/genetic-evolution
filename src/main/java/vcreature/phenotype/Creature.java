@@ -41,9 +41,9 @@ public class Creature
    */
  
   
-  private final PhysicsSpace physicsSpace; 
-  private final Node jMonkeyRootNode;
-  private ArrayList<Block> body = new ArrayList<Block>();
+  public final PhysicsSpace physicsSpace;
+  public final Node jMonkeyRootNode;
+  public ArrayList<Block> body = new ArrayList<Block>();
   
   //Temporary vectors used on each frame. They here to avoid instanciating new vectors on each frame
   private Vector3f tmpVec3; //
