@@ -26,7 +26,6 @@ import com.jme3.system.AppSettings;
 
 public class MainSim extends SimpleApplication implements ActionListener
 {
-  
   private BulletAppState bulletAppState;
   private PhysicsSpace physicsSpace;
   private float cameraAngle = (float)(Math.PI/2.0);
