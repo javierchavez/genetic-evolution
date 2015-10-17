@@ -33,7 +33,7 @@ public class RandomCreature extends Creature
   {
     clearCreature();
     Block root = generateBlock();
-    //addBlocks(root);
+    addBlocks(root);
   }
 
   public void clearCreature()
@@ -67,6 +67,7 @@ public class RandomCreature extends Creature
           addBlocks(child);
         }
       }
+      attempts++;
     }
   }
 
