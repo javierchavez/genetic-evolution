@@ -22,11 +22,29 @@ import com.jme3.math.Quaternion;
  */
 public class Block
 {
+  /**
+   *
+   */
   public static final float BLOCK_DENSITY = 4f; //Killograms per cubic meter.
+  /**
+   *
+   */
   public static Material MATERIAL_RED;
+  /**
+   *
+   */
   public static Material MATERIAL_BLUE;
+  /**
+   *
+   */
   public static Material MATERIAL_GREEN;
+  /**
+   *
+   */
   public static Material MATERIAL_BROWN;
+  /**
+   *
+   */
   public static Material MATERIAL_GRAY;
   
   private float sizeX, sizeY, sizeZ; //meters
@@ -48,6 +66,15 @@ public class Block
   //Creates a box that has a center of 0,0,0 and extends in the out from 
     //the center by the given amount in each direction. 
     // So, for example, a box with extent of 0.5 would be the unit cube.
+  /**
+   *
+   * @param physicsSpace
+   * @param rootNode
+   * @param id
+   * @param center
+   * @param size
+   * @param rotation
+   */
   public Block(PhysicsSpace physicsSpace, Node rootNode, int id, Vector3f center, Vector3f size, Quaternion rotation) 
   { 
     if (size.x < 0.5f || size.y < 0.5f || size.z < 0.5f) 
@@ -92,6 +119,9 @@ public class Block
   }
   
   
+  /**
+   *
+   */
   public void clear()
   {
     childList.clear();
@@ -107,12 +137,21 @@ public class Block
     physicsControl = null;
   }
   
+  /**
+   *
+   * @param mat
+   */
   public void setMaterial(Material mat)
   {
     geometry.setMaterial(mat);
   }
 
 
+  /**
+   *
+   * @param parent
+   * @param joint
+   */
   public void setJointToParent(Block parent, HingeJoint joint)
   {
      jointToParent = joint;
@@ -120,16 +159,46 @@ public class Block
      this.parent = parent;
   }
 
+  /**
+   *
+   * @param neuron
+   */
   public void addNeuron(Neuron neuron)
   {
      neuronTable.add(neuron);
   }
   
+  /**
+   *
+   * @return
+   */
   public Geometry getGeometry() {return geometry;}
+  /**
+   *
+   * @return
+   */
   public RigidBodyControl getPhysicsControl() {return physicsControl;}
+  /**
+   *
+   * @return
+   */
   public HingeJoint getJoint(){ return jointToParent;}
+  /**
+   *
+   * @return
+   */
   public float getJointAngle() { return jointToParent.getHingeAngle(); }
+  /**
+   *
+   * @param output
+   * @return
+   */
   public Vector3f getCenter(Vector3f output) {return physicsControl.getPhysicsLocation(output); }
+  /**
+   *
+   * @param output
+   * @return
+   */
   public Vector3f getStartCenter(Vector3f output) 
   { output.x = startCenter.x;
     output.y = startCenter.y;
@@ -138,6 +207,10 @@ public class Block
   }
   
   
+  /**
+   *
+   * @return
+   */
   public float getHeight()
   {
     BoundingBox box = (BoundingBox) geometry.getWorldBound();
@@ -146,25 +219,74 @@ public class Block
   }
   
   
+  /**
+   *
+   * @return
+   */
   public int getID() {return id;}
+  
+  
+   /**
+   * 
+   * setID() should only be used by the creature class when one or more blocks are deleated form the creature.
+   */
+  void setID(int id) {this.id = id;}
 
-  public int getIdOfParent(){ return parent.getID();}
+  /**
+   * 
+   * @return the id of the parent or -1 if this is a root block.
+   */
+  public int getIdOfParent()
+  { 
+    if (parent == null) return -1;
+    return parent.getID();
+  }
   
 
+  /**
+   *
+   * @return Full extent (not half extent) of the block along the x-axis of 
+   * its local coordinates (before any rotations).
+   */
   public float getSizeX() {return sizeX;}
   
 
+  /**
+   * 
+   * @return Full extent (not half extent) of the block along the y-axis of 
+   * its local coordinates (before any rotations).
+   */
   public float getSizeY() {return sizeY;}
   
 
+  /**
+   *
+   * @return Full extent (not half extent) of the block along the z-axis of 
+   * its local coordinates (before any rotations).
+   */
   public float getSize() {return sizeZ;}
   
+  /**
+   * Careful when using this. It gives a pointer to the block's childList.
+   * If this is corrupted the results are continued use of the creature class 
+   * are undefined.
+   * @return
+   */
   public ArrayList<Block> getChildList() {return childList;}
   
   
+  /**
+   * @return
+   */
   public ArrayList<Neuron> getNeuronTable() { return neuronTable;}
   
   
+  
+  
+  /**
+   *
+   * @param assetManager
+   */
   public static void initStaticMaterials(AssetManager assetManager)
   {
     MATERIAL_RED   = initStaticMaterial(assetManager, ColorRGBA.Red);
@@ -204,33 +326,56 @@ public class Block
    //Return the maximium impulse that can be supplyed by a joint on the given parent.
   //The maximium impulse that can be applyed to a joint is proportional to the parent's surface area.
   //The maximium impulse is returned in Newton seconds.
-public final float getJointMaxImpulse()
+  /**
+   *
+   * @return
+   */
+  public final float getJointMaxImpulse()
   {
     
     return parent.sizeX*parent.sizeY + parent.sizeY*parent.sizeZ + parent.sizeZ*parent.sizeX;
   }
 
 
-public final float getMass()
+  /**
+   *
+   * @return
+   */
+  public final float getMass()
   {
     return sizeX*sizeY*sizeZ*BLOCK_DENSITY;
   }
 
-public static float min(Vector3f vec)
+  /**
+   *
+   * @param vec
+   * @return
+   */
+  public static float min(Vector3f vec)
 {
   if (vec.x <= vec.y && vec.x <= vec.z) return vec.x;
   if (vec.y <= vec.x && vec.y <= vec.z) return vec.y;
   return vec.z;
 }
 
-public static float max(Vector3f vec)
+  /**
+   *
+   * @param vec
+   * @return
+   */
+  public static float max(Vector3f vec)
 {
   if (vec.x >= vec.y && vec.x >= vec.z) return vec.x;
   if (vec.y >= vec.x && vec.y >= vec.z) return vec.y;
   return vec.z;
 }
 
-public static String vectorToStr(Vector3f vec)
+  /**
+   *
+   * @param vec
+   * @return
+   */
+  public static String vectorToStr(Vector3f vec)
 {
   return "("+vec.x +", "+vec.y +", "+vec.z +")";
 }

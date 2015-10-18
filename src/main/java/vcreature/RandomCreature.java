@@ -38,6 +38,7 @@ public class RandomCreature extends Creature
     Block root = generateBlock();
     body.add(root);
     addBlocks(root);
+    placeOnGround();
   }
 
   private void addBlocks(Block parent)
@@ -82,11 +83,29 @@ public class RandomCreature extends Creature
   {
     Random rand = new Random();
     Vector3f size = genRandSize(rand);
+    Vector3f parentCenter = new Vector3f();
+    parentCenter = parent.getStartCenter(parentCenter);
+    Vector3f parentSize = new Vector3f(parent.getSizeX()/2, parent.getSizeY()/2, parent.getSize()/2);
 
-    // add the block to parent
-    // this should be done in Joel's new api\
-    // also checks for collisions and doesn't
-    // place a block if it is colliding with something else
+    int side = rand.nextInt(6);
+    float x = 0;
+    float y = 0;
+    float z = 0;
+
+    switch (side) {
+      case 0: // XY plane 1
+        break;
+      case 1: // XY plane 2
+        break;
+      case 2: // XZ plane 1
+        break;
+      case 3: // XZ plane 2
+        break;
+      case 4: // YZ plane 1
+        break;
+      default: // YZ plane 2
+        break;
+    }
     return null;
   }
 
@@ -108,8 +127,7 @@ public class RandomCreature extends Creature
     ArrayList<Block> children = new ArrayList<>();
     for (Block block : body)
     {
-      Block blockParent = getParent(block);
-      if (blockParent != null && parent.getID() == blockParent.getID())
+      if (parent.getID() == block.getIdOfParent())
       {
         children.add(block);
       }
@@ -131,13 +149,13 @@ public class RandomCreature extends Creature
   private Block getParent(Block block)
   {
     Block parent;
-    try
-    {
-      parent = body.get(block.getIdOfParent());
-    }
-    catch (NullPointerException ex)
+    if (block.getIdOfParent() == -1)
     {
       parent = null;
+    }
+    else
+    {
+      parent = body.get(block.getIdOfParent());
     }
     return parent;
   }
