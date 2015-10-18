@@ -9,7 +9,8 @@ public class BlockGene extends Gene<BlockGene>
   private float width;
   private float height;
   private Sensor sensor;
-  private Effector effectors;
+  private Effector effector;
+  private float jointSite;
 
   public BlockGene()
   {
@@ -26,14 +27,14 @@ public class BlockGene extends Gene<BlockGene>
     this.sensor = sensor;
   }
 
-  public Effector getEffectors()
+  public Effector getEffector()
   {
-    return effectors;
+    return effector;
   }
 
-  public void setEffectors(Effector effectors)
+  public void setEffector(Effector effector)
   {
-    this.effectors = effectors;
+    this.effector = effector;
   }
 
   public float getLength()
@@ -81,7 +82,16 @@ public class BlockGene extends Gene<BlockGene>
     _newGene.width = width;
     _newGene.length = length;
     _newGene.height = height;
-    _newGene.setLinkedGeneWeights(cloneLinkedGeneWeights());
     return _newGene;
+  }
+
+  public float getJointSite()
+  {
+    return jointSite;
+  }
+
+  public void setJointSite(float jointSite)
+  {
+    this.jointSite = jointSite;
   }
 }
