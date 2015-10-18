@@ -8,7 +8,12 @@ public class Effector
   private float minLimit;
   private float maxLimit;
   private float maxForce;
+
+  // Slide 27 item 1- 1-n
   private ArrayList<NeuralNode> neuralNet;
+
+  // Sims 3.3 first sentence
+  private EffectorInput inputSource;
 
   public Effector()
   {
@@ -59,5 +64,15 @@ public class Effector
   public void setNeuralNet(ArrayList<NeuralNode> neuralNet)
   {
     this.neuralNet = neuralNet;
+  }
+
+  /**
+   * Source of the stimulation either from Sensor or Neural source
+   *
+   * @param inputSource
+   */
+  public void addConnection(EffectorInput inputSource)
+  {
+    this.inputSource = inputSource;
   }
 }
