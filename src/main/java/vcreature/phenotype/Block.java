@@ -109,8 +109,8 @@ public class Block
   
   public int getID() {return id;}
 
-  public int getIdOfParent(){ return parent.getID();}
-  
+  public int getIdOfParent(){ return parent == null ? -1 : parent.getID();}
+
 
   public float getSizeX() {return sizeX;}
   
