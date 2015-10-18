@@ -23,6 +23,8 @@ public class RandomCreature extends Creature
 {
   private RandomCreatureParameters params = new RandomCreatureParameters();
 
+  private List<Block> body = new ArrayList<>();
+
   public RandomCreature(PhysicsSpace physicsSpace, Node jMonkeyRootNode)
   {
     super(physicsSpace, jMonkeyRootNode);
@@ -31,20 +33,11 @@ public class RandomCreature extends Creature
 
   public void generateCreature()
   {
-    clearCreature();
-    Block root = generateBlock();
-    addBlocks(root);
-  }
-
-  public void clearCreature()
-  {
-    for (Block block : body)
-    {
-      physicsSpace.remove(block.getGeometry());
-      jMonkeyRootNode.detachChild(block.getGeometry());
-    }
-    jMonkeyRootNode.updateGeometricState();
+    if (body.size() != 0) remove();
     body.clear();
+    Block root = generateBlock();
+    body.add(root);
+    addBlocks(root);
   }
 
   private void addBlocks(Block parent)
@@ -62,6 +55,7 @@ public class RandomCreature extends Creature
       if (getChildren(parent).size() <= params.MAX_CHILDREN && rand.nextFloat() < params.CHILD_SPAWN_CHANCE)
       {
         Block child = generateBlock(parent);
+        body.add(child);
         if (child != null && rand.nextFloat() < params.RECURSE_CHANCE)
         {
           addBlocks(child);
@@ -114,7 +108,8 @@ public class RandomCreature extends Creature
     ArrayList<Block> children = new ArrayList<>();
     for (Block block : body)
     {
-      if (parent.getID() == block.getIdOfParent())
+      Block blockParent = getParent(block);
+      if (blockParent != null && parent.getID() == blockParent.getID())
       {
         children.add(block);
       }
@@ -124,12 +119,27 @@ public class RandomCreature extends Creature
 
   private int getDepth(Block block, int depth)
   {
-    if (block.getIdOfParent() == -1)
+    Block parent = getParent(block);
+    if (parent == null)
     {
       return depth;
     }
 
-    return getDepth(body.get(block.getIdOfParent()), depth+1);
+    return getDepth(parent, depth+1);
+  }
+
+  private Block getParent(Block block)
+  {
+    Block parent;
+    try
+    {
+      parent = body.get(block.getIdOfParent());
+    }
+    catch (NullPointerException ex)
+    {
+      parent = null;
+    }
+    return parent;
   }
 
   private Neuron genRandNeuron()
