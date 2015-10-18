@@ -77,9 +77,9 @@ public class BlockGene extends Gene<BlockGene>
   public BlockGene clone()
   {
     BlockGene _newGene = new BlockGene();
-    _newGene.width = width;
-    _newGene.length = length;
-    _newGene.height = height;
+    _newGene.setDimensions(length,width,height);
+    _newGene.setEffector(effector);
+    _newGene.setSensor(sensor);
     return _newGene;
   }
 
