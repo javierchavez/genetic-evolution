@@ -1,6 +1,6 @@
 package vcreature.genotype;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Genome is a collection of genes. Genetic representation of this morphology is a directed graph of
@@ -9,31 +9,14 @@ import java.util.ArrayList;
  */
 public class Genome
 {
-  private int cachedSize;
-  private ArrayList<Gene<?>> genes;
+
+  private LinkedList<Gene<?>> genes;
   private Gene rootVertex;
 
 
   public Genome()
   {
-    genes = new ArrayList<>();
-    cachedSize = 0;
-  }
-
-  /**
-   * Fill the array with genes
-   */
-  public void unfold()
-  {
-
-  }
-
-  /**
-   * Clear the array
-   */
-  public void fold()
-  {
-
+    genes = new LinkedList<>();
   }
 
   /**
@@ -81,7 +64,7 @@ public class Genome
    *
    * @return List of Genes
    */
-  public ArrayList<Gene<?>> getGenes()
+  public LinkedList<Gene<?>> getGenes()
   {
     return genes;
   }
@@ -103,7 +86,6 @@ public class Genome
       return;
     }
 
-    gene.getLinkedGeneWeights().put(0/*rand from 0 to this.size()*/, 4.0/*link range*/);
   }
 
   public void linkGenes(int gene1, int gene2, double linkWeight)
@@ -113,11 +95,12 @@ public class Genome
     {
       return;
     }
-    gene.getLinkedGeneWeights().put(gene2, linkWeight);
   }
 
-  public void linkGeneTypeTo(int geneIndex, GeneType geneType)
+  public void append(Gene gene)
   {
-
+    genes.add(gene);
   }
+
+
 }
