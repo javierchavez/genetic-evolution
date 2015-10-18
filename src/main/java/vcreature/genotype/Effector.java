@@ -1,6 +1,7 @@
 package vcreature.genotype;
 
 
+
 import java.util.ArrayList;
 
 public class Effector
@@ -49,6 +50,11 @@ public class Effector
   public ArrayList<NeuralNode> getNeuralNet()
   {
     return neuralNet;
+  }
+
+  public void addNeuralNode(NeuralNode node)
+  {
+    neuralNet.add(node);
   }
 
   public void setNeuralNet(ArrayList<NeuralNode> neuralNet)
