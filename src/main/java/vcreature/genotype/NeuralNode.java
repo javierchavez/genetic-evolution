@@ -7,20 +7,36 @@ import java.util.HashMap;
 
 public class NeuralNode
 {
-  private EnumOperator neuronType;
+  private EnumOperator neuronFunction;
   private HashMap<Character, NeuronInput> inputs;
 
   public NeuralNode()
   {
+    inputs = new HashMap<>(5);
+    inputs.put('A', null);
+    inputs.put('B', null);
+    inputs.put('C', null);
+    inputs.put('D', null);
+    inputs.put('E', null);
   }
 
-  public EnumOperator getNeuronType()
+  public EnumOperator getNeuronFunction()
   {
-    return neuronType;
+    return neuronFunction;
   }
 
-  public void setNeuronType(EnumOperator neuronType)
+  public void setNeuronFunction(EnumOperator neuronFunction)
   {
-    this.neuronType = neuronType;
+    this.neuronFunction = neuronFunction;
+  }
+
+  public HashMap<Character, NeuronInput> getInputs()
+  {
+    return this.inputs;
+  }
+
+  public void setInput (Character input, NeuronInput value)
+  {
+    inputs.put(input, value);
   }
 }
