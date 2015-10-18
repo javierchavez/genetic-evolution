@@ -1,7 +1,12 @@
 package vcreature.genotype;
 
-
-public abstract class Sensor<T extends Sensor<?, ?>, V>
+/**
+ * Page 13 Slide 26 the sensor is for joints, touch, height
+ *
+ * @param <T> type of sensor
+ * @param <V> sensors value type
+ */
+public abstract class Sensor<T extends Sensor<?, ?>, V> implements NeuronInput<V>
 {
 
   private V sensorValue;
@@ -11,8 +16,14 @@ public abstract class Sensor<T extends Sensor<?, ?>, V>
     return sensorValue;
   }
 
+  public void setValue(V value)
+  {
+    sensorValue = value;
+  }
+
   public void setSensorValue(V value)
   {
-    this.sensorValue = value;
+    setValue(value);
   }
+
 }

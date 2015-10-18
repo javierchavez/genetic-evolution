@@ -8,13 +8,33 @@ public class BlockGene extends Gene<BlockGene>
   private float length;
   private float width;
   private float height;
-
+  private Sensor sensor;
+  private Effector effectors;
 
   public BlockGene()
   {
     super(GeneType.BLOCK);
   }
 
+  public Sensor getSensor()
+  {
+    return sensor;
+  }
+
+  public void setSensor(Sensor sensor)
+  {
+    this.sensor = sensor;
+  }
+
+  public Effector getEffectors()
+  {
+    return effectors;
+  }
+
+  public void setEffectors(Effector effectors)
+  {
+    this.effectors = effectors;
+  }
 
   public float getLength()
   {
