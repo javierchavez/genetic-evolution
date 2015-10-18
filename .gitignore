@@ -19,6 +19,7 @@ gradle-app.setting
 # Linkers
 *.dylib
 *.dll
+*.so
 
 ## Directory-based project format:
 .idea/
