@@ -124,10 +124,11 @@ public class RandomCreature extends Creature
 
   private List<Block> getChildren(Block parent)
   {
-    ArrayList<Block> children = new ArrayList<>();
+    List<Block> children = new ArrayList<>();
     for (Block block : body)
     {
-      if (parent.getID() == block.getIdOfParent())
+      Block blockParent = getParent(block);
+      if (blockParent != null && parent.getID() == blockParent.getID())
       {
         children.add(block);
       }
@@ -149,13 +150,21 @@ public class RandomCreature extends Creature
   private Block getParent(Block block)
   {
     Block parent;
-    if (block.getIdOfParent() == -1)
+    try
+    {
+      int parentID = block.getIdOfParent();
+      if (parentID == -1)
+      {
+        parent = null;
+      }
+      else
+      {
+        parent = body.get(parentID);
+      }
+    }
+    catch (NullPointerException ex)
     {
       parent = null;
-    }
-    else
-    {
-      parent = body.get(block.getIdOfParent());
     }
     return parent;
   }
