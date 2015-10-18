@@ -8,13 +8,15 @@ public class GeneticEngine
   public static Genome performCrossOver(Genome mother, Genome father)
   {
 
-    Genome son = new Genome(); son.setRoot(mother.getRoot().clone()); son.getGenes().add(son.getRoot());
+    Genome son = new Genome(); son.setRoot(mother.getRoot().clone());
+    son.getGenes().add(son.getRoot());
 
 
-    int motherStart = mother.size(); int motherEnd = mother.size(); int fatherStart = father.size();
-    int fatherEnd = father.size();
+    int motherStart = mother.size(); int motherEnd = mother.size();
+    int fatherStart = father.size(); int fatherEnd = father.size();
 
-    son.merge(mother, motherStart, motherEnd); son.merge(father, fatherStart, fatherEnd);
+    son.merge(mother, motherStart, motherEnd);
+    son.merge(father, fatherStart, fatherEnd);
 
     // create edges to root node
     for (int i = 0; i < 4; i++)
@@ -37,30 +39,37 @@ public class GeneticEngine
     int size = mom.size();
 
     // Create the Genomes for the twin children.
-    Genome g1 = new Genome(); Genome g2 = new Genome();
+    Genome g1 = new Genome();
+    Genome g2 = new Genome();
 
 
-    int interval = size / 5; int transition = rand.nextInt(size - (2 * interval)) + interval;
+    int interval = size / 5;
+    int transition = rand.nextInt(size - (2 * interval)) + interval;
 
 
     for (int i = 0; i < size; i++)
     {
-      Gene parentGeneA = mom.getGenes().get(i).clone(); Gene parentGeneB = dad.getGenes().get(i).clone();
-      Gene childGeneA; Gene childGeneB;
+      Gene parentGeneA = mom.getGenes().get(i).clone();
+      Gene parentGeneB = dad.getGenes().get(i).clone();
+      Gene childGeneA;
+      Gene childGeneB;
 
 
       try
       {
         if (i < transition)
         {
-          childGeneA = parentGeneA.clone(); childGeneB = parentGeneB.clone();
+          childGeneA = parentGeneA.clone();
+          childGeneB = parentGeneB.clone();
         }
         else
         {
-          childGeneA = parentGeneB.clone(); childGeneB = parentGeneA.clone();
+          childGeneA = parentGeneB.clone();
+          childGeneB = parentGeneA.clone();
         }
 
-        g1.append(childGeneA); g2.append(childGeneB);
+        g1.append(childGeneA);
+        g2.append(childGeneB);
       }
       catch (IllegalArgumentException ex)
       {
@@ -68,7 +77,8 @@ public class GeneticEngine
       }
     }
 
-    Genome[] children = {g1, g2}; return children;
+    Genome[] children = {g1, g2};
+    return children;
   }
 
 
