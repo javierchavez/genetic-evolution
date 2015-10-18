@@ -69,9 +69,7 @@ public class BlockGene extends Gene<BlockGene>
 
   public void setDimensions(float length, float width, float height)
   {
-    this.length = length;
-    this.width = width;
-    this.height = height;
+    this.length = length; this.width = width; this.height = height;
   }
 
 

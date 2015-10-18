@@ -4,6 +4,7 @@ package vcreature.genotype;
 public class ConstantInput implements NeuronInput<Float>
 {
   private float constant;
+
   @Override
   public Float getValue()
   {

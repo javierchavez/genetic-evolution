@@ -39,30 +39,27 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
       Effector effector = new Effector();
       // get joint angle && orientation (what side the joint is connected to block)
       // or something
-      effector.setMaxForce(b.getMass());
-      effector.setMaxLimit(b.getMass());
+      effector.setMaxForce(b.getMass()); effector.setMaxLimit(b.getMass());
       for (Neuron neuron : b.getNeuronTable())
       {
         effector.addNeuralNode(synthesizeNeuron(neuron));
       }
-    }
-    return gene;
+    } return gene;
   }
 
 
   private NeuralNode synthesizeNeuron(Neuron neuron)
   {
     NeuralNode node = new NeuralNode();
-//    node.setNeuronFunction();
+    //    node.setNeuronFunction();
     // neuron.getOp()
-//    for (int i = 0; i < EnumNeuronInput.values().length; i++)
-//    {
-//
-//    }
+    //    for (int i = 0; i < EnumNeuronInput.values().length; i++)
+    //    {
+    //
+    //    }
 
 
-    NeuronInput input = new TimeInput();
-    input.setValue(11f);
+    NeuronInput input = new TimeInput(); input.setValue(11f);
 
     node.getInputs().put('A', input);
 

@@ -8,8 +8,7 @@ public abstract class Gene<T extends Gene<?>>
 
   public Gene(GeneType geneType)
   {
-    this.geneType = geneType;
-    this.active = true;
+    this.geneType = geneType; this.active = true;
   }
 
   /**
@@ -28,7 +27,6 @@ public abstract class Gene<T extends Gene<?>>
   {
     return geneType;
   }
-
 
 
   public boolean isActive()
