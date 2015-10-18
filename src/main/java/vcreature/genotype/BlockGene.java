@@ -8,24 +8,33 @@ public class BlockGene extends Gene<BlockGene>
   private float length;
   private float width;
   private float height;
-  private Sensor sensor;
+  private Sensor angleSensor;
+  private Sensor touchSensor;
+  private Sensor heightSensor;
   private Effector effector;
   private float jointSite;
 
   public BlockGene()
   {
     super(GeneType.BLOCK);
+    angleSensor = new AngleSensor();
+    touchSensor = new TouchSensor();
+    heightSensor = new HeightSensor();
+    effector = new Effector();
+    ConstantInput constant = new ConstantInput();
+
+
   }
 
-  public Sensor getSensor()
-  {
-    return sensor;
-  }
-
-  public void setSensor(Sensor sensor)
-  {
-    this.sensor = sensor;
-  }
+  //  public Sensor getSensor()
+  //  {
+  //    return sensor;
+  //  }
+  //
+  //  public void setSensor(Sensor sensor)
+  //  {
+  //    this.sensor = sensor;
+  //  }
 
   public Effector getEffector()
   {
@@ -79,7 +88,7 @@ public class BlockGene extends Gene<BlockGene>
     BlockGene _newGene = new BlockGene();
     _newGene.setDimensions(length,width,height);
     _newGene.setEffector(effector);
-    _newGene.setSensor(sensor);
+    // _newGene.setSensor(sensor);
     return _newGene;
   }
 
