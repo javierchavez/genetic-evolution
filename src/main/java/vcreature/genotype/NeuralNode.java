@@ -5,7 +5,7 @@ import vcreature.phenotype.EnumOperator;
 
 import java.util.HashMap;
 
-public class NeuralNode
+public class NeuralNode implements EffectorInput
 {
   private EnumOperator neuronFunction;
   private HashMap<Character, NeuronInput> inputs;

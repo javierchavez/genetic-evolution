@@ -1,7 +1,7 @@
 package vcreature.genotype;
 
 
-public class ConstantInput implements NeuronInput<Float>
+public class ConstantInput implements NeuronInput<Float>, EffectorInput
 {
   private float constant;
 
