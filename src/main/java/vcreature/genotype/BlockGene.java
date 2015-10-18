@@ -23,7 +23,10 @@ public class BlockGene extends Gene<BlockGene>
     effector = new Effector();
     ConstantInput constant = new ConstantInput();
 
-
+    // Sims 3.3 first sentence
+    effector.addConnection(touchSensor);
+    // or to add constant
+    effector.addConnection(constant);
   }
 
   //  public Sensor getSensor()
