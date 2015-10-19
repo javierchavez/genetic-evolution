@@ -12,8 +12,8 @@ Clone the repo.
 
 Get the submodules.
 ```bash
-    git submodule init
-    git submodule update
+git submodule init
+git submodule update
 ```
 
 ###Intellij
