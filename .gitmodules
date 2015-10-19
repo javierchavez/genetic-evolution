@@ -1,0 +1,3 @@
+[submodule "joel-api-repo"]
+	path = joel-api-repo
+	url = git@github.com:castellanos70/CS351_VirtualCreature_API.git
