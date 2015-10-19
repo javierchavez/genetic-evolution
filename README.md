@@ -10,6 +10,12 @@ Clone the repo.
     git clone https://github.com/javierchavez/genetic-evolution.git
 ```
 
+Get the submodules.
+```bash
+    git submodule init
+    git submodule update
+```
+
 ###Intellij
 ---
 The following are if you are using Intellij
