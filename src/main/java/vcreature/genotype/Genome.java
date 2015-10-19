@@ -3,20 +3,20 @@ package vcreature.genotype;
 import java.util.LinkedList;
 
 /**
- * Genome is a collection of abstractGenes. Genetic representation of this morphology is a directed graph of
+ * Genome is a collection of genes. Genetic representation of this morphology is a directed graph of
  * nodes and connections. More simply, genome is analogous
  * to a directed graph and AbstractGene is the vertex, edges and weights are stored in the AbstractGene.
  */
 public class Genome
 {
 
-  private LinkedList<AbstractGene<?>> abstractGenes;
+  private LinkedList<AbstractGene<?>> genes;
   private AbstractGene rootVertex;
 
 
   public Genome()
   {
-    abstractGenes = new LinkedList<>();
+    genes = new LinkedList<>();
   }
 
   /**
@@ -30,7 +30,7 @@ public class Genome
   {
     for (int i = start; i < end; i++)
     {
-      abstractGenes.add(parent.getAbstractGenes().get(i).clone());
+      genes.add(parent.getGenes().get(i).clone());
     }
   }
 
@@ -43,7 +43,7 @@ public class Genome
   {
     if (rootVertex == null)
     {
-      return abstractGenes.get(0);
+      return genes.get(0);
     }
     return rootVertex;
   }
@@ -64,9 +64,9 @@ public class Genome
    *
    * @return List of Genes
    */
-  public LinkedList<AbstractGene<?>> getAbstractGenes()
+  public LinkedList<AbstractGene<?>> getGenes()
   {
-    return abstractGenes;
+    return genes;
   }
 
   /**
@@ -75,12 +75,12 @@ public class Genome
    */
   public int size()
   {
-    return abstractGenes.size();
+    return genes.size();
   }
 
   public void linkRandomGeneTo(int geneIndex)
   {
-    AbstractGene<?> abstractGene = abstractGenes.get(geneIndex);
+    AbstractGene<?> abstractGene = genes.get(geneIndex);
     if (abstractGene == null)
     {
       return;
@@ -90,7 +90,7 @@ public class Genome
 
   public void linkGenes(int gene1, int gene2, double linkWeight)
   {
-    AbstractGene<?> abstractGene = abstractGenes.get(gene1);
+    AbstractGene<?> abstractGene = genes.get(gene1);
     if (abstractGene == null)
     {
       return;
@@ -99,7 +99,7 @@ public class Genome
 
   public void append(AbstractGene abstractGene)
   {
-    abstractGenes.add(abstractGene);
+    genes.add(abstractGene);
   }
 
 
