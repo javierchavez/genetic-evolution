@@ -9,7 +9,7 @@ public class GeneticEngine
   {
 
     Genome son = new Genome(); son.setRoot(mother.getRoot().clone());
-    son.getGenes().add(son.getRoot());
+    son.getAbstractGenes().add(son.getRoot());
 
 
     int motherStart = mother.size(); int motherEnd = mother.size();
@@ -49,27 +49,27 @@ public class GeneticEngine
 
     for (int i = 0; i < size; i++)
     {
-      Gene parentGeneA = mom.getGenes().get(i).clone();
-      Gene parentGeneB = dad.getGenes().get(i).clone();
-      Gene childGeneA;
-      Gene childGeneB;
+      AbstractGene parentAbstractGeneA = mom.getAbstractGenes().get(i).clone();
+      AbstractGene parentAbstractGeneB = dad.getAbstractGenes().get(i).clone();
+      AbstractGene childAbstractGeneA;
+      AbstractGene childAbstractGeneB;
 
 
       try
       {
         if (i < transition)
         {
-          childGeneA = parentGeneA.clone();
-          childGeneB = parentGeneB.clone();
+          childAbstractGeneA = parentAbstractGeneA.clone();
+          childAbstractGeneB = parentAbstractGeneB.clone();
         }
         else
         {
-          childGeneA = parentGeneB.clone();
-          childGeneB = parentGeneA.clone();
+          childAbstractGeneA = parentAbstractGeneB.clone();
+          childAbstractGeneB = parentAbstractGeneA.clone();
         }
 
-        g1.append(childGeneA);
-        g2.append(childGeneB);
+        g1.append(childAbstractGeneA);
+        g2.append(childAbstractGeneB);
       }
       catch (IllegalArgumentException ex)
       {

@@ -1,7 +1,7 @@
 package vcreature.genotype;
 
 
-public interface NeuronInput<V>
+public interface NeuralInput<V>
 {
   V getValue();
 

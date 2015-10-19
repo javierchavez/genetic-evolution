@@ -29,9 +29,9 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
   }
 
 
-  private BlockGene synthesizeBlock(Block b)
+  private Gene synthesizeBlock(Block b)
   {
-    BlockGene gene = new BlockGene();
+    Gene gene = new Gene();
     gene.setDimensions(b.getSizeY(), b.getSizeX(), b.getHeight());
 
     if (b.getJoint() != null)
@@ -59,7 +59,7 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
     //    }
 
 
-    NeuronInput input = new TimeInput(); input.setValue(11f);
+    NeuralInput input = new TimeInput(); input.setValue(11f);
 
     node.getInputs().put('A', input);
 

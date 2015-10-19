@@ -1,49 +1,146 @@
 package vcreature.genotype;
 
-
-public abstract class Gene<T extends Gene<?>>
+/**
+ * Rigid Part
+ */
+public class Gene extends AbstractGene<Gene>
 {
-  private GeneType geneType;
-  private boolean active;
+  private float length;
+  private float width;
+  private float height;
 
-  public Gene(GeneType geneType)
+  // Spec. page 13 slide 26
+  private Sensor angleSensor;
+  private Sensor touchSensor;
+  private Sensor heightSensor;
+
+  // TODO: Does the effector go here?
+  private Effector effector;
+  private float jointSite;
+
+
+
+  public Gene()
   {
-    this.geneType = geneType; this.active = true;
+    super(GeneType.BLOCK);
+    angleSensor = new AngleSensor();
+    touchSensor = new TouchSensor();
+    heightSensor = new HeightSensor();
+    effector = new Effector();
+    ConstantInput constant = new ConstantInput();
+
+    // Sims 3.3 first sentence
+    //    effector.addConnection(touchSensor);
+    // or to add constant
+    //    effector.addConnection(constant);
+    //  }
+
+    //  public Sensor getSensor()
+    //  {
+    //    return sensor;
+    //  }
+    //
+    //  public void setSensor(Sensor sensor)
+    //  {
+    //    this.sensor = sensor;
   }
 
-  /**
-   * Clone the gene.
-   *
-   * @return cloned gene
-   */
-  public abstract T clone();
 
-  /**
-   * Get the type of the gene
-   *
-   * @return type of the gene
-   */
-  public GeneType getGeneType()
+  public Sensor getAngleSensor()
   {
-    return geneType;
+    return angleSensor;
   }
 
-
-  public boolean isActive()
+  public void setAngleSensor(Sensor angleSensor)
   {
-    return active;
+    this.angleSensor = angleSensor;
   }
 
-  public void setActive(boolean active)
+  public Sensor getTouchSensor()
   {
-    this.active = active;
+    return touchSensor;
+  }
+
+  public void setTouchSensor(Sensor touchSensor)
+  {
+    this.touchSensor = touchSensor;
+  }
+
+  public Sensor getHeightSensor()
+  {
+    return heightSensor;
+  }
+
+  public void setHeightSensor(Sensor heightSensor)
+  {
+    this.heightSensor = heightSensor;
+  }
+
+  public Effector getEffector()
+  {
+    return effector;
+  }
+
+  public void setEffector(Effector effector)
+  {
+    this.effector = effector;
+  }
+
+  public float getLength()
+  {
+    return length;
+  }
+
+  public void setLength(float length)
+  {
+    this.length = length;
+  }
+
+  public float getWidth()
+  {
+    return width;
+  }
+
+  public void setWidth(float width)
+  {
+    this.width = width;
+  }
+
+  public float getHeight()
+  {
+    return height;
+  }
+
+  public void setHeight(float height)
+  {
+    this.height = height;
+  }
+
+  public void setDimensions(float length, float width, float height)
+  {
+    this.length = length;
+    this.width = width;
+    this.height = height;
   }
 
 
   @Override
-  public String toString()
+  public Gene clone()
   {
-    return "|" + getGeneType().toString() + "|";
+    Gene _newGene = new Gene();
+    _newGene.setDimensions(length, width, height);
+    _newGene.setEffector(effector);
+    // _newGene.setSensor(sensor);
+    return _newGene;
+  }
+
+  public float getJointSite()
+  {
+    return jointSite;
+  }
+
+  public void setJointSite(float jointSite)
+  {
+    this.jointSite = jointSite;
   }
 }
-

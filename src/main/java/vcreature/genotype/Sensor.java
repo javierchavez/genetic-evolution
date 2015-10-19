@@ -6,7 +6,7 @@ package vcreature.genotype;
  * @param <T> type of sensor
  * @param <V> sensors value type
  */
-public abstract class Sensor<T extends Sensor<?, ?>, V> implements NeuronInput<V>, EffectorInput
+public abstract class Sensor<T extends Sensor<?, ?>, V> implements NeuralInput<V>, EffectorInput
 {
 
   private V sensorValue;

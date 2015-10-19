@@ -1,7 +1,7 @@
 package vcreature.genotype;
 
 
-public class TimeInput implements NeuronInput<Float>
+public class TimeInput implements NeuralInput<Float>
 {
 
   private float time;
