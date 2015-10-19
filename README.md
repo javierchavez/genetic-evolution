@@ -7,7 +7,7 @@ How to set up your env
 
 Clone the repo.
 ```bash
-    git clone https://github.com/javierchavez/genetic-evolution.git
+git clone https://github.com/javierchavez/genetic-evolution.git
 ```
 
 Get the submodules.
@@ -16,7 +16,7 @@ git submodule init
 git submodule update
 ```
 
-###Intellij
+###Intellij ENV
 ---
 The following are if you are using Intellij
 
@@ -27,22 +27,23 @@ The following are if you are using Intellij
 mark the `src` directory as Sources.
 5.    Click ok and right click on MainSim and choose Run 'MainSim.Main()'
 
-###Emacs/Command line
+###Simple ENV
 ---
 The following are if you are compiling with via command line without a IDE.
-###Prereq
+######Prereq
+Make sure these are installed in your system (brew is great for this).
 *    Gradle
 *    Java 1.8
 
 ###Running
 Running via the command line
 ```bash
-    gradle run
+gradle run
 ```
 
 ###Building
 ```bash
-    gradle build
+gradle build
 ```
 
 
