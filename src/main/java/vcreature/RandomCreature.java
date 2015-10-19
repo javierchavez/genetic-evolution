@@ -85,7 +85,7 @@ public class RandomCreature extends Creature
     Random rand = new Random();
     Vector3f size = genRandSize(rand);
     Vector3f parentSize = new Vector3f(parent.getSizeX()/2, parent.getSizeY()/2, parent.getSize()/2);
-    float[] angles = {0,0,0};
+    float[] rotations = {0f, 0f, 0f};
 
     int side = rand.nextInt(6);
     Vector3f pivot;
@@ -93,17 +93,22 @@ public class RandomCreature extends Creature
     Vector3f axis;
     Vector3f parentAxis;
 
-    float x = 0;
-    float y = 0;
-    float z = 0;
+    float x, y, z;
+    float parentX, parentY, parentZ;
 
     switch (side) {
       case 0: // XY plane 1
-        x = (parent.getSizeX()/2) - (rand.nextFloat()*parent.getSizeX());
-        y = (parent.getSizeY()/2) - (rand.nextFloat()*parent.getSizeY());
-        z = parentSize.z;
-        parentPivot = new Vector3f(x, y, z);
-        pivot = new Vector3f(0, 0, -size.z);
+        parentX = (parent.getSizeX()/2) - (rand.nextFloat()*parent.getSizeX());
+        parentY = (parent.getSizeY()/2) - (rand.nextFloat()*parent.getSizeY());
+        parentZ = parentSize.z;
+        parentPivot = new Vector3f(parentX, parentY, parentZ);
+
+        x = size.x - (rand.nextFloat()*2*size.x);
+        y = size.y - (rand.nextFloat()*2*size.y);
+        z = -size.z;
+        pivot = new Vector3f(x, y, z);
+
+        //rotations = new float[] {0f, 0f, (float) (rand.nextFloat()*2*Math.PI)};
         if (rand.nextBoolean())
         {
           parentAxis = Vector3f.UNIT_X;
@@ -116,11 +121,17 @@ public class RandomCreature extends Creature
         }
         break;
       case 1: // XY plane 2
-        x = (parent.getSizeX()/2) - (rand.nextFloat()*parent.getSizeX());
-        y = (parent.getSizeY()/2) - (rand.nextFloat()*parent.getSizeY());
-        z = -parentSize.z;
-        parentPivot = new Vector3f(x, y, z);
-        pivot = new Vector3f(0, 0, size.z);
+        parentX = (parent.getSizeX()/2) - (rand.nextFloat()*parent.getSizeX());
+        parentY = (parent.getSizeY()/2) - (rand.nextFloat()*parent.getSizeY());
+        parentZ = -parentSize.z;
+        parentPivot = new Vector3f(parentX, parentY, parentZ);
+
+        x = size.x - (rand.nextFloat()*2*size.x);
+        y = size.y - (rand.nextFloat()*2*size.y);
+        z = size.z;
+        pivot = new Vector3f(x, y, z);
+
+        //rotations = new float[] {0f, 0f, (float) (rand.nextFloat()*2*Math.PI)};
         if (rand.nextBoolean())
         {
           parentAxis = Vector3f.UNIT_X;
@@ -133,11 +144,17 @@ public class RandomCreature extends Creature
         }
         break;
       case 2: // XZ plane 1
-        x = (parent.getSizeX()/2) - (rand.nextFloat()*parent.getSizeX());
-        y = parentSize.y;
-        z = (parent.getSize()/2) - (rand.nextFloat()*parent.getSize());
-        parentPivot = new Vector3f(x, y, z);
-        pivot = new Vector3f(0, -size.y, 0);
+        parentX = (parent.getSizeX()/2) - (rand.nextFloat()*parent.getSizeX());
+        parentY = parentSize.y;
+        parentZ = (parent.getSize()/2) - (rand.nextFloat()*parent.getSize());
+        parentPivot = new Vector3f(parentX, parentY, parentZ);
+
+        x = size.x - (rand.nextFloat()*2*size.x);
+        y = -size.y;
+        z = size.z - (rand.nextFloat()*2*size.z);
+        pivot = new Vector3f(x, y, z);
+
+        //rotations = new float[] {0f, (float) (rand.nextFloat()*2*Math.PI), 0f};
         if (rand.nextBoolean())
         {
           parentAxis = Vector3f.UNIT_X;
@@ -150,11 +167,17 @@ public class RandomCreature extends Creature
         }
         break;
       case 3: // XZ plane 2
-        x = (parent.getSizeX()/2) - (rand.nextFloat()*parent.getSizeX());
-        y = -parentSize.y;
-        z = (parent.getSize()/2) - (rand.nextFloat()*parent.getSize());
-        parentPivot = new Vector3f(x, y, z);
-        pivot = new Vector3f(0, size.y, 0);
+        parentX = (parent.getSizeX()/2) - (rand.nextFloat()*parent.getSizeX());
+        parentY = -parentSize.y;
+        parentZ = (parent.getSize()/2) - (rand.nextFloat()*parent.getSize());
+        parentPivot = new Vector3f(parentX, parentY, parentZ);
+
+        x = size.x - (rand.nextFloat()*2*size.x);
+        y = size.y;
+        z = size.z - (rand.nextFloat()*2*size.z);
+        pivot = new Vector3f(x, y, z);
+
+        //rotations = new float[] {0f, (float) (rand.nextFloat()*2*Math.PI), 0f};
         if (rand.nextBoolean())
         {
           parentAxis = Vector3f.UNIT_X;
@@ -167,11 +190,17 @@ public class RandomCreature extends Creature
         }
         break;
       case 4: // YZ plane 1
-        x = parentSize.x;
-        y = (parent.getSizeY()/2) - (rand.nextFloat()*parent.getSizeY());
-        z = (parent.getSize()/2) - (rand.nextFloat()*parent.getSize());
-        parentPivot = new Vector3f(x, y, z);
-        pivot = new Vector3f(-size.x, 0, 0);
+        parentX = parentSize.x;
+        parentY = (parent.getSizeY()/2) - (rand.nextFloat()*parent.getSizeY());
+        parentZ = (parent.getSize()/2) - (rand.nextFloat()*parent.getSize());
+        parentPivot = new Vector3f(parentX, parentY, parentZ);
+
+        x = -size.x;
+        y = size.y - (rand.nextFloat()*2*size.y);
+        z = size.z - (rand.nextFloat()*2*size.z);
+        pivot = new Vector3f(x, y, z);
+
+        //rotations = new float[] {(float) (rand.nextFloat()*2*Math.PI), 0f, 0f};
         if (rand.nextBoolean())
         {
           parentAxis = Vector3f.UNIT_Y;
@@ -184,11 +213,17 @@ public class RandomCreature extends Creature
         }
         break;
       default: // YZ plane 2
-        x = -parentSize.x;
-        y = (parent.getSizeY()/2) - (rand.nextFloat()*parent.getSizeY());
-        z = (parent.getSize()/2) - (rand.nextFloat()*parent.getSize());
-        parentPivot = new Vector3f(x, y, z);
-        pivot = new Vector3f(size.x, 0, 0);
+        parentX = -parentSize.x;
+        parentY = (parent.getSizeY()/2) - (rand.nextFloat()*parent.getSizeY());
+        parentZ = (parent.getSize()/2) - (rand.nextFloat()*parent.getSize());
+        parentPivot = new Vector3f(parentX, parentY, parentZ);
+
+        x = size.x;
+        y = size.y - (rand.nextFloat()*2*size.y);
+        z = size.z - (rand.nextFloat()*2*size.z);
+        pivot = new Vector3f(x, y, z);
+
+        //rotations = new float[] {(float) (rand.nextFloat()*2*Math.PI), 0f, 0f};
         if (rand.nextBoolean())
         {
           parentAxis = Vector3f.UNIT_Y;
@@ -201,7 +236,7 @@ public class RandomCreature extends Creature
         }
         break;
     }
-    return addBlock(angles, size, parent, parentPivot, pivot, parentAxis, axis);
+    return addBlock(rotations, size, parent, parentPivot, pivot, parentAxis, axis);
   }
 
   private float genRandDim(Random rand)
