@@ -17,7 +17,7 @@ public class RandomCreatureParameters
   public static final int MAX_CHILDREN = 5; // maximum number of children any block can have
   public static final int MAX_DEPTH = 5; // maximum number of children any block can be from root
 
-  public static final float CHILD_SPAWN_CHANCE = 0.25f; // chance that a block will spawn a child block
-  public static final float RECURSE_CHANCE = 0.5f; // chance that a block will spawn at depth n+1 from root block
+  public static final float CHILD_SPAWN_CHANCE = 0.1f; // chance that a block will spawn a child block
+  public static final float RECURSE_CHANCE = 0.1f; // chance that a block will spawn at depth n+1 from root block
 
 }
