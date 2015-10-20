@@ -9,9 +9,6 @@ repositories {
         url 'http://updates.jmonkeyengine.org/maven'
     }
 }
-task preBuild << {
-    commandLine 'sh', './update'
-}
 
 dependencies {
     compile 'com.jme3:jme3-core:3.0.+'
