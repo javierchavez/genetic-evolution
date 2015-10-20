@@ -19,4 +19,9 @@ public abstract class Synthesizer<T, V>
    * @return new converted object
    */
   public abstract T decode(V typeToConvert);
+
+
+  public abstract String toString();
+
+  public abstract String synthesizedToString();
 }

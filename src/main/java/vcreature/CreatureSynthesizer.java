@@ -12,18 +12,29 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
   public Genome encode(Creature creature)
   {
     Genome genome = new Genome();
+    // root of the genome is index 0
     for (int i = 0; i < creature.getNumberOfBodyBlocks(); i++)
     {
       genome.append(synthesizeBlock(creature.getBlockByID(i)));
     }
-
-    genome.setRoot(synthesizeBlock(creature.getBlockByID(0)));
 
     return genome;
   }
 
   @Override
   public Creature decode(Genome typeToConvert)
+  {
+    return null;
+  }
+
+  @Override
+  public String toString()
+  {
+    return null;
+  }
+
+  @Override
+  public String synthesizedToString()
   {
     return null;
   }
