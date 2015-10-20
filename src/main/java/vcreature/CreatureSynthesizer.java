@@ -3,7 +3,6 @@ package vcreature;
 import vcreature.genotype.*;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
-import vcreature.phenotype.Neuron;
 
 
 public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
@@ -19,6 +18,32 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
     }
 
     return genome;
+  }
+
+  private Chromosome synthesizeBlock(Block blockByID)
+  {
+    Chromosome chromosome = new Chromosome();
+
+    chromosome.h = new HeightAllele().setValue(blockByID.getSizeY());
+    chromosome.w = new WidthAllele().setValue(blockByID.getSizeX());
+    chromosome.l = new LengthAllele().setValue(blockByID.getSize());
+
+    Site s = new Site();
+    s.childIndex = blockByID.getID();
+    s.parentIndex = blockByID.getIdOfParent();
+    chromosome.j = new JointSiteAllele().setValue(s);
+    chromosome.o = new JointAngleAllele().setValue(blockByID.getJointAngle());
+
+    for (int i = 0; i < blockByID.getNeuronTable().size(); i++)
+    {
+      for (int j = 0; j < 5; j++)
+      {
+        blockByID.getNeuronTable().get(i);
+
+      }
+    }
+
+    return chromosome;
   }
 
   @Override
@@ -39,41 +64,4 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
     return null;
   }
 
-
-  private Gene synthesizeBlock(Block b)
-  {
-    Gene gene = new Gene();
-    gene.setDimensions(b.getSizeY(), b.getSizeX(), b.getHeight());
-
-    if (b.getJoint() != null)
-    {
-      Effector effector = new Effector();
-      // get joint angle && orientation (what side the joint is connected to block)
-      // or something
-      effector.setMaxForce(b.getMass()); effector.setMaxLimit(b.getMass());
-      for (Neuron neuron : b.getNeuronTable())
-      {
-        effector.addNeuralNode(synthesizeNeuron(neuron));
-      }
-    } return gene;
-  }
-
-
-  private NeuralNode synthesizeNeuron(Neuron neuron)
-  {
-    NeuralNode node = new NeuralNode();
-    //    node.setNeuronFunction();
-    // neuron.getOp()
-    //    for (int i = 0; i < EnumNeuronInput.values().length; i++)
-    //    {
-    //
-    //    }
-
-
-    NeuralInput input = new TimeInput(); input.setValue(11f);
-
-    node.getInputs().put('A', input);
-
-    return node;
-  }
 }
