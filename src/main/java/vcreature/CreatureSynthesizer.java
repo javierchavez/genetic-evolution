@@ -3,7 +3,9 @@ package vcreature;
 import vcreature.genotype.*;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
+import vcreature.phenotype.EnumNeuronInput;
 import vcreature.phenotype.Neuron;
+import vcreature.genotype.NeuralInput.InputPosition;
 
 import java.util.*;
 
@@ -24,7 +26,11 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
       // add gene to genome
       genome.append(g);
       // link gene (directed graph)
-      genome.linkGenes(b.getIdOfParent(), i);
+      // TODO is this correct? Directed graph normally point opposite
+      // genome.linkGenes(b.getIdOfParent(), i);
+
+      // So I am doing it this way for a more proper graph
+      genome.linkGenes(i, b.getIdOfParent());
     }
 
     return genome;
@@ -64,7 +70,9 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
       {
         effector.addNeuralNode(synthesizeNeuron(neuron));
       }
-    } return gene;
+      effector.setJointParentIndex(b.getIdOfParent());
+    }
+    return gene;
   }
 
 
@@ -72,20 +80,64 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
   {
     NeuralNode node = new NeuralNode();
 
-    //    node.setNeuronFunction();
-    // neuron.getOp()
-    //    for (int i = 0; i < EnumNeuronInput.values().length; i++)
-    //    {
-    //
-    //    }
+    for (int i = 0; i < Neuron.TOTAL_INPUTS; i++)
+    {
+      NeuralInput input = synthesizeNeuronInput(neuron, i);
+      synthesizeNeuronOperators(node, neuron);
+      node.setInput(input.getInputPosition(), input);
 
-
-    NeuralInput input = new TimeInput(); input.setValue(11f);
-
-    node.getInputs().put('A', input);
+    }
 
     return node;
   }
+
+  private void synthesizeNeuronOperators(NeuralNode nnode, Neuron neuron)
+  {
+    nnode.setOperator(neuron.getOp(0), NeuralNode.NeuralOperatorPosition.FIRST);
+    nnode.setOperator(neuron.getOp(1), NeuralNode.NeuralOperatorPosition.SECOND);
+    nnode.setOperator(neuron.getOp(2), NeuralNode.NeuralOperatorPosition.THIRD);
+    nnode.setOperator(neuron.getOp(3), NeuralNode.NeuralOperatorPosition.FOURTH);
+  }
+
+  private NeuralInput synthesizeNeuronInput(Neuron neuron, int position)
+  {
+    if (neuron.getInputType(position) == EnumNeuronInput.CONSTANT)
+    {
+      return new ConstantInput()
+              .setValue(neuron.getInputValue(position))
+              .setInputPosition(InputPosition.fromOrdinal(position));
+    }
+    if (neuron.getInputType(position) == EnumNeuronInput.TIME)
+    {
+      return new TimeInput()
+              .setValue(neuron.getInputValue(position))
+              .setInputPosition(InputPosition.fromOrdinal(position));
+    }
+    if (neuron.getInputType(position) == EnumNeuronInput.TOUCH)
+    {
+      return new TouchSensor()
+              .setValue(neuron.getInputValue(position))
+              .setInputPosition(InputPosition.fromOrdinal(position));
+    }
+    if (neuron.getInputType(position) == EnumNeuronInput.HEIGHT)
+    {
+      return new HeightSensor()
+              .setValue(neuron.getInputValue(position))
+              .setInputPosition(InputPosition.fromOrdinal(position));
+    }
+    if (neuron.getInputType(position) == EnumNeuronInput.JOINT)
+    {
+      return new AngleSensor()
+              .setValue(neuron.getInputValue(position))
+              .setInputPosition(InputPosition.fromOrdinal(position));
+    }
+
+    return new ConstantInput()
+            .setValue(neuron.getInputValue(position))
+            .setInputPosition(InputPosition.fromOrdinal(position));
+
+  }
+
 
   /**
    * BFS to turn a directed graph into array
@@ -93,7 +145,7 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
   public class BFS
   {
 
-    public List<Gene> lenearOrder (Genome graph)
+    public List<Gene> lenearOrder(Genome graph)
     {
       Queue<Gene> frontier = new LinkedList<>();
       frontier.add(graph.getRoot());
@@ -106,7 +158,6 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
         List<Gene> neighbors = graph.neighbors(current);
 
 
-
         for (Gene next : neighbors)
         {
           if (!cameFrom.containsKey(next))
@@ -117,12 +168,14 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
         }
       }
 
-      return reconstructPath(cameFrom, graph.getRoot(), graph.getGenes().getLast());
+      return reconstructPath(cameFrom,
+                             graph.getRoot(),
+                             graph.getGenes().getLast());
     }
 
-    private List<Gene> reconstructPath (HashMap<Gene, Gene> came_from,
-                                        Gene start,
-                                        Gene end)
+    private List<Gene> reconstructPath(HashMap<Gene, Gene> came_from,
+                                       Gene start,
+                                       Gene end)
     {
       Gene current = end;
       List<Gene> path = new ArrayList<>();
