@@ -2,40 +2,53 @@ package vcreature.genotype;
 
 
 import vcreature.phenotype.EnumOperator;
+import vcreature.genotype.NeuralInput.InputPosition;
 
 import java.util.HashMap;
 
 /**
- * This is a neuron can be either unary or binary
+ *
  *
  */
 public class NeuralNode implements EffectorInput
 {
-  private EnumOperator neuronFunction;
-  private HashMap<Character, NeuralInput> inputs;
+  private HashMap<InputPosition, NeuralInput> inputs;
+  private HashMap<NeuralOperatorPosition, EnumOperator> operators;
 
   public NeuralNode()
   {
     inputs = new HashMap<>();
   }
 
-  public EnumOperator getNeuronFunction()
-  {
-    return neuronFunction;
-  }
 
-  public void setNeuronFunction(EnumOperator neuronFunction)
-  {
-    this.neuronFunction = neuronFunction;
-  }
 
-  public HashMap<Character, NeuralInput> getInputs()
+  public HashMap<InputPosition, NeuralInput> getInputs()
   {
     return this.inputs;
   }
 
-  public void setInput (Character input, NeuralInput value)
+  public void setInput (InputPosition input, NeuralInput value)
   {
     inputs.put(input, value);
+  }
+
+  public HashMap<NeuralOperatorPosition, EnumOperator> getOperators()
+  {
+    return operators;
+  }
+
+  public void setOperators(HashMap<NeuralOperatorPosition, EnumOperator> operators)
+  {
+    this.operators = operators;
+  }
+
+  public void setOperator(EnumOperator operator, NeuralOperatorPosition operatorPosition)
+  {
+    operators.put(operatorPosition,operator);
+  }
+
+  public enum NeuralOperatorPosition
+  {
+    FIRST,SECOND,THIRD,FOURTH
   }
 }
