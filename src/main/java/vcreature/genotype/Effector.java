@@ -16,7 +16,7 @@ public class Effector
   // Sims 3.3 first sentence
   // private EffectorInput inputSource;
 
-  public Effector()
+  protected Effector()
   {
     this.maxForce = 0;
     neuralNet = new ArrayList<>();

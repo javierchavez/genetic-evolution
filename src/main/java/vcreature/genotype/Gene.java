@@ -25,9 +25,9 @@ public class Gene extends AbstractGene<Gene>
   public Gene()
   {
     super(GeneType.BLOCK);
-    angleSensor = new AngleSensor();
-    touchSensor = new TouchSensor();
-    heightSensor = new HeightSensor();
+    angleSensor = new AngleSensor(this);
+    touchSensor = new TouchSensor(this);
+    heightSensor = new HeightSensor(this);
     effector = new Effector();
 
   }
@@ -131,12 +131,6 @@ public class Gene extends AbstractGene<Gene>
     this.jointSite = jointSite;
   }
 
-  public void setSenors(TouchSensor touchSensor, HeightSensor heightSensor, AngleSensor angleSensor)
-  {
-    this.touchSensor = touchSensor;
-    this.heightSensor = heightSensor;
-    this.angleSensor = angleSensor;
-  }
 
   @Override
   public String toString()

@@ -9,7 +9,18 @@ package vcreature.genotype;
 public abstract class Sensor<T extends Sensor<?, ?>, V> implements NeuralInput<V>, EffectorInput
 {
   private V sensorValue;
+  private Gene source;
 
+
+  public Sensor(Gene source)
+  {
+    this.source = source;
+  }
+
+  public Gene getSource()
+  {
+    return source;
+  }
 
   public V getValue()
   {
