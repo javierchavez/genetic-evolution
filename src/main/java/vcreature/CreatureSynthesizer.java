@@ -65,16 +65,8 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
 
     if (b.getJoint() != null)
     {
-      Effector effector = new Effector();
-
-      TouchSensor touchSensor = new TouchSensor();
-      HeightSensor heightSensor = new HeightSensor();
-      AngleSensor angleSensor = new AngleSensor();
-
-      gene.setSenors(touchSensor, heightSensor, angleSensor);
-
-      effector.setMaxForce(b.getJointMaxImpulse());
-      effector.setJointParentIndex(b.getIdOfParent());
+      gene.getEffector().setMaxForce(b.getJointMaxImpulse());
+      gene.getEffector().setJointParentIndex(b.getIdOfParent());
 
 
     }
