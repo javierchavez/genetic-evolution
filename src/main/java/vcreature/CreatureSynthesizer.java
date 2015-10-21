@@ -214,7 +214,10 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
       Gene current = frontier.remove();
       List<Gene> neighbors = genome.neighbors(current);
 
-      s.append(current.toString()+ "p");
+      if (neighbors.size() > 0)
+      {
+        s.append(current.toString()+ "p");
+      }
 
       for (Gene next : neighbors)
       {
@@ -222,7 +225,7 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
         {
           frontier.add(next);
           cameFrom.put(next, current);
-          s.append(next.toString()+"n");
+          s.append("->" + next.toString());
         }
       }
       s.append("\n");
