@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public class Effector
 {
-  private float minLimit;
-  private float maxLimit;
   private float maxForce;
+  private int jointParentIndex;
+
 
   // Slide 27 Each effector (degree of freedom of each joint) has a
   // sequence of 0 to n rules called the effector's rule table
@@ -18,28 +18,8 @@ public class Effector
 
   public Effector()
   {
-    this.minLimit = this.maxLimit = this.maxForce = 0;
+    this.maxForce = 0;
     neuralNet = new ArrayList<>();
-  }
-
-  public float getMinLimit()
-  {
-    return minLimit;
-  }
-
-  public void setMinLimit(float minLimit)
-  {
-    this.minLimit = minLimit;
-  }
-
-  public float getMaxLimit()
-  {
-    return maxLimit;
-  }
-
-  public void setMaxLimit(float maxLimit)
-  {
-    this.maxLimit = maxLimit;
   }
 
   public float getMaxForce()
@@ -65,6 +45,16 @@ public class Effector
   public void setNeuralNet(ArrayList<NeuralNode> neuralNet)
   {
     this.neuralNet = neuralNet;
+  }
+
+  public int getJointParentIndex()
+  {
+    return jointParentIndex;
+  }
+
+  public void setJointParentIndex(int jointParentIndex)
+  {
+    this.jointParentIndex = jointParentIndex;
   }
 
   /**
