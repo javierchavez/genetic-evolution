@@ -12,8 +12,10 @@ public class GeneticEngine
     son.getGenes().add(son.getRoot());
 
 
-    int motherStart = mother.size(); int motherEnd = mother.size();
-    int fatherStart = father.size(); int fatherEnd = father.size();
+    int motherStart = mother.size();
+    int motherEnd = mother.size();
+    int fatherStart = father.size();
+    int fatherEnd = father.size();
 
     son.merge(mother, motherStart, motherEnd);
     son.merge(father, fatherStart, fatherEnd);
@@ -49,10 +51,10 @@ public class GeneticEngine
 
     for (int i = 0; i < size; i++)
     {
-      AbstractGene parentAbstractGeneA = mom.getGenes().get(i).clone();
-      AbstractGene parentAbstractGeneB = dad.getGenes().get(i).clone();
-      AbstractGene childAbstractGeneA;
-      AbstractGene childAbstractGeneB;
+      Gene parentAbstractGeneA = mom.getGenes().get(i).clone();
+      Gene parentAbstractGeneB = dad.getGenes().get(i).clone();
+      Gene childAbstractGeneA;
+      Gene childAbstractGeneB;
 
 
       try
