@@ -1,7 +1,7 @@
 package vcreature.genotype;
 
 /**
- * Rigid Part
+ * Rigid Part our creature this will be a Block
  */
 public class Gene extends AbstractGene<Gene>
 {

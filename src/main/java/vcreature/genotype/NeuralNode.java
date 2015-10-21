@@ -8,8 +8,7 @@ import vcreature.phenotype.Neuron;
 import java.util.HashMap;
 
 /**
- *
- *
+ *  This is a Neuron
  */
 public class NeuralNode implements EffectorInput
 {

@@ -3,6 +3,9 @@ package vcreature.genotype;
 
 import java.util.ArrayList;
 
+/**
+ * Effector is analogous to a joint
+ */
 public class Effector
 {
   private float maxForce;
