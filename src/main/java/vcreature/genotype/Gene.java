@@ -117,7 +117,11 @@ public class Gene extends AbstractGene<Gene>
     Gene _newGene = new Gene();
     _newGene.setDimensions(length, width, height);
     _newGene.setEffector(effector);
-    // _newGene.setSensor(sensor);
+
+    _newGene.setTouchSensor(touchSensor);
+    _newGene.setAngleSensor(angleSensor);
+    _newGene.setHeightSensor(heightSensor);
+
     return _newGene;
   }
 
