@@ -15,8 +15,9 @@ public class Gene extends AbstractGene<Gene>
   private Sensor touchSensor;
   private Sensor heightSensor;
 
-  // TODO: Does the effector go here?
   private Effector effector;
+
+  // location of the joint, maybe different data type
   private float jointSite;
 
 
@@ -28,22 +29,7 @@ public class Gene extends AbstractGene<Gene>
     touchSensor = new TouchSensor();
     heightSensor = new HeightSensor();
     effector = new Effector();
-    ConstantInput constant = new ConstantInput();
 
-    // Sims 3.3 first sentence
-    //    effector.addConnection(touchSensor);
-    // or to add constant
-    //    effector.addConnection(constant);
-    //  }
-
-    //  public Sensor getSensor()
-    //  {
-    //    return sensor;
-    //  }
-    //
-    //  public void setSensor(Sensor sensor)
-    //  {
-    //    this.sensor = sensor;
   }
 
 
