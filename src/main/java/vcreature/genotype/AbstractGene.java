@@ -65,5 +65,7 @@ public abstract class AbstractGene<T extends AbstractGene<?>>
   {
     this.edges = edges;
   }
+
+
 }
 

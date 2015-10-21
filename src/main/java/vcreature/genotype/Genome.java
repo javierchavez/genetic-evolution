@@ -21,6 +21,8 @@ public class Genome
     genes = new LinkedList<>();
   }
 
+
+
   /**
    * Merge one genome into this genome
    *
@@ -111,7 +113,10 @@ public class Genome
 
     for (Integer integer : edges)
     {
-      neighbors.add(genes.get(integer));
+      if (integer >= 0)
+      {
+        neighbors.add(genes.get(integer));
+      }
     }
     return neighbors;
   }

@@ -5,20 +5,7 @@ public class TimeInput implements NeuralInput<Float>
 {
 
   private float time;
-  private InputPosition position;
 
-  @Override
-  public TimeInput setInputPosition(InputPosition position)
-  {
-    this.position = position;
-    return this;
-  }
-
-  @Override
-  public InputPosition getInputPosition()
-  {
-    return position;
-  }
 
 
   @Override

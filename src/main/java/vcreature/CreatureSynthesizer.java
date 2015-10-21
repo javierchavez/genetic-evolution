@@ -12,10 +12,15 @@ import java.util.*;
 
 public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
 {
+
+  private Genome genome;
+
   @Override
   public Genome encode(Creature creature)
   {
-    Genome genome = new Genome();
+
+    // BUILD THE RIGID GENOME
+    genome = new Genome();
     // root of the genome is index 0
     for (int i = 0; i < creature.getNumberOfBodyBlocks(); i++)
     {
@@ -26,30 +31,28 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
       // add gene to genome
       genome.append(g);
       // link gene (directed graph)
-      // TODO is this correct? Directed graph normally point opposite
-      // genome.linkGenes(b.getIdOfParent(), i);
-
-      // So I am doing it this way for a more proper graph
-      genome.linkGenes(i, b.getIdOfParent());
+       genome.linkGenes(b.getIdOfParent(), i);
     }
+
+    // LINK THE NERVOUS SYSTEM
+    for (int i = 0; i < creature.getNumberOfBodyBlocks(); i++)
+    {
+      // get the block
+      Block b = creature.getBlockByID(i);
+      Gene g = genome.getGenes().get(i);
+
+      for (Neuron neuron : b.getNeuronTable())
+      {
+        g.getEffector().addNeuralNode(synthesizeNeuron(neuron, b));
+      }
+    }
+
 
     return genome;
   }
 
   @Override
   public Creature decode(Genome typeToConvert)
-  {
-    return null;
-  }
-
-  @Override
-  public String toString()
-  {
-    return null;
-  }
-
-  @Override
-  public String synthesizedToString()
   {
     return null;
   }
@@ -63,20 +66,23 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
     if (b.getJoint() != null)
     {
       Effector effector = new Effector();
-      // get joint angle && orientation (what side the joint is connected to block)
-      // or something
+
+      TouchSensor touchSensor = new TouchSensor();
+      HeightSensor heightSensor = new HeightSensor();
+      AngleSensor angleSensor = new AngleSensor();
+
+      gene.setSenors(touchSensor, heightSensor, angleSensor);
+
       effector.setMaxForce(b.getJointMaxImpulse());
-      for (Neuron neuron : b.getNeuronTable())
-      {
-        effector.addNeuralNode(synthesizeNeuron(neuron));
-      }
       effector.setJointParentIndex(b.getIdOfParent());
+
+
     }
     return gene;
   }
 
 
-  private NeuralNode synthesizeNeuron(Neuron neuron)
+  private NeuralNode synthesizeNeuron(Neuron neuron, Block b)
   {
     NeuralNode node = new NeuralNode();
 
@@ -84,7 +90,7 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
     {
       NeuralInput input = synthesizeNeuronInput(neuron, i);
       synthesizeNeuronOperators(node, neuron);
-      node.setInput(input.getInputPosition(), input);
+      node.setInput(InputPosition.fromOrdinal(i), input);
 
     }
 
@@ -93,48 +99,46 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
 
   private void synthesizeNeuronOperators(NeuralNode nnode, Neuron neuron)
   {
-    nnode.setOperator(neuron.getOp(0), NeuralNode.NeuralOperatorPosition.FIRST);
-    nnode.setOperator(neuron.getOp(1), NeuralNode.NeuralOperatorPosition.SECOND);
-    nnode.setOperator(neuron.getOp(2), NeuralNode.NeuralOperatorPosition.THIRD);
-    nnode.setOperator(neuron.getOp(3), NeuralNode.NeuralOperatorPosition.FOURTH);
+    nnode.setOperator(neuron.getOp(0),
+                      NeuralNode.NeuralOperatorPosition.FIRST);
+    nnode.setOperator(neuron.getOp(1),
+                      NeuralNode.NeuralOperatorPosition.SECOND);
+    nnode.setOperator(neuron.getOp(2),
+                      NeuralNode.NeuralOperatorPosition.THIRD);
+    nnode.setOperator(neuron.getOp(3),
+                      NeuralNode.NeuralOperatorPosition.FOURTH);
   }
 
-  private NeuralInput synthesizeNeuronInput(Neuron neuron, int position)
+  private NeuralInput synthesizeNeuronInput(Neuron neuron, int inputPosition)
   {
-    if (neuron.getInputType(position) == EnumNeuronInput.CONSTANT)
+    if (neuron.getInputType(inputPosition) == EnumNeuronInput.CONSTANT)
     {
-      return new ConstantInput()
-              .setValue(neuron.getInputValue(position))
-              .setInputPosition(InputPosition.fromOrdinal(position));
+      return new ConstantInput().setValue(neuron.getInputValue(inputPosition));
     }
-    if (neuron.getInputType(position) == EnumNeuronInput.TIME)
+    if (neuron.getInputType(inputPosition) == EnumNeuronInput.TIME)
     {
-      return new TimeInput()
-              .setValue(neuron.getInputValue(position))
-              .setInputPosition(InputPosition.fromOrdinal(position));
+      return new TimeInput().setValue(neuron.getInputValue(inputPosition));
     }
-    if (neuron.getInputType(position) == EnumNeuronInput.TOUCH)
+    if (neuron.getInputType(inputPosition) == EnumNeuronInput.TOUCH)
     {
-      return new TouchSensor()
-              .setValue(neuron.getInputValue(position))
-              .setInputPosition(InputPosition.fromOrdinal(position));
+      int a = neuron.getBlockIdx(inputPosition);
+      float val = neuron.getInputValue(inputPosition);
+      return genome.getGenes().get(a).getTouchSensor().setValue(val);
     }
-    if (neuron.getInputType(position) == EnumNeuronInput.HEIGHT)
+    if (neuron.getInputType(inputPosition) == EnumNeuronInput.HEIGHT)
     {
-      return new HeightSensor()
-              .setValue(neuron.getInputValue(position))
-              .setInputPosition(InputPosition.fromOrdinal(position));
+      int a = neuron.getBlockIdx(inputPosition);
+      float val = neuron.getInputValue(inputPosition);
+      return genome.getGenes().get(a).getHeightSensor().setValue(val);
     }
-    if (neuron.getInputType(position) == EnumNeuronInput.JOINT)
+    if (neuron.getInputType(inputPosition) == EnumNeuronInput.JOINT)
     {
-      return new AngleSensor()
-              .setValue(neuron.getInputValue(position))
-              .setInputPosition(InputPosition.fromOrdinal(position));
+      int a = neuron.getBlockIdx(inputPosition);
+      float val = neuron.getInputValue(inputPosition);
+      return genome.getGenes().get(a).getAngleSensor().setValue(val);
     }
 
-    return new ConstantInput()
-            .setValue(neuron.getInputValue(position))
-            .setInputPosition(InputPosition.fromOrdinal(position));
+    return new ConstantInput().setValue(neuron.getInputValue(inputPosition));
 
   }
 
@@ -194,5 +198,43 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
 
       return path;
     }
+  }
+
+
+  @Override
+  public String toString()
+  {
+    return null;
+  }
+
+  @Override
+  public String synthesizedToString()
+  {
+    StringBuffer s = new StringBuffer();
+
+    Queue<Gene> frontier = new LinkedList<>();
+    frontier.add(genome.getRoot());
+    HashMap<Gene, Gene> cameFrom = new HashMap<>();
+    cameFrom.put(genome.getRoot(), null);
+
+    while (!frontier.isEmpty())
+    {
+      Gene current = frontier.remove();
+      List<Gene> neighbors = genome.neighbors(current);
+
+      s.append(current.toString()+ "p");
+
+      for (Gene next : neighbors)
+      {
+        if (!cameFrom.containsKey(next))
+        {
+          frontier.add(next);
+          cameFrom.put(next, current);
+          s.append(next.toString()+"n");
+        }
+      }
+      s.append("\n");
+    }
+    return s.toString();
   }
 }

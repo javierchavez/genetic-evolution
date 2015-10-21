@@ -1,8 +1,9 @@
 package vcreature.genotype;
 
 
-import vcreature.phenotype.EnumOperator;
 import vcreature.genotype.NeuralInput.InputPosition;
+import vcreature.phenotype.EnumOperator;
+import vcreature.phenotype.Neuron;
 
 import java.util.HashMap;
 
@@ -17,7 +18,8 @@ public class NeuralNode implements EffectorInput
 
   public NeuralNode()
   {
-    inputs = new HashMap<>();
+    inputs = new HashMap<>(Neuron.TOTAL_INPUTS);
+    operators = new HashMap<>(EnumOperator.SIZE);
   }
 
 

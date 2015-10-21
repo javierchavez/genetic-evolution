@@ -11,9 +11,9 @@ public class Gene extends AbstractGene<Gene>
   private int recursiveLimit = 1;
 
   // Spec. page 13 slide 26
-  private Sensor angleSensor;
-  private Sensor touchSensor;
-  private Sensor heightSensor;
+  private AngleSensor angleSensor;
+  private TouchSensor touchSensor;
+  private HeightSensor heightSensor;
 
   private Effector effector;
 
@@ -33,32 +33,32 @@ public class Gene extends AbstractGene<Gene>
   }
 
 
-  public Sensor getAngleSensor()
+  public AngleSensor getAngleSensor()
   {
     return angleSensor;
   }
 
-  public void setAngleSensor(Sensor angleSensor)
+  public void setAngleSensor(AngleSensor angleSensor)
   {
     this.angleSensor = angleSensor;
   }
 
-  public Sensor getTouchSensor()
+  public TouchSensor getTouchSensor()
   {
     return touchSensor;
   }
 
-  public void setTouchSensor(Sensor touchSensor)
+  public void setTouchSensor(TouchSensor touchSensor)
   {
     this.touchSensor = touchSensor;
   }
 
-  public Sensor getHeightSensor()
+  public HeightSensor getHeightSensor()
   {
     return heightSensor;
   }
 
-  public void setHeightSensor(Sensor heightSensor)
+  public void setHeightSensor(HeightSensor heightSensor)
   {
     this.heightSensor = heightSensor;
   }
@@ -129,5 +129,18 @@ public class Gene extends AbstractGene<Gene>
   public void setJointSite(float jointSite)
   {
     this.jointSite = jointSite;
+  }
+
+  public void setSenors(TouchSensor touchSensor, HeightSensor heightSensor, AngleSensor angleSensor)
+  {
+    this.touchSensor = touchSensor;
+    this.heightSensor = heightSensor;
+    this.angleSensor = angleSensor;
+  }
+
+  @Override
+  public String toString()
+  {
+    return "|B()|";
   }
 }

@@ -9,21 +9,6 @@ package vcreature.genotype;
 public abstract class Sensor<T extends Sensor<?, ?>, V> implements NeuralInput<V>, EffectorInput
 {
   private V sensorValue;
-  private InputPosition position;
-
-  @Override
-  public NeuralInput<V> setInputPosition(InputPosition position)
-  {
-    this.position = position;
-    return this;
-  }
-
-  @Override
-  public InputPosition getInputPosition()
-  {
-    return position;
-  }
-
 
 
   public V getValue()
@@ -36,10 +21,4 @@ public abstract class Sensor<T extends Sensor<?, ?>, V> implements NeuralInput<V
     sensorValue = value;
     return this;
   }
-
-  public void setSensorValue(V value)
-  {
-    setValue(value);
-  }
-
 }

@@ -11,10 +11,6 @@ public interface NeuralInput<V>
 
     }
 
-  NeuralInput<V> setInputPosition(InputPosition position);
-
-  InputPosition getInputPosition();
-
   V getValue();
 
   NeuralInput<V> setValue(V value);
