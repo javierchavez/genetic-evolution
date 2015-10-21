@@ -8,6 +8,7 @@ public class Gene extends AbstractGene<Gene>
   private float length;
   private float width;
   private float height;
+  private int recursiveLimit = 1;
 
   // Spec. page 13 slide 26
   private Sensor angleSensor;

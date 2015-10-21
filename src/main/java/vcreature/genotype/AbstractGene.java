@@ -1,14 +1,19 @@
 package vcreature.genotype;
 
 
+import java.util.ArrayList;
+
 public abstract class AbstractGene<T extends AbstractGene<?>>
 {
   private GeneType geneType;
   private boolean active;
+  private ArrayList<Integer> edges;
 
   public AbstractGene(GeneType geneType)
   {
-    this.geneType = geneType; this.active = true;
+    this.geneType = geneType;
+    this.active = true;
+    edges = new ArrayList<>();
   }
 
   /**
@@ -44,6 +49,21 @@ public abstract class AbstractGene<T extends AbstractGene<?>>
   public String toString()
   {
     return "|" + getGeneType().toString() + "|";
+  }
+
+  public ArrayList<Integer> getEdges()
+  {
+    return edges;
+  }
+
+  public void addEdge(int vertex)
+  {
+    edges.add(vertex);
+  }
+
+  public void setEdges(ArrayList<Integer> edges)
+  {
+    this.edges = edges;
   }
 }
 
