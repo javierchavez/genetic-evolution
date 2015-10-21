@@ -90,6 +90,11 @@ public class Genome
 
   public void linkGenes(int geneIndex1, int geneIndex2)
   {
+    if (geneIndex1 < 0)
+    {
+      return;
+    }
+
     AbstractGene<?> g1 = genes.get(geneIndex1);
     if (g1 == null)
     {
