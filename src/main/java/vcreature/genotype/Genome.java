@@ -1,6 +1,8 @@
 package vcreature.genotype;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Genome is a collection of genes. Genetic representation of this morphology is a directed graph of
@@ -10,8 +12,8 @@ import java.util.LinkedList;
 public class Genome
 {
 
-  private LinkedList<AbstractGene<?>> genes;
-  private AbstractGene rootVertex;
+  private LinkedList<Gene> genes;
+  private Gene rootVertex;
 
 
   public Genome()
@@ -28,10 +30,18 @@ public class Genome
    */
   public void merge(Genome parent, int start, int end)
   {
+    int lastLink = genes.size()-1;
     for (int i = start; i < end; i++)
     {
-      genes.add(parent.getGenes().get(i).clone());
+      genes.add(parent.getGenes().get(i));
     }
+    // get the new
+    genes.get(lastLink).addEdge(lastLink+1);
+  }
+
+  public void append(Gene gene)
+  {
+    genes.add(gene);
   }
 
   /**
@@ -39,7 +49,7 @@ public class Genome
    *
    * @return Gene that is the root of the Genome
    */
-  public AbstractGene getRoot()
+  public Gene getRoot()
   {
     if (rootVertex == null)
     {
@@ -54,7 +64,7 @@ public class Genome
    *
    * @param root
    */
-  public void setRoot(AbstractGene root)
+  public void setRoot(Gene root)
   {
     this.rootVertex = root;
   }
@@ -64,7 +74,7 @@ public class Genome
    *
    * @return List of Genes
    */
-  public LinkedList<AbstractGene<?>> getGenes()
+  public LinkedList<Gene> getGenes()
   {
     return genes;
   }
@@ -78,29 +88,27 @@ public class Genome
     return genes.size();
   }
 
-  public void linkRandomGeneTo(int geneIndex)
+  public void linkGenes(int geneIndex1, int geneIndex2)
   {
-    AbstractGene<?> abstractGene = genes.get(geneIndex);
-    if (abstractGene == null)
+    AbstractGene<?> g1 = genes.get(geneIndex1);
+    if (g1 == null)
     {
       return;
     }
-
+    g1.addEdge(geneIndex2);
   }
 
-  public void linkGenes(int gene1, int gene2, double linkWeight)
+
+  public List<Gene> neighbors (Gene current)
   {
-    AbstractGene<?> abstractGene = genes.get(gene1);
-    if (abstractGene == null)
+    ArrayList<Integer> edges = current.getEdges();
+    ArrayList<Gene> neighbors = new ArrayList<>();
+
+    for (Integer integer : edges)
     {
-      return;
+      neighbors.add(genes.get(integer));
     }
+    return neighbors;
   }
-
-  public void append(AbstractGene abstractGene)
-  {
-    genes.add(abstractGene);
-  }
-
 
 }
