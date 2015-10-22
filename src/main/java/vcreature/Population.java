@@ -1,149 +1,71 @@
 package vcreature;
 
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
-public class Population implements List<Being>
+/**
+ * Vector because of synchronization
+ */
+public class Population extends Vector<Being>
 {
+  private final Vector<Being> beings;
 
-  @Override
-  public int size()
+  private volatile int generations;
+  private volatile float averageFitness;
+  private volatile float bestFitness;
+  private volatile long lifetimeOffspring;
+  private volatile long lifetimeHillClimbs;
+  private volatile long currentRejectedCreatures;
+  private volatile long currentFailedHillClimbs;
+  private volatile long lifetimeRejectedCreatures;
+  private volatile long lifetimeFailedHillClimbs;
+  private volatile Environment environment;
+
+  public Population(Vector<Being> beings, Environment environment)
   {
-    return 0;
+    this.beings = beings;
+    this.environment = environment;
+  }
+
+  public Population(Environment environment)
+  {
+    this(new Vector<>(2001), environment);
+  }
+
+  public void initPop()
+  {
+    for (int i = 0; i < 200; i++)
+    {
+      Being a = new Being();
+       a.setPhenotype(FlappyBird.class, environment);
+      beings.add(i, a);
+    }
+  }
+
+  public void update() {
+    generations++;
   }
 
   @Override
-  public boolean isEmpty()
+  public synchronized List<Being> subList(int fromIndex, int toIndex)
   {
-    return false;
+    return beings.subList(fromIndex, toIndex);
   }
 
   @Override
-  public boolean contains(Object o)
+  public synchronized Being get(int index)
   {
-    return false;
+    return beings.get(index);
   }
 
   @Override
-  public Iterator<Being> iterator()
+  public synchronized int size()
   {
-    return null;
+    return beings.size();
   }
 
-  @Override
-  public Object[] toArray()
+  public int getGenerations()
   {
-    return new Object[0];
-  }
-
-  @Override
-  public <T> T[] toArray(T[] a)
-  {
-    return null;
-  }
-
-  @Override
-  public boolean add(Being being)
-  {
-    return false;
-  }
-
-  @Override
-  public boolean remove(Object o)
-  {
-    return false;
-  }
-
-  @Override
-  public boolean containsAll(Collection<?> c)
-  {
-    return false;
-  }
-
-  @Override
-  public boolean addAll(Collection<? extends Being> c)
-  {
-    return false;
-  }
-
-  @Override
-  public boolean addAll(int index, Collection<? extends Being> c)
-  {
-    return false;
-  }
-
-  @Override
-  public boolean removeAll(Collection<?> c)
-  {
-    return false;
-  }
-
-  @Override
-  public boolean retainAll(Collection<?> c)
-  {
-    return false;
-  }
-
-  @Override
-  public void clear()
-  {
-
-  }
-
-  @Override
-  public Being get(int index)
-  {
-    return null;
-  }
-
-  @Override
-  public Being set(int index, Being element)
-  {
-    return null;
-  }
-
-  @Override
-  public void add(int index, Being element)
-  {
-
-  }
-
-  @Override
-  public Being remove(int index)
-  {
-    return null;
-  }
-
-  @Override
-  public int indexOf(Object o)
-  {
-    return 0;
-  }
-
-  @Override
-  public int lastIndexOf(Object o)
-  {
-    return 0;
-  }
-
-  @Override
-  public ListIterator<Being> listIterator()
-  {
-    return null;
-  }
-
-  @Override
-  public ListIterator<Being> listIterator(int index)
-  {
-    return null;
-  }
-
-  @Override
-  public List<Being> subList(int fromIndex, int toIndex)
-  {
-    return null;
+    return generations;
   }
 }
