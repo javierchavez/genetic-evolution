@@ -57,16 +57,24 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
     return null;
   }
 
+  private Block synthesizeGene(Gene current)
+  {
+    return null;
+  }
+
 
   private Gene synthesizeBlock(Block b)
   {
-    Gene gene = new Gene();
+    Gene gene = new Gene(b.getID());
     gene.setDimensions(b.getSizeY(), b.getSizeX(), b.getHeight());
 
     if (b.getJoint() != null)
     {
       gene.getEffector().setMaxForce(b.getJointMaxImpulse());
       gene.getEffector().setJointParentIndex(b.getIdOfParent());
+      gene.getEffector().setParent(b.getJoint().getPivotA());
+      gene.getEffector().setChild(b.getJoint().getPivotB());
+      // gene.getEffector().setParentAxis(b.getJoint().getHingeAngle());
 
 
     }

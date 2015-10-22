@@ -1,9 +1,13 @@
 package vcreature;
 
 
+import com.jme3.bullet.PhysicsSpace;
+import com.jme3.scene.Node;
 import vcreature.genotype.Genome;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
+
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Wrapper for Genome and Creature
@@ -36,5 +40,46 @@ public class Being /*Comparable<Being>*/
     }
 
     return blocks;
+  }
+
+  public void update(float delta)
+  {
+    phenotype.updateBrain(delta);
+  }
+
+  public void setPhenotype(Class<? extends Creature> creatureClass, Environment environment)
+  {
+    try
+    {
+      this.phenotype = creatureClass.getDeclaredConstructor(PhysicsSpace.class, Node.class).newInstance(
+              environment.getBulletAppState().getPhysicsSpace(), environment.getRootNode());
+    }
+    catch (InstantiationException e)
+    {
+      e.printStackTrace();
+    }
+    catch (IllegalAccessException e)
+    {
+      e.printStackTrace();
+    }
+    catch (InvocationTargetException e)
+    {
+      e.printStackTrace();
+    }
+    catch (NoSuchMethodException e)
+    {
+      e.printStackTrace();
+    }
+
+    CreatureSynthesizer synthesizer = new CreatureSynthesizer();
+    genotype = synthesizer.encode(phenotype);
+    phenotype.remove();
+
+  }
+
+
+  public Creature getPhenotype()
+  {
+    return phenotype;
   }
 }
