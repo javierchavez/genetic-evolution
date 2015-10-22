@@ -1,5 +1,11 @@
 # Genetic Evolution
-We need a description
+We are to evolve by means of reproduction creatures. Since we are merely
+crossing genes, the selection process is very important. We need to maintain diversity
+while still improving the overall fitness of the population. This type of evolution
+is a little different in that we are not evolving based on a environment but rather
+a fitness. This means we have to evaluate after every crossover to decide how to
+handle the offspring.
+
 
 #Contributing
 How to set up your env
