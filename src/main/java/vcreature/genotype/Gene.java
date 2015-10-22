@@ -5,9 +5,12 @@ package vcreature.genotype;
  */
 public class Gene extends AbstractGene<Gene>
 {
-  private float length;
-  private float width;
-  private float height;
+  private float lengthX;
+  private float widthZ;
+  private float heightY;
+
+
+  private int position;
   private int recursiveLimit = 1;
 
   // Spec. page 13 slide 26
@@ -17,12 +20,15 @@ public class Gene extends AbstractGene<Gene>
 
   private Effector effector;
 
-  // location of the joint, maybe different data type
-  private float jointSite;
 
 
+  public Gene(int position)
+  {
+    this();
+    this.position = position;
+  }
 
-  public Gene()
+  private Gene()
   {
     super(GeneType.BLOCK);
     angleSensor = new AngleSensor(this);
@@ -73,41 +79,41 @@ public class Gene extends AbstractGene<Gene>
     this.effector = effector;
   }
 
-  public float getLength()
+  public float getLengthX()
   {
-    return length;
+    return lengthX;
   }
 
-  public void setLength(float length)
+  public void setLengthX(float lengthX)
   {
-    this.length = length;
+    this.lengthX = lengthX;
   }
 
-  public float getWidth()
+  public float getWidthZ()
   {
-    return width;
+    return widthZ;
   }
 
-  public void setWidth(float width)
+  public void setWidthZ(float widthZ)
   {
-    this.width = width;
+    this.widthZ = widthZ;
   }
 
-  public float getHeight()
+  public float getHeightY()
   {
-    return height;
+    return heightY;
   }
 
-  public void setHeight(float height)
+  public void setHeightY(float heightY)
   {
-    this.height = height;
+    this.heightY = heightY;
   }
 
-  public void setDimensions(float length, float width, float height)
+  public void setDimensions(float x, float z, float y)
   {
-    this.length = length;
-    this.width = width;
-    this.height = height;
+    this.lengthX = x;
+    this.widthZ = z;
+    this.heightY = y;
   }
 
 
@@ -115,7 +121,7 @@ public class Gene extends AbstractGene<Gene>
   public Gene clone()
   {
     Gene _newGene = new Gene();
-    _newGene.setDimensions(length, width, height);
+    _newGene.setDimensions(lengthX, widthZ, heightY);
     _newGene.setEffector(effector);
 
     _newGene.setTouchSensor(touchSensor);
@@ -124,17 +130,6 @@ public class Gene extends AbstractGene<Gene>
 
     return _newGene;
   }
-
-  public float getJointSite()
-  {
-    return jointSite;
-  }
-
-  public void setJointSite(float jointSite)
-  {
-    this.jointSite = jointSite;
-  }
-
 
   @Override
   public String toString()
