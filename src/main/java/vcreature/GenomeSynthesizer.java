@@ -24,7 +24,7 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
     return ourInstance;
   }
 
-  private GenomeSynthesizer()
+  public GenomeSynthesizer()
   {
   }
 
