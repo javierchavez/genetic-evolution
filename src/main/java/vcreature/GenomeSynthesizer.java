@@ -73,7 +73,6 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
   private Block synthesizeGene(Gene current, Block parent)
   {
     Block block;
-    Vector3f temp = new Vector3f();
     Vector3f size = new Vector3f(current.getLengthX()/2, current.getHeightY()/2, current.getWidthZ()/2);
 
     if (parent == null)
@@ -85,12 +84,16 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
     else
     {
       float[] rotations = {0,0,0};
-      current.getEffector().getParent(temp);
-      Vector3f parentPivot = new Vector3f(temp);
-      current.getEffector().getChild(temp);
-      Vector3f currentPivot = new Vector3f(temp);
-      current.getEffector().getParentAxis(temp);
-      Vector3f pivotAxis = new Vector3f(temp);
+
+      Vector3f parentPivot = new Vector3f();
+      current.getEffector().getParent(parentPivot);
+
+      Vector3f currentPivot = new Vector3f();
+      current.getEffector().getChild(currentPivot);
+
+      Vector3f pivotAxis = new Vector3f();
+      current.getEffector().getParentAxis(pivotAxis);
+
       block = creature.addBlock(rotations, size, parent, parentPivot, currentPivot, pivotAxis);
     }
     return block;
