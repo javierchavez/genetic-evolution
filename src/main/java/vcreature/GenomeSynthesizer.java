@@ -116,6 +116,6 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
   @Override
   public String synthesizedToString()
   {
-    return null;
+    return creature.toString();
   }
 }
