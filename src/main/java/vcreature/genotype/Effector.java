@@ -128,7 +128,7 @@ public class Effector
   }
 
 
-  public void sgetParent(Vector3f vector3f)
+  public void getParent(Vector3f vector3f)
   {
     vector3f.x = parentX;
     vector3f.y = parentY;

@@ -43,14 +43,17 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
     Queue<Gene> frontier = new LinkedList<>();
     frontier.add(genome.getRoot());
     HashMap<Gene, Gene> cameFrom = new HashMap<>();
+    HashMap<Gene, Block> blockParent = new HashMap<>();
     cameFrom.put(genome.getRoot(), null);
+    blockParent.put(genome.getRoot(), null);
 
+    Block currentBlock;
     while (!frontier.isEmpty())
     {
       Gene current = frontier.remove();
       List<Gene> neighbors = genome.neighbors(current);
 
-      Block block = synthesizeGene(current, true);
+      currentBlock = synthesizeGene(current, blockParent.get(current));
 
       for (Gene next : neighbors)
       {
@@ -58,28 +61,39 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
         {
           frontier.add(next);
           cameFrom.put(next, current);
-
+          blockParent.put(next, currentBlock);
         }
       }
 
     }
-
-
-    return null;
+    creature.placeOnGround();
+    return creature;
   }
 
-  private Block synthesizeGene(Gene current, boolean isRoot)
+  private Block synthesizeGene(Gene current, Block parent)
   {
+    Block block;
+    Vector3f temp = new Vector3f();
+    Vector3f size = new Vector3f(current.getLengthX()/2, current.getHeightY()/2, current.getWidthZ()/2);
 
-    Vector3f _vec = new Vector3f(current.getLengthX(), current.getHeightY(), current.getWidthZ());
-
-    if (isRoot)
+    if (parent == null)
     {
-      // Block torso = this.creature.addRoot(_vec)
-
+      // start the creature at the origin
+      // creature.placeOnGround() will move it as necessary
+      block = creature.addRoot(new Vector3f(0, 0, 0), size);
     }
-
-    return null;
+    else
+    {
+      float[] rotations = {0,0,0};
+      current.getEffector().getParent(temp);
+      Vector3f parentPivot = new Vector3f(temp);
+      current.getEffector().getChild(temp);
+      Vector3f currentPivot = new Vector3f(temp);
+      current.getEffector().getParentAxis(temp);
+      Vector3f pivotAxis = new Vector3f(temp);
+      block = creature.addBlock(rotations, size, parent, parentPivot, currentPivot, pivotAxis);
+    }
+    return block;
   }
 
 
