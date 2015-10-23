@@ -1,6 +1,7 @@
 package vcreature.genotype;
 
 
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 
 import java.util.ArrayList;
@@ -12,18 +13,18 @@ public class Effector
 {
   private float maxForce;
   private int jointParentIndex;
-  private float parentX = 0f;
+  private float rotationY = 0f; // rotation of the block
+  private float rotationZ = 0f;
+  private float rotationX = 0f;
+  private float parentX = 0f; // local coordinates of the joint on the parent block
   private float parentY = 0f;
   private float parentZ = 0f;
-  private float childX = 0f;
+  private float childX = 0f; // local coordinates of the joint on the child block
   private float childY = 0f;
   private float childZ = 0f;
-  private float parentAxisX = 0f;
-  private float parentAxisY = 0f;
-  private float parentAxisZ = 0f;
-  private float childAxisX = 0f;
-  private float childAxisY = 0f;
-  private float childAxisZ = 0f;
+  private float pivotAxisX = 0f; // joel's new api only requires 1 axis to be specified for the joint
+  private float pivotAxisY = 0f;
+  private float pivotAxisZ = 0f;
 
 
   // Slide 27 Each effector (degree of freedom of each joint) has a
@@ -74,20 +75,19 @@ public class Effector
     this.jointParentIndex = jointParentIndex;
   }
 
-  public void setChildAxis(Vector3f vector3f)
+  public void setPivotAxis(Vector3f vector3f)
   {
-    childAxisX = vector3f.x;
-    childAxisY = vector3f.y;
-    childAxisZ = vector3f.z;
+    pivotAxisX = vector3f.x;
+    pivotAxisY = vector3f.y;
+    pivotAxisZ = vector3f.z;
   }
 
-  public void setParentAxis(Vector3f vector3f)
+  public void setPivotAxis(float[] rotations)
   {
-    parentAxisX = vector3f.x;
-    parentAxisY = vector3f.y;
-    parentAxisZ = vector3f.z;
+    pivotAxisY = rotations[0];
+    pivotAxisZ = rotations[1];
+    pivotAxisX = rotations[2];
   }
-
 
   public void setChild(Vector3f vector3f)
   {
@@ -104,19 +104,18 @@ public class Effector
     parentZ = vector3f.z;
   }
 
-
-  public void getChildAxis(Vector3f vector3f)
+  public void getRotation(float[] rotations)
   {
-    vector3f.x = childAxisX;
-    vector3f.y = childAxisY;
-    vector3f.z = childAxisZ;
+    rotations[0] = rotationY;
+    rotations[1] = rotationZ;
+    rotations[2] = rotationX;
   }
 
-  public void getParentAxis(Vector3f vector3f)
+  public void getPivotAxis(Vector3f vector3f)
   {
-    vector3f.x = parentAxisX;
-    vector3f.y = parentAxisY;
-    vector3f.z = parentAxisZ;
+    vector3f.x = pivotAxisX;
+    vector3f.y = pivotAxisY;
+    vector3f.z = pivotAxisZ;
   }
 
 
