@@ -1,7 +1,6 @@
 package vcreature.genotype;
 
 
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 
 import java.util.ArrayList;
