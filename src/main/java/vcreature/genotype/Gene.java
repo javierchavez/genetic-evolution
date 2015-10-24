@@ -1,5 +1,7 @@
 package vcreature.genotype;
 
+import com.jme3.math.Vector3f;
+
 /**
  * Rigid Part our creature this will be a Block
  */
@@ -114,6 +116,13 @@ public class Gene extends AbstractGene<Gene>
     this.lengthX = x;
     this.widthZ = z;
     this.heightY = y;
+  }
+
+  public void setDimensions(Vector3f size)
+  {
+    this.lengthX = 2*size.x;
+    this.heightY = 2*size.y;
+    this.widthZ = 2*size.z;
   }
 
 

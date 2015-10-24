@@ -29,9 +29,10 @@ public class GenomeGenerator
   public Genome generateGenome()
   {
     clearGenome();
-    Gene gene = generateGene();
-    genome.append(gene);
-    genome.setRoot(gene);
+    Gene root = generateGene();
+    genome.append(root);
+    genome.setRoot(root);
+    addGenes(root);
     return genome;
   }
 
@@ -41,13 +42,13 @@ public class GenomeGenerator
     Random rand = new Random();
     Gene gene;
 
-    while (attempts < params.MAX_GENERATION_ATTEMPTS)
+    while (attempts <= params.MAX_GENERATION_ATTEMPTS)
     {
-      if (genome.neighbors(parent).size() <= params.MAX_CHILDREN && rand.nextFloat() < params.CHILD_SPAWN_CHANCE)
+      if (genome.neighbors(parent).size() <= params.MAX_CHILDREN && rand.nextFloat() <= params.CHILD_SPAWN_CHANCE)
       {
         gene = generateGene(parent);
         genome.append(gene);
-        if (rand.nextFloat() < params.RECURSE_CHANCE)
+        if (rand.nextFloat() <= params.RECURSE_CHANCE)
         {
           addGenes(gene);
         }
@@ -70,8 +71,104 @@ public class GenomeGenerator
     Random rand = new Random();
     Gene gene = new Gene(genome.size());
 
+    float[] rotations = {0f, 0f, 0f};
     Vector3f size = genRandSize(rand);
-    gene.setDimensions(size.x, size.z, size.y);
+
+    int side = rand.nextInt(6);
+    Vector3f childPivot;
+    Vector3f parentPivot;
+    Vector3f pivotAxis;
+
+    float childX, childY, childZ;
+    float parentX, parentY, parentZ;
+    Vector3f parentSize = new Vector3f(gene.getLengthX()/2, gene.getHeightY()/2, gene.getWidthZ()/2);
+
+    switch (side)
+    {
+      case 0: // XY plane 1
+        parentX = parentSize.x - (rand.nextFloat()*2*parentSize.x);
+        parentY = parentSize.y - (rand.nextFloat()*2*parentSize.y);
+        parentZ = parentSize.z;
+        parentPivot = new Vector3f(parentX, parentY, parentZ);
+
+        childX = size.x - (rand.nextFloat()*2*size.x);
+        childY = size.y - (rand.nextFloat()*2*size.y);
+        childZ = -size.z;
+        childPivot = new Vector3f(childX, childY, childZ);
+
+        pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_X : Vector3f.UNIT_Y;
+        break;
+      case 1: // XY plane 2
+        parentX = parentSize.x - (rand.nextFloat()*2*parentSize.x);
+        parentY = parentSize.y - (rand.nextFloat()*2*parentSize.y);
+        parentZ = -parentSize.z;
+        parentPivot = new Vector3f(parentX, parentY, parentZ);
+
+        childX = size.x - (rand.nextFloat()*2*size.x);
+        childY = size.y - (rand.nextFloat()*2*size.y);
+        childZ = size.z;
+        childPivot = new Vector3f(childX, childY, childZ);
+
+        pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_X : Vector3f.UNIT_Y;
+        break;
+      case 2: // XZ plane 1
+        parentX = parentSize.x - (rand.nextFloat()*2*parentSize.x);
+        parentY = parentSize.y;
+        parentZ = parentSize.z - (rand.nextFloat()*2*parentSize.z);
+        parentPivot = new Vector3f(parentX, parentY, parentZ);
+
+        childX = size.x - (rand.nextFloat()*2*size.x);
+        childY = -size.y;
+        childZ = size.z - (rand.nextFloat()*2*size.z);
+        childPivot = new Vector3f(childX, childY, childZ);
+
+        pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_X : Vector3f.UNIT_Z;
+        break;
+      case 3: // XZ plane 2
+        parentX = parentSize.x - (rand.nextFloat()*2*parentSize.x);
+        parentY = -parentSize.y;
+        parentZ = parentSize.z - (rand.nextFloat()*2*parentSize.z);
+        parentPivot = new Vector3f(parentX, parentY, parentZ);
+
+        childX = size.x - (rand.nextFloat()*2*size.x);
+        childY = size.y;
+        childZ = size.z - (rand.nextFloat()*2*size.z);
+        childPivot = new Vector3f(childX, childY, childZ);
+
+        pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_X : Vector3f.UNIT_Z;
+        break;
+      case 4: // YZ plane 1
+        parentX = parentSize.x;
+        parentY = parentSize.y - (rand.nextFloat()*2*parentSize.y);
+        parentZ = parentSize.z - (rand.nextFloat()*2*parentSize.z);
+        parentPivot = new Vector3f(parentX, parentY, parentZ);
+
+        childX = -size.x;
+        childY = size.y - (rand.nextFloat()*2*size.y);
+        childZ = size.z - (rand.nextFloat()*2*size.z);
+        childPivot = new Vector3f(childX, childY, childZ);
+
+        pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_Y : Vector3f.UNIT_Z;
+        break;
+      default: // YZ plane 2
+        parentX = -parentSize.x;
+        parentY = parentSize.y - (rand.nextFloat()*2*parentSize.y);
+        parentZ = parentSize.z - (rand.nextFloat()*2*parentSize.z);
+        parentPivot = new Vector3f(parentX, parentY, parentZ);
+
+        childX = size.x;
+        childY = size.y - (rand.nextFloat()*2*size.y);
+        childZ = size.z - (rand.nextFloat()*2*size.z);
+        childPivot = new Vector3f(childX, childY, childZ);
+
+        pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_Y : Vector3f.UNIT_Z;
+        break;
+    }
+    gene.setDimensions(size);
+    gene.getEffector().setParent(parentPivot);
+    gene.getEffector().setChild(childPivot);
+    gene.getEffector().setRotations(rotations);
+    gene.getEffector().setPivotAxis(pivotAxis);
     return gene;
   }
 

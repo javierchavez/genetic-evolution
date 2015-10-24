@@ -81,11 +81,11 @@ public class Effector
     pivotAxisZ = vector3f.z;
   }
 
-  public void setPivotAxis(float[] rotations)
+  public void setRotations(float[] rotations)
   {
-    pivotAxisY = rotations[0];
-    pivotAxisZ = rotations[1];
-    pivotAxisX = rotations[2];
+    rotationY = rotations[0];
+    rotationZ = rotations[1];
+    rotationX = rotations[2];
   }
 
   public void setChild(Vector3f vector3f)
