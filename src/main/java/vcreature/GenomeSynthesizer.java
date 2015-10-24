@@ -24,13 +24,14 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
     return ourInstance;
   }
 
-  public GenomeSynthesizer()
+  private GenomeSynthesizer()
   {
   }
 
-  public static void init(Environment environment)
+  public static GenomeSynthesizer init(Environment environment)
   {
     env = environment;
+    return ourInstance;
   }
 
   @Override
