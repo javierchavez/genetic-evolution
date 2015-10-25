@@ -66,11 +66,20 @@ public class GeneticAlgorithm
     return initialPopulation;
   }
 
-  //TODO: decouple physics from graphics
-  private double calcFitness(Being individual)
+  //TODO: make real fitness function
+  //test fitness function; maximize surface area of all blocks; this is to test that the GA works to solve an optimization problem
+  protected double calcFitness(Being individual)
   {
+    double fitness = 0.0;
+    double surfaceArea = 0.0;
     Genome genotype = individual.getGenotype();
-    return 0.0;
+    LinkedList<Gene> genes = genotype.getGenes();
+    for(Gene gene : genes)
+    {
+      surfaceArea = surfaceArea +  2 * gene.getHeightY()*gene.getLengthX() + 2 * gene.getHeightY() * gene.getWidthZ() + 2 * gene.getLengthX() * gene.getWidthZ();
+    }
+
+    return surfaceArea;
   }
 
 

@@ -30,6 +30,7 @@ public class GAGame extends MainSim implements ActionListener
     GeneticAlgorithm GA = new GeneticAlgorithm(evolution.getPopulation());
     Being testBeing = GA.getInitialPopulation().getBeings().get(0);
     GA.mutation(testBeing);
+
     initKeys();
 
 
