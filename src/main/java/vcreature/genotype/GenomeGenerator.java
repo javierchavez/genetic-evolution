@@ -30,7 +30,6 @@ public class GenomeGenerator
   {
     clearGenome();
     Gene root = generateGene();
-    genome.append(root);
     genome.setRoot(root);
     addGenes(root);
     return genome;
@@ -47,7 +46,6 @@ public class GenomeGenerator
       if (genome.neighbors(parent).size() <= params.MAX_CHILDREN && rand.nextFloat() <= params.CHILD_SPAWN_CHANCE)
       {
         gene = generateGene(parent);
-        genome.append(gene);
         if (rand.nextFloat() <= params.RECURSE_CHANCE)
         {
           addGenes(gene);
@@ -63,6 +61,7 @@ public class GenomeGenerator
     Gene gene = new Gene(genome.size());
     Vector3f size = genRandSize(rand);
     gene.setDimensions(size.x, size.z, size.y);
+    genome.append(gene);
     return gene;
   }
 
@@ -169,6 +168,8 @@ public class GenomeGenerator
     gene.getEffector().setChild(childPivot);
     gene.getEffector().setRotations(rotations);
     gene.getEffector().setPivotAxis(pivotAxis);
+    genome.append(gene);
+    genome.linkGenes(genome.getGenes().indexOf(parent), genome.getGenes().indexOf(gene));
     return gene;
   }
 

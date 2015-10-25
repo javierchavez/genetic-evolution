@@ -1,7 +1,6 @@
 package vcreature;
 
 
-import vcreature.genotype.Genome;
 import vcreature.genotype.GenomeGenerator;
 import vcreature.phenotype.Creature;
 
