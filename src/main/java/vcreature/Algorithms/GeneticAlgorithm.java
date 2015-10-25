@@ -21,10 +21,12 @@ import com.jme3.system.AppSettings;
 import com.jme3.texture.Texture;
 import vcreature.*;
 import vcreature.genotype.Genome;
+import vcreature.genotype.Gene;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.PhysicsConstants;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 import java.util.Vector;
 
@@ -42,32 +44,35 @@ public class GeneticAlgorithm
   private int generationNumber;
   private double bestFitness;
   private Being bestBeing;
+  private Population initialPopulation;
 
 
 
 
-  GeneticAlgorithm()
+  GeneticAlgorithm(Population initPop)
   {
-    this.populationSize = 20;
+    this.populationSize = 200;
     this.pctCrossover = 90;
     this.pctMutations = 0;
     this.generationNumber = 0;
     this.bestFitness = 0;
     this.bestBeing = null;
+    this.initialPopulation = initPop;
+
+  }
+
+  public Population getInitialPopulation()
+  {
+    return initialPopulation;
   }
 
   //TODO: decouple physics from graphics
   private double calcFitness(Being individual)
   {
-    Random rnd = new Random();
-    return 1.0 * (rnd.nextInt(100));
+    Genome genotype = individual.getGenotype();
+    return 0.0;
   }
-  //Temporary creation of random initial population; final project will take in results of hill-climbing algorithm
-  private Vector<Being> genInitPopulation()
-  {
-    Vector<Being> initPopulation = new Vector();
-    return initPopulation;
-  }
+
 
   private Vector<Being> selection (Vector<Being> population)
   {
@@ -80,17 +85,32 @@ public class GeneticAlgorithm
 
   }
 
-  private void mutation(Being individual)
+  protected Being mutation(Being individual)
   {
-
+    Genome genotype = individual.getGenotype();
+    LinkedList<Gene> genes = genotype.getGenes();
+    Gene testGene = genes.get(0);
+    Random rnd = new Random();
+    int x = rnd.nextInt(2);
+    switch(x)
+    {
+      case 0: testGene.setHeightY(10.0f);
+        break;
+      case 1: testGene.setLengthX(10.0f);
+        break;
+      case 2: testGene.setWidthZ(10.0f);
+        break;
+    }
+    return individual;
   }
 
 
   private Vector<Being> createNextGeneration(Vector<Being>population)
   {
-    Vector<Being>initPopulation = new Vector();
 
-    return initPopulation;
+    Vector<Being>nextPopulation = new Vector();
+
+    return nextPopulation;
   }
 
   private void evolvePopulation()
@@ -98,7 +118,7 @@ public class GeneticAlgorithm
 
     double genBestFitness; //best fitness from current generation
     Being genBestBeing; ///most fit creature from current generation
-    Vector<Being> currentGeneration = genInitPopulation();
+    Vector<Being> currentGeneration= this.initialPopulation.getBeings();
     Vector<Being> nextGeneration = new Vector();
     while(generationNumber < 1)
     {

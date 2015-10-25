@@ -32,6 +32,11 @@ public class Population extends Vector<Being>
     this(new Vector<>(2001), environment);
   }
 
+  public Vector<Being> getBeings()
+  {
+    return beings;
+  }
+
   public void initPop()
   {
     for (int i = 0; i < 200; i++)

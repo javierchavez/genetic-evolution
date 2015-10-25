@@ -29,6 +29,10 @@ public class Being /*Comparable<Being>*/
   private int children;
   private float fitness;
 
+  public Genome getGenotype()
+  {
+    return genotype;
+  }
 
   public Block[] getBodyBlocks ()
   {
