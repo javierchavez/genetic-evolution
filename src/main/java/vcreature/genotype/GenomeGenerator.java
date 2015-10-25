@@ -13,8 +13,8 @@ import vcreature.phenotype.EnumNeuronInput;
  */
 public class GenomeGenerator
 {
-  GenomeGeneratorParameters params = new GenomeGeneratorParameters();
-  Genome genome = new Genome();
+  private GenomeGeneratorParameters params = new GenomeGeneratorParameters();
+  private Genome genome = new Genome();
 
   public GenomeGenerator()
   {

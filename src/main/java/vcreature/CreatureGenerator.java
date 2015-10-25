@@ -9,45 +9,30 @@ import vcreature.phenotype.Creature;
  */
 public class CreatureGenerator
 {
-  Environment env;
-  Creature creature;
-  GenomeGenerator generator;
+  private static final CreatureGenerator thisInstance = new CreatureGenerator();
+  private static  Environment env;
+  private static GenomeGenerator generator = new GenomeGenerator();
 
-  public CreatureGenerator(Environment env)
+  private Creature creature;
+
+  private CreatureGenerator()
   {
-    this.env = env;
-    generator = new GenomeGenerator();
-    generateCreature();
   }
 
-  public void setENV(Environment env)
+  public static CreatureGenerator getInstance()
   {
-    this.env = env;
+    return thisInstance;
   }
 
-  public Environment getENV()
+  public static CreatureGenerator init(Environment environment)
   {
-    return env;
-  }
-
-  public Creature getCreature()
-  {
-    return creature;
+    env = environment;
+    return thisInstance;
   }
 
   public Creature generateCreature()
   {
-    removeCreature();
     creature = GenomeSynthesizer.init(env).encode(generator.generateGenome());
     return creature;
-  }
-
-  public void removeCreature()
-  {
-    try
-    {
-      creature.remove();
-    }
-    catch (NullPointerException ex) {}
   }
 }
