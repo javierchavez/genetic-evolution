@@ -1,4 +1,4 @@
-package vcreature.GeneticAlgorithm;
+package vcreature.Algorithms;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
@@ -18,13 +18,10 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
-import com.jme3.system.JmeContext;
 import com.jme3.texture.Texture;
-import com.sun.xml.internal.bind.v2.TODO;
 import vcreature.*;
 import vcreature.genotype.Genome;
 import vcreature.phenotype.Block;
-import vcreature.phenotype.Creature;
 import vcreature.phenotype.PhysicsConstants;
 
 import java.util.ArrayList;
