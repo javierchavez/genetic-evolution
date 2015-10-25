@@ -27,8 +27,10 @@ public class Evolution extends Thread
     }
   }
 
-
-
+  public Population getPopulation()
+  {
+    return population;
+  }
 
   public Being getBeing(int i)
   {
