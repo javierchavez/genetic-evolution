@@ -111,7 +111,9 @@ public class GenomeGenerator
 
     float childX, childY, childZ;
     float parentX, parentY, parentZ;
-    Vector3f parentSize = new Vector3f(gene.getLengthX()/2, gene.getHeightY()/2, gene.getWidthZ()/2);
+
+    Vector3f parentSize = new Vector3f();
+    parent.getDimensions(parentSize);
 
     switch (side)
     {
@@ -195,9 +197,9 @@ public class GenomeGenerator
         break;
     }
     gene.setDimensions(size);
+    gene.setRotations(rotations);
     gene.getEffector().setParent(parentPivot);
     gene.getEffector().setChild(childPivot);
-    gene.getEffector().setRotations(rotations);
     gene.getEffector().setPivotAxis(pivotAxis);
     genome.append(gene);
     genome.linkGenes(genome.getGenes().indexOf(parent), genome.getGenes().indexOf(gene));

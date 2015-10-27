@@ -11,6 +11,9 @@ public class Gene extends AbstractGene<Gene>
   private float widthZ;
   private float heightY;
 
+  private float rotationY = 0f; // rotation of the block
+  private float rotationZ = 0f;
+  private float rotationX = 0f;
 
   private int position;
   private int recursiveLimit = 1;
@@ -125,6 +128,26 @@ public class Gene extends AbstractGene<Gene>
     this.widthZ = 2*size.z;
   }
 
+  public void getDimensions(Vector3f size)
+  {
+    size.x = lengthX / 2;
+    size.y = heightY / 2;
+    size.z = widthZ / 2;
+  }
+
+  public void setRotations(float[] rotations)
+  {
+    rotationY = rotations[0];
+    rotationZ = rotations[1];
+    rotationX = rotations[2];
+  }
+
+  public void getRotation(float[] rotations)
+  {
+    rotations[0] = rotationY;
+    rotations[1] = rotationZ;
+    rotations[2] = rotationX;
+  }
 
   @Override
   public Gene clone()

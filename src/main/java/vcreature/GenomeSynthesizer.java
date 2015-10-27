@@ -81,11 +81,12 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
       // start the creature at the origin
       // creature.placeOnGround() will move it as necessary
       block = creature.addRoot(new Vector3f(0, Attributes.VERTICAL_OFFSET, 0), size);
+      block.setMaterial(Block.MATERIAL_RED);
     }
     else
     {
       float[] rotations = new float[3];
-      current.getEffector().getRotation(rotations);
+      current.getRotation(rotations);
 
       Vector3f parentPivot = new Vector3f();
       current.getEffector().getParent(parentPivot);

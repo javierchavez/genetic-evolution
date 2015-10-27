@@ -12,16 +12,13 @@ public class Effector
 {
   private float maxForce;
   private int jointParentIndex;
-  private float rotationY = 0f; // rotation of the block
-  private float rotationZ = 0f;
-  private float rotationX = 0f;
   private float parentX = 0f; // local coordinates of the joint on the parent block
   private float parentY = 0f;
   private float parentZ = 0f;
   private float childX = 0f; // local coordinates of the joint on the child block
   private float childY = 0f;
   private float childZ = 0f;
-  private float pivotAxisX = 0f; // joel's new api only requires 1 axis to be specified for the joint
+  private float pivotAxisX = 0f; // axis of rotation for the joint
   private float pivotAxisY = 0f;
   private float pivotAxisZ = 0f;
 
@@ -81,20 +78,12 @@ public class Effector
     pivotAxisZ = vector3f.z;
   }
 
-  public void setRotations(float[] rotations)
-  {
-    rotationY = rotations[0];
-    rotationZ = rotations[1];
-    rotationX = rotations[2];
-  }
-
   public void setChild(Vector3f vector3f)
   {
     childX = vector3f.x;
     childY = vector3f.y;
     childZ = vector3f.z;
   }
-
 
   public void setParent(Vector3f vector3f)
   {
@@ -103,12 +92,6 @@ public class Effector
     parentZ = vector3f.z;
   }
 
-  public void getRotation(float[] rotations)
-  {
-    rotations[0] = rotationY;
-    rotations[1] = rotationZ;
-    rotations[2] = rotationX;
-  }
 
   public void getPivotAxis(Vector3f vector3f)
   {
