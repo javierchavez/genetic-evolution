@@ -215,6 +215,7 @@ public class GenomeGenerator
     float width = genRandDim(rand); // x dimension
     float height = genRandDim(rand); // y dimension
     float depth = genRandDim(rand); // z dimension
+    System.out.println(Math.min(width, Math.min(height, depth)));
     return new Vector3f(width/2, height/2, depth/2);
   }
 
@@ -267,11 +268,13 @@ public class GenomeGenerator
           block2 = creature.getBlockByID(j);
           if (getCollision(block1, block2).size() > 0)
           {
+            creature.remove();
             return false;
           }
         }
       }
     }
+    creature.remove();
     return true;
   }
 

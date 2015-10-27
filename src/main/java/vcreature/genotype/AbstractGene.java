@@ -63,7 +63,7 @@ public abstract class AbstractGene<T extends AbstractGene<?>>
 
   public void removeEdge(int vertex)
   {
-    edges.remove(vertex);
+    edges.remove((Integer) vertex);
   }
 
   public void setEdges(ArrayList<Integer> edges)
