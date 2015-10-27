@@ -16,4 +16,6 @@ public class GenomeGeneratorParameters
 
   public static final float CHILD_SPAWN_CHANCE = 0.25f; // chance that a block will spawn a child block
   public static final float RECURSE_CHANCE = 0.3f; // chance that a block will spawn at depth n+1 from root block
+
+  public static final float VERTICAL_OFFSET = 200f; // work around for joel's code
 }

@@ -26,4 +26,5 @@ public class Attributes
   // How often to check the whole Population and eliminate excess duplicates.
   public static final float SIMILAR_CHECK_INTERVAL = 50;
 
+  public static final float VERTICAL_OFFSET = 200f; // work around for joel's code
 }
