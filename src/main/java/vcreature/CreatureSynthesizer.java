@@ -31,7 +31,7 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
       // add gene to genome
       genome.append(g);
       // link gene (directed graph)
-       genome.linkGenes(b.getIdOfParent(), i);
+      genome.linkGenes(b.getIdOfParent(), i);
     }
 
     // LINK THE NERVOUS SYSTEM

@@ -1,7 +1,7 @@
 package vcreature.genotype;
 
 
-import java.util.Random;
+import java.util.*;
 
 import com.jme3.math.Vector3f;
 
@@ -40,6 +40,11 @@ public class GenomeGenerator
     int attempts = 0;
     Random rand = new Random();
     Gene gene;
+
+    if (getDepth(parent) > params.MAX_DEPTH)
+    {
+      return;
+    }
 
     while (attempts <= params.MAX_GENERATION_ATTEMPTS)
     {
@@ -189,5 +194,33 @@ public class GenomeGenerator
   private EnumNeuronInput getRandInput(Random rand)
   {
     return EnumNeuronInput.values()[rand.nextInt(EnumNeuronInput.values().length)];
+  }
+
+  private int getDepth(Gene gene)
+  {
+    int depth = 0;
+    Queue<Gene> frontier = new LinkedList<>();
+    frontier.add(genome.getRoot());
+    HashMap<Gene, Gene> cameFrom = new HashMap<>();
+    HashMap<Gene, Integer> geneDepth = new HashMap<>();
+    cameFrom.put(genome.getRoot(), null);
+    geneDepth.put(genome.getRoot(), depth);
+
+    while (!frontier.isEmpty())
+    {
+      Gene current = frontier.remove();
+      List<Gene> neighbors = genome.neighbors(current);
+
+      for (Gene next : neighbors)
+      {
+        if (!cameFrom.containsKey(next))
+        {
+          frontier.add(next);
+          cameFrom.put(next, current);
+          geneDepth.put(next, geneDepth.get(current)+1);
+        }
+      }
+    }
+    return geneDepth.get(gene);
   }
 }

@@ -339,9 +339,6 @@ public class RandomCreature extends Creature
     return results;
   }
 
-  /*
-    Is block1 a the parent of block2
-   */
   private boolean isParent(Block block1, Block block2)
   {
     return block1.getID() == block2.getIdOfParent();
