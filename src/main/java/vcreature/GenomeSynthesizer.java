@@ -80,7 +80,7 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
     {
       // start the creature at the origin
       // creature.placeOnGround() will move it as necessary
-      block = creature.addRoot(new Vector3f(0, 0, 0), size);
+      block = creature.addRoot(new Vector3f(0, size.y, 0), size);
     }
     else
     {
