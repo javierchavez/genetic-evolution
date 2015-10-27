@@ -91,8 +91,7 @@ public class GenomeGenerator
   {
     Random rand = new Random();
     Gene gene = new Gene(genome.size());
-    Vector3f size = genRandSize(rand);
-    gene.setDimensions(size.x, size.z, size.y);
+    gene.setDimensions(genRandSize(rand));
     genome.append(gene);
     return gene;
   }
