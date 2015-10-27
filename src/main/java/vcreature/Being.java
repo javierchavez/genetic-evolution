@@ -34,6 +34,16 @@ public class Being /*Comparable<Being>*/
     return genotype;
   }
 
+  public float getFitness()
+  {
+    return fitness;
+  }
+
+  public void setFitness(float fitness)
+  {
+    this.fitness = fitness;
+  }
+
   public Block[] getBodyBlocks ()
   {
     int totalBlocks = phenotype.getNumberOfBodyBlocks();

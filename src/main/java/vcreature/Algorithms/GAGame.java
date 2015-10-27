@@ -5,10 +5,12 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.system.AppSettings;
-import vcreature.Being;
-import vcreature.Environment;
-import vcreature.Evolution;
-import vcreature.MainSim;
+import com.jme3.system.JmeContext;
+import vcreature.*;
+import vcreature.genotype.Gene;
+
+import java.util.LinkedList;
+import java.util.Vector;
 
 
 public class GAGame extends MainSim implements ActionListener
@@ -27,14 +29,58 @@ public class GAGame extends MainSim implements ActionListener
                               rootNode);
 
     evolution = new Evolution(environment);
-    GeneticAlgorithm GA = new GeneticAlgorithm(evolution.getPopulation());
-    Being testBeing = GA.getInitialPopulation().getBeings().get(0);
-    GA.mutation(testBeing);
+    Population initPop = evolution.getPopulation();
+    GeneticAlgorithm GA = new GeneticAlgorithm(initPop);
+
+
+    System.out.println("Orig pop");
+    printBeings(initPop.getBeings());
+    GA.printFitnessStats(initPop.getBeings());
+
+
+
+    Vector<Being> newParents = GA.selection(GA.getInitialPopulation().getBeings());
+
+    System.out.println("mutated pop");
+
+    GA.printFitnessStats(initPop.getBeings());
+
+    System.out.println("new Parents");
+
+    GA.printFitnessStats(newParents);
+
+    System.out.println("next generation");
+    Vector<Being> nextGen = GA.createNextGeneration(newParents);
+
+    GA.printFitnessStats(nextGen);
+
+
+
 
     initKeys();
 
 
   }
+
+  private void printBeings(Vector<Being> p)
+  {
+
+    int beingNumber = 0;
+    int geneNumber = 0;
+    for(Being being : p)
+    {
+      beingNumber++;
+      geneNumber = 0;
+      for(Gene gene : being.getGenotype().getGenes())
+      {
+        geneNumber++;
+        System.out.println("Being " + beingNumber + ", Gene " + geneNumber);
+        System.out.println("h " + gene.getHeightY() + " w " + gene.getWidthZ() + " l " + gene.getLengthX());
+        System.out.println("fitness " + being.getFitness());
+      }
+    }
+  }
+
   private void initKeys() {
 
     inputManager.addMapping("Update Creature",  new KeyTrigger(KeyInput.KEY_U));
@@ -83,7 +129,8 @@ public class GAGame extends MainSim implements ActionListener
     GAGame app = new GAGame();
     app.setShowSettings(false);
     app.setSettings(settings);
-    app.start();
+    //app.start();
+    app.start(JmeContext.Type.Headless);
 
 
     //        app.evolution.addToWorld(new Being());

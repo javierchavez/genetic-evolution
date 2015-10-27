@@ -37,6 +37,8 @@ public class Population extends Vector<Being>
     return beings;
   }
 
+
+
   public void initPop()
   {
     for (int i = 0; i < 200; i++)

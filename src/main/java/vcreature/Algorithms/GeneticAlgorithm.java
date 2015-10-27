@@ -39,8 +39,8 @@ public class GeneticAlgorithm
 
 
   private int populationSize;
-  private int pctMutations;
-  private int pctCrossover;
+  private int pctMutations = 50;
+  private int pctCrossover = 90;
   private int generationNumber;
   private double bestFitness;
   private Being bestBeing;
@@ -59,6 +59,8 @@ public class GeneticAlgorithm
     this.bestBeing = null;
     this.initialPopulation = initPop;
 
+
+
   }
 
   public Population getInitialPopulation()
@@ -68,10 +70,10 @@ public class GeneticAlgorithm
 
   //TODO: make real fitness function
   //test fitness function; maximize surface area of all blocks; this is to test that the GA works to solve an optimization problem
-  protected double calcFitness(Being individual)
+  protected float calcFitness(Being individual)
   {
-    double fitness = 0.0;
-    double surfaceArea = 0.0;
+    float fitness = 0.0f;
+    float surfaceArea = 0.0f;
     Genome genotype = individual.getGenotype();
     LinkedList<Gene> genes = genotype.getGenes();
     for(Gene gene : genes)
@@ -82,58 +84,190 @@ public class GeneticAlgorithm
     return surfaceArea;
   }
 
-
-  private Vector<Being> selection (Vector<Being> population)
+  protected void printFitnessStats(Vector<Being> beings)
   {
+    float bestFitness = 0;
+    float avgFitness = 0;
+    for(Being being : beings)
+    {
+      if(being.getFitness() > bestFitness)
+      {
+        bestFitness = being.getFitness();
+      }
+      avgFitness = avgFitness + being.getFitness();
+    }
+    avgFitness = avgFitness / beings.size();
+    System.out.println("Best fitness " + bestFitness);
+    System.out.println("Avg fitness " + avgFitness);
+  }
+
+
+
+  protected Vector<Being> selection (Vector<Being> population)
+  {
+
+
+    //hack to generate random population
+    for(Being being : population)
+    {
+      mutation(being);
+      LinkedList<Gene> genes = being.getGenotype().getGenes();
+    }
+
     Vector<Being> newParents = new Vector();
+    Random rnd = new Random();
+
+    float currentGenBestFitness = 0f;
+    Being currentGenBestBeing = null;
+
+    //get fitness for every member of population
+    for(Being being : population)
+    {
+      float fitness = calcFitness(being);
+      being.setFitness(fitness);
+      if(fitness > currentGenBestFitness)
+      {
+        currentGenBestBeing = being;
+        currentGenBestFitness = fitness;
+      }
+    }
+
+    if(this.bestBeing == null || currentGenBestBeing.getFitness() > this.bestBeing.getFitness())
+    {
+      this.bestBeing = currentGenBestBeing;
+      this.bestFitness = currentGenBestBeing.getFitness();
+    }
+    //elitism;take the best individual unchanged into the next generation
+    newParents.add(currentGenBestBeing);
+    //take one random member of the population to meet spac that requires every member of population has chance of being selected
+    newParents.add(population.get(rnd.nextInt(population.size())));
+
+    //tournament selection; tournament size 2; take random pairs from population; compare fitness; take better Being into next generation
+    //need to keep population size consistent; take elitism and randomly added beings into account
+    for(int i = 0; i < populationSize - 2; i++)
+    {
+      int rndIndex1 = rnd.nextInt(population.size());
+      int rndIndex2 = rnd.nextInt(population.size());
+
+      Being being1 = population.get(rndIndex1);
+
+      while(rndIndex2 == rndIndex1)
+      {
+        rndIndex2 = rnd.nextInt(population.size());
+      }
+      Being being2 = population.get(rndIndex2);
+
+      if(being1.getFitness() >= being2.getFitness())
+      {
+        newParents.add(being1);
+      }
+      else
+      {
+        newParents.add(being2);
+      }
+
+    }
+
     return newParents;
   }
 
+
   private void crossover(Being parent1, Being parent2)
   {
-
+    Random rnd = new Random();
+    int crossoverPoint1 = rnd.nextInt(parent1.getGenotype().getGenes().size());
+    int crossoverPoint2 = rnd.nextInt(parent2.getGenotype().getGenes().size());
   }
 
-  protected Being mutation(Being individual)
+  protected void mutation(Being individual)
   {
     Genome genotype = individual.getGenotype();
     LinkedList<Gene> genes = genotype.getGenes();
-    Gene testGene = genes.get(0);
     Random rnd = new Random();
-    int x = rnd.nextInt(2);
+    Gene mutatedGene = genes.get(rnd.nextInt(genes.size()));
+
+    int x = rnd.nextInt(3);
     switch(x)
     {
-      case 0: testGene.setHeightY(10.0f);
+      case 0:
+        if(0.5f + mutatedGene.getHeightY() <=10.0f)
+        {
+          mutatedGene.setHeightY(0.5f + mutatedGene.getHeightY());
+        }
         break;
-      case 1: testGene.setLengthX(10.0f);
+      case 1:
+        if(0.5f + mutatedGene.getLengthX() <=10.0f)
+        {
+          mutatedGene.setLengthX(0.5f + mutatedGene.getLengthX());
+        }
         break;
-      case 2: testGene.setWidthZ(10.0f);
+      case 2:
+        if(0.5f + mutatedGene.getWidthZ() <=10.0f)
+        {
+          mutatedGene.setWidthZ(0.5f + mutatedGene.getWidthZ());
+        }
         break;
     }
-    return individual;
+
   }
 
 
-  private Vector<Being> createNextGeneration(Vector<Being>population)
+  protected Vector<Being> createNextGeneration(Vector<Being>population)
   {
+    Vector<Being> nextGeneration = new Vector();
+    Vector<Being> newParents = selection(population);
+    Random rnd = new Random();
+    Being parent1;
+    Being parent2;
 
-    Vector<Being>nextPopulation = new Vector();
 
-    return nextPopulation;
+
+    //elitism: put one copy of unaltered most fit being and one mutated version of most fit being directly into nextGen
+    //pick random pairs of parents from population pool
+    nextGeneration.add(this.bestBeing);
+    nextGeneration.add(this.bestBeing);
+
+    while(newParents.size() > 2)
+    {
+      int parent1index = rnd.nextInt(newParents.size());
+
+      parent1 = newParents.get(rnd.nextInt(newParents.size()));
+      newParents.remove(parent1index);
+      int parent2index = rnd.nextInt(newParents.size());
+      parent2 = newParents.get(rnd.nextInt(newParents.size()));
+      newParents.remove(parent2index);
+      if(rnd.nextInt(100) < this.pctCrossover)
+      {
+        crossover(parent1, parent2);
+      }
+      if (rnd.nextInt(100) < this.pctMutations)
+      {
+        mutation(parent1);
+      }
+      if (rnd.nextInt(100) < this.pctMutations)
+      {
+        mutation(parent2);
+      }
+      nextGeneration.add(parent1);
+      nextGeneration.add(parent2);
+    }
+
+
+    return nextGeneration;
   }
 
-  private void evolvePopulation()
+  private Vector<Being> evolvePopulation()
   {
 
-    double genBestFitness; //best fitness from current generation
+    double currentGenBestFitness; //best fitness from current generation
     Being genBestBeing; ///most fit creature from current generation
     Vector<Being> currentGeneration= this.initialPopulation.getBeings();
     Vector<Being> nextGeneration = new Vector();
-    while(generationNumber < 1)
+    while(generationNumber < 5)
     {
       double summedFitness = 0;
       double averageFitness = 0;
-      genBestFitness = 0;
+      currentGenBestFitness = 0;
       genBestBeing = null;
       nextGeneration = createNextGeneration(currentGeneration);
       this.generationNumber++;
@@ -141,9 +275,9 @@ public class GeneticAlgorithm
       {
         double fitness = calcFitness(individual);
         summedFitness = summedFitness + fitness;
-        if(fitness > genBestFitness)
+        if(fitness > currentGenBestFitness)
         {
-          genBestFitness = fitness;
+          currentGenBestFitness = fitness;
         }
         if(fitness > this.bestFitness)
         {
@@ -152,7 +286,9 @@ public class GeneticAlgorithm
       }
 
       averageFitness = summedFitness/nextGeneration.size();
+
     }
+    return nextGeneration;
   }
 
 }
