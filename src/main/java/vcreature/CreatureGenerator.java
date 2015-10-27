@@ -27,6 +27,7 @@ public class CreatureGenerator
   public static CreatureGenerator init(Environment environment)
   {
     env = environment;
+    generator.setENV(environment);
     return thisInstance;
   }
 

@@ -3,8 +3,13 @@ package vcreature.genotype;
 
 import java.util.*;
 
+import com.jme3.collision.CollisionResults;
 import com.jme3.math.Vector3f;
 
+import vcreature.Environment;
+import vcreature.GenomeSynthesizer;
+import vcreature.phenotype.Block;
+import vcreature.phenotype.Creature;
 import vcreature.phenotype.EnumNeuronInput;
 
 
@@ -15,10 +20,17 @@ public class GenomeGenerator
 {
   private GenomeGeneratorParameters params = new GenomeGeneratorParameters();
   private Genome genome = new Genome();
+  private Environment env;
+
+  public GenomeGenerator(Environment env)
+  {
+    generateGenome();
+    this.env = env;
+  }
 
   public GenomeGenerator()
   {
-    generateGenome();
+    this(null);
   }
 
   public void clearGenome()
@@ -26,12 +38,20 @@ public class GenomeGenerator
     genome = new Genome();
   }
 
+  public void setENV(Environment env)
+  {
+    this.env = env;
+  }
+
   public Genome generateGenome()
   {
     clearGenome();
-    Gene root = generateGene();
-    genome.setRoot(root);
-    addGenes(root);
+    if (env != null)
+    {
+      Gene root = generateGene();
+      genome.setRoot(root);
+      addGenes(root);
+    }
     return genome;
   }
 
@@ -48,12 +68,19 @@ public class GenomeGenerator
 
     while (attempts <= params.MAX_GENERATION_ATTEMPTS)
     {
-      if (genome.neighbors(parent).size() <= params.MAX_CHILDREN && rand.nextFloat() <= params.CHILD_SPAWN_CHANCE)
+      if (rand.nextFloat() <= params.CHILD_SPAWN_CHANCE && genome.neighbors(parent).size() <= params.MAX_CHILDREN)
       {
         gene = generateGene(parent);
-        if (rand.nextFloat() <= params.RECURSE_CHANCE)
+        if (validGenome())
         {
-          addGenes(gene);
+          if (rand.nextFloat() <= params.RECURSE_CHANCE)
+          {
+            addGenes(gene);
+          }
+        }
+        else
+        {
+          genome.remove(gene);
         }
       }
       attempts += 1;
@@ -217,10 +244,41 @@ public class GenomeGenerator
         {
           frontier.add(next);
           cameFrom.put(next, current);
-          geneDepth.put(next, geneDepth.get(current)+1);
+          geneDepth.put(next, geneDepth.get(current) + 1);
         }
       }
     }
     return geneDepth.get(gene);
+  }
+
+  private boolean validGenome()
+  {
+    Creature creature = GenomeSynthesizer.init(env).encode(genome);
+
+    Block block1;
+    Block block2;
+    for (int i = 0; i < creature.getNumberOfBodyBlocks(); i++)
+    {
+      block1 = creature.getBlockByID(i);
+      for(int j = 0; j < creature.getNumberOfBodyBlocks(); j++)
+      {
+        if (i != j)
+        {
+          block2 = creature.getBlockByID(j);
+          if (getCollision(block1, block2).size() > 0)
+          {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  private CollisionResults getCollision(Block block1, Block block2)
+  {
+    CollisionResults results = new CollisionResults();
+    block1.getGeometry().collideWith(block2.getGeometry().getWorldBound(), results);
+    return results;
   }
 }

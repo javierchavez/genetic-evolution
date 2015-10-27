@@ -46,6 +46,21 @@ public class Genome
     genes.add(gene);
   }
 
+  public void remove(Gene gene)
+  {
+    for (Gene neighbor : neighbors(gene))
+    {
+      remove(neighbor);
+    }
+
+    int geneIdx = genes.indexOf(gene);
+    for (Gene parent : genes)
+    {
+      parent.removeEdge(geneIdx);
+    }
+    genes.remove(gene);
+  }
+
   /**
    * Root of the genome
    *
