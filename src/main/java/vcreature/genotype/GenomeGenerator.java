@@ -126,9 +126,19 @@ public class GenomeGenerator
         childX = size.x - (rand.nextFloat()*2*size.x);
         childY = size.y - (rand.nextFloat()*2*size.y);
         childZ = -size.z;
+        if (rand.nextBoolean()) // x axis
+        {
+          childX = rand.nextBoolean() ? size.x : -size.x;
+          pivotAxis = Vector3f.UNIT_X;
+        }
+        else // y axis
+        {
+          childY = rand.nextBoolean() ? size.y : -size.y;
+          pivotAxis = Vector3f.UNIT_Y;
+        }
         childPivot = new Vector3f(childX, childY, childZ);
 
-        pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_X : Vector3f.UNIT_Y;
+        //pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_X : Vector3f.UNIT_Y;
         break;
       case 1: // XY plane 2
         parentX = parentSize.x - (rand.nextFloat()*2*parentSize.x);
@@ -139,9 +149,19 @@ public class GenomeGenerator
         childX = size.x - (rand.nextFloat()*2*size.x);
         childY = size.y - (rand.nextFloat()*2*size.y);
         childZ = size.z;
+        if (rand.nextBoolean()) // x axis
+        {
+          childX = rand.nextBoolean() ? size.x : -size.x;
+          pivotAxis = Vector3f.UNIT_X;
+        }
+        else // y axis
+        {
+          childY = rand.nextBoolean() ? size.y : -size.y;
+          pivotAxis = Vector3f.UNIT_Y;
+        }
         childPivot = new Vector3f(childX, childY, childZ);
 
-        pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_X : Vector3f.UNIT_Y;
+        //pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_X : Vector3f.UNIT_Y;
         break;
       case 2: // XZ plane 1
         parentX = parentSize.x - (rand.nextFloat()*2*parentSize.x);
@@ -152,9 +172,19 @@ public class GenomeGenerator
         childX = size.x - (rand.nextFloat()*2*size.x);
         childY = -size.y;
         childZ = size.z - (rand.nextFloat()*2*size.z);
+        if (rand.nextBoolean()) // x axis
+        {
+          childX = rand.nextBoolean() ? size.x : -size.x;
+          pivotAxis = Vector3f.UNIT_X;
+        }
+        else // z axis
+        {
+          childZ = rand.nextBoolean() ? size.z : -size.z;
+          pivotAxis = Vector3f.UNIT_Z;
+        }
         childPivot = new Vector3f(childX, childY, childZ);
 
-        pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_X : Vector3f.UNIT_Z;
+        //pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_X : Vector3f.UNIT_Z;
         break;
       case 3: // XZ plane 2
         parentX = parentSize.x - (rand.nextFloat()*2*parentSize.x);
@@ -165,9 +195,19 @@ public class GenomeGenerator
         childX = size.x - (rand.nextFloat()*2*size.x);
         childY = size.y;
         childZ = size.z - (rand.nextFloat()*2*size.z);
+        if (rand.nextBoolean()) // x axis
+        {
+          childX = rand.nextBoolean() ? size.x : -size.x;
+          pivotAxis = Vector3f.UNIT_X;
+        }
+        else // z axis
+        {
+          childZ = rand.nextBoolean() ? size.z : -size.z;
+          pivotAxis = Vector3f.UNIT_Z;
+        }
         childPivot = new Vector3f(childX, childY, childZ);
 
-        pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_X : Vector3f.UNIT_Z;
+        //pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_X : Vector3f.UNIT_Z;
         break;
       case 4: // YZ plane 1
         parentX = parentSize.x;
@@ -178,9 +218,19 @@ public class GenomeGenerator
         childX = -size.x;
         childY = size.y - (rand.nextFloat()*2*size.y);
         childZ = size.z - (rand.nextFloat()*2*size.z);
+        if (rand.nextBoolean()) // y axis
+        {
+          childY = rand.nextBoolean() ? size.y : -size.y;
+          pivotAxis = Vector3f.UNIT_Y;
+        }
+        else // z axis
+        {
+          childZ = rand.nextBoolean() ? size.z : -size.z;
+          pivotAxis = Vector3f.UNIT_Z;
+        }
         childPivot = new Vector3f(childX, childY, childZ);
 
-        pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_Y : Vector3f.UNIT_Z;
+        //pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_Y : Vector3f.UNIT_Z;
         break;
       default: // YZ plane 2
         parentX = -parentSize.x;
@@ -191,9 +241,19 @@ public class GenomeGenerator
         childX = size.x;
         childY = size.y - (rand.nextFloat()*2*size.y);
         childZ = size.z - (rand.nextFloat()*2*size.z);
+        if (rand.nextBoolean()) // y axis
+        {
+          childY = rand.nextBoolean() ? size.y : -size.y;
+          pivotAxis = Vector3f.UNIT_Y;
+        }
+        else // z axis
+        {
+          childZ = rand.nextBoolean() ? size.z : -size.z;
+          pivotAxis = Vector3f.UNIT_Z;
+        }
         childPivot = new Vector3f(childX, childY, childZ);
 
-        pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_Y : Vector3f.UNIT_Z;
+        //pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_Y : Vector3f.UNIT_Z;
         break;
     }
     gene.setDimensions(size);
