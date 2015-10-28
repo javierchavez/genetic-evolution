@@ -11,6 +11,7 @@ import vcreature.GenomeSynthesizer;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
 import vcreature.phenotype.EnumNeuronInput;
+import vcreature.phenotype.EnumOperator;
 
 
 /**
@@ -262,6 +263,7 @@ public class GenomeGenerator
     gene.getEffector().setParent(parentPivot);
     gene.getEffector().setChild(childPivot);
     gene.getEffector().setPivotAxis(pivotAxis);
+    addNeurons(gene, rand.nextInt(params.MAX_NEURON_RULES));
     genome.append(gene);
     genome.linkGenes(genome.getGenes().indexOf(parent), genome.getGenes().indexOf(gene));
     return gene;
@@ -278,11 +280,6 @@ public class GenomeGenerator
     float height = genRandDim(rand); // y dimension
     float depth = genRandDim(rand); // z dimension
     return new Vector3f(width/2, height/2, depth/2);
-  }
-
-  private EnumNeuronInput getRandInput(Random rand)
-  {
-    return EnumNeuronInput.values()[rand.nextInt(EnumNeuronInput.values().length)];
   }
 
   private int getDepth(Gene gene)
@@ -344,5 +341,63 @@ public class GenomeGenerator
     CollisionResults results = new CollisionResults();
     block1.getGeometry().collideWith(block2.getGeometry().getWorldBound(), results);
     return results;
+  }
+
+  private void addNeurons(Gene gene, int numNeurons)
+  {
+    for (int i = 0; i <= numNeurons; i++)
+    {
+      gene.getEffector().addNeuralNode(genRandNeuron(gene));
+    }
+  }
+
+  private NeuralNode genRandNeuron(Gene gene)
+  {
+    Random rand = new Random();
+    NeuralNode neuron = new NeuralNode();
+
+    neuron.setInput(NeuralInput.InputPosition.A, genRandInput(rand, gene));
+    neuron.setInput(NeuralInput.InputPosition.B, genRandInput(rand, gene));
+    neuron.setInput(NeuralInput.InputPosition.C, genRandInput(rand, gene));
+    neuron.setInput(NeuralInput.InputPosition.D, genRandInput(rand, gene));
+    neuron.setInput(NeuralInput.InputPosition.E, genRandInput(rand, gene));
+
+    neuron.setOperator(getRandOperator(rand), NeuralNode.NeuralOperatorPosition.FIRST);
+    neuron.setOperator(getRandOperator(rand), NeuralNode.NeuralOperatorPosition.SECOND);
+    neuron.setOperator(getRandOperator(rand), NeuralNode.NeuralOperatorPosition.THIRD);
+    neuron.setOperator(getRandOperator(rand), NeuralNode.NeuralOperatorPosition.FOURTH);
+    return neuron;
+  }
+
+  private NeuralInput genRandInput(Random rand, Gene gene)
+  {
+    NeuralInput neuralInput;
+    EnumNeuronInput input =  EnumNeuronInput.values()[rand.nextInt(EnumNeuronInput.values().length)];
+
+    switch (input)
+    {
+      case TIME:
+        neuralInput = new TimeInput();
+        break;
+      case TOUCH:
+        neuralInput = new TouchSensor(gene);
+        break;
+      case HEIGHT:
+        neuralInput = new HeightSensor(gene);
+        break;
+      case JOINT:
+        neuralInput = new AngleSensor(gene);
+        break;
+      default:
+        neuralInput = new ConstantInput();
+        break;
+    }
+    neuralInput.setValue(rand.nextFloat() * params.MAX_NEURON_VALUE);
+    return neuralInput;
+  }
+
+  private EnumOperator getRandOperator(Random rand)
+  {
+    return EnumOperator.values()[rand.nextInt(EnumOperator.SIZE)];
   }
 }
