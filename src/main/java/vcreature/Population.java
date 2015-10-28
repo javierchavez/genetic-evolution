@@ -1,6 +1,9 @@
 package vcreature;
 
 
+import vcreature.genotype.GenomeGenerator;
+import vcreature.phenotype.Creature;
+
 import java.util.*;
 
 /**
@@ -37,14 +40,12 @@ public class Population extends Vector<Being>
     return beings;
   }
 
-
-
   public void initPop()
   {
     for (int i = 0; i < 200; i++)
     {
       Being a = new Being();
-       a.setPhenotype(FlappyBird.class, environment);
+      a.setGenotype(GenomeGenerator.init(environment).generateGenome());
       beings.add(i, a);
     }
   }

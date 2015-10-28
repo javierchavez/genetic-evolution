@@ -45,7 +45,7 @@ public class Game extends MainSim implements ActionListener
     if (isPressed && name.equals("Update Creature"))
     {
       beingIndx++;
-      // environment.removeFromWorld(); // bug in creature.remove(); ????
+      environment.removeFromWorld(); // bug in creature.remove(); ????
       Being being = evolution.getBeing(beingIndx);
       environment.addToWorld(being);
 

@@ -11,7 +11,6 @@ public class CreatureGenerator
 {
   private static final CreatureGenerator thisInstance = new CreatureGenerator();
   private static  Environment env;
-  private static GenomeGenerator generator = new GenomeGenerator();
 
   private Creature creature;
 
@@ -27,13 +26,12 @@ public class CreatureGenerator
   public static CreatureGenerator init(Environment environment)
   {
     env = environment;
-    generator.setENV(environment);
     return thisInstance;
   }
 
   public Creature generateCreature()
   {
-    creature = GenomeSynthesizer.init(env).encode(generator.generateGenome());
+    creature = GenomeSynthesizer.init(env).encode(GenomeGenerator.init(env).generateGenome());
     return creature;
   }
 }

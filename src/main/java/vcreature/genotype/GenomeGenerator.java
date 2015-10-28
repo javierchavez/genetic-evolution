@@ -18,19 +18,28 @@ import vcreature.phenotype.EnumNeuronInput;
  */
 public class GenomeGenerator
 {
-  private GenomeGeneratorParameters params = new GenomeGeneratorParameters();
+  private static final GenomeGenerator thisInstance = new GenomeGenerator();
+  private static Environment env;
+  private static GenomeGeneratorParameters params = new GenomeGeneratorParameters();
   private Genome genome = new Genome();
-  private Environment env;
 
-  public GenomeGenerator(Environment env)
-  {
-    generateGenome();
-    this.env = env;
-  }
+  //public GenomeGenerator(Environment env)
+  //{
+  //  generateGenome();
+  //  this.env = env;
+  //}
 
-  public GenomeGenerator()
+  private GenomeGenerator() {}
+
+  //public GenomeGenerator()
+  //{
+  //  this(null);
+  //}
+
+  public static GenomeGenerator init(Environment environment)
   {
-    this(null);
+    env = environment;
+    return thisInstance;
   }
 
   public void clearGenome()
@@ -38,20 +47,12 @@ public class GenomeGenerator
     genome = new Genome();
   }
 
-  public void setENV(Environment env)
-  {
-    this.env = env;
-  }
-
   public Genome generateGenome()
   {
     clearGenome();
-    if (env != null)
-    {
-      Gene root = generateGene();
-      genome.setRoot(root);
-      addGenes(root);
-    }
+    Gene root = generateGene();
+    genome.setRoot(root);
+    addGenes(root);
     return genome;
   }
 

@@ -68,6 +68,10 @@ public class Environment
 
   public void addToWorld(Being v)
   {
+    v.createPhenotype(this);
+    currentBeing = v;
+    elapsedSimulationTime = 0.0f;
+    /*
     Class<? extends Creature> creatureClass = v.getPhenotype().getClass();
     try
     {
@@ -93,15 +97,13 @@ public class Environment
     {
       e.printStackTrace();
     }
-
-
+    */
   }
 
   public void removeFromWorld(Creature creature)
   {
 
   }
-
 
   public void beginEvaluation(Creature creature)
   {
@@ -140,10 +142,9 @@ public class Environment
 
     if (currentBeing != null)
     {
-      currentBeing.getPhenotype().remove();
+      currentBeing.removePhenotype();
       elapsedSimulationTime = 0.0f;
       currentBeing = null;
-
     }
 
   }

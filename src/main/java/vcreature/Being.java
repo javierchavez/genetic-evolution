@@ -4,6 +4,7 @@ package vcreature;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.scene.Node;
 import vcreature.genotype.Genome;
+import vcreature.genotype.GenomeGenerator;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
 
@@ -32,6 +33,11 @@ public class Being /*Comparable<Being>*/
   public Genome getGenotype()
   {
     return genotype;
+  }
+
+  public void setGenotype(Genome genotype)
+  {
+    this.genotype = genotype;
   }
 
   public float getFitness()
@@ -91,9 +97,19 @@ public class Being /*Comparable<Being>*/
 
   }
 
-
   public Creature getPhenotype()
   {
     return phenotype;
+  }
+
+  public Creature createPhenotype(Environment env)
+  {
+    phenotype = GenomeSynthesizer.init(env).encode(genotype);
+    return phenotype;
+  }
+
+  public void removePhenotype()
+  {
+    phenotype.remove();
   }
 }
