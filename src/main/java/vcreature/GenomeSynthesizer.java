@@ -2,15 +2,13 @@ package vcreature;
 
 
 import com.jme3.math.Vector3f;
-import vcreature.genotype.Gene;
-import vcreature.genotype.Genome;
+import vcreature.genotype.*;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
+import vcreature.phenotype.EnumNeuronInput;
+import vcreature.phenotype.Neuron;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
 {
@@ -98,10 +96,13 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
       current.getEffector().getPivotAxis(pivotAxis);
 
       block = creature.addBlock(rotations, size, parent, parentPivot, currentPivot, pivotAxis);
+      for (Neuron neuron : synthesizeNeurons(current))
+      {
+        block.addNeuron(neuron);
+      }
     }
     return block;
   }
-
 
   @Override
   public Genome decode(Creature typeToConvert)
@@ -119,5 +120,64 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
   public String synthesizedToString()
   {
     return creature.toString();
+  }
+
+  private List<Neuron> synthesizeNeurons(Gene gene)
+  {
+    List<Neuron> neurons = new ArrayList<>();
+    for (NeuralNode neuralNode : gene.getEffector().getNeuralNet())
+    {
+      neurons.add(synthesizeNeuralNode(neuralNode));
+    }
+    return neurons;
+  }
+
+  private Neuron synthesizeNeuralNode(NeuralNode neuralNode)
+  {
+    EnumNeuronInput inputA = synthesizeInput(neuralNode.getInputs().get(NeuralInput.InputPosition.A));
+    EnumNeuronInput inputB = synthesizeInput(neuralNode.getInputs().get(NeuralInput.InputPosition.B));
+    EnumNeuronInput inputC = synthesizeInput(neuralNode.getInputs().get(NeuralInput.InputPosition.C));
+    EnumNeuronInput inputD = synthesizeInput(neuralNode.getInputs().get(NeuralInput.InputPosition.D));
+    EnumNeuronInput inputE = synthesizeInput(neuralNode.getInputs().get(NeuralInput.InputPosition.E));
+
+    Neuron neuron = new Neuron(inputA, inputB, inputC, inputD, inputE);
+    neuron.setInputValue(Neuron.A, (Float) neuralNode.getInputs().get(NeuralInput.InputPosition.A).getValue());
+    neuron.setInputValue(Neuron.B, (Float) neuralNode.getInputs().get(NeuralInput.InputPosition.B).getValue());
+    neuron.setInputValue(Neuron.C, (Float) neuralNode.getInputs().get(NeuralInput.InputPosition.C).getValue());
+    neuron.setInputValue(Neuron.D, (Float) neuralNode.getInputs().get(NeuralInput.InputPosition.D).getValue());
+    neuron.setInputValue(Neuron.E, (Float) neuralNode.getInputs().get(NeuralInput.InputPosition.E).getValue());
+
+    neuron.setOp(neuralNode.getOperators().get(NeuralNode.NeuralOperatorPosition.FIRST), 0);
+    neuron.setOp(neuralNode.getOperators().get(NeuralNode.NeuralOperatorPosition.SECOND), 1);
+    neuron.setOp(neuralNode.getOperators().get(NeuralNode.NeuralOperatorPosition.THIRD), 2);
+    neuron.setOp(neuralNode.getOperators().get(NeuralNode.NeuralOperatorPosition.FOURTH), 3);
+
+    return neuron;
+  }
+
+  private EnumNeuronInput synthesizeInput(NeuralInput neuralInput)
+  {
+    EnumNeuronInput input;
+    if (neuralInput instanceof TimeInput)
+    {
+      input = EnumNeuronInput.TIME;
+    }
+    else if (neuralInput instanceof AngleSensor)
+    {
+      input = EnumNeuronInput.JOINT;
+    }
+    else if (neuralInput instanceof HeightSensor)
+    {
+      input = EnumNeuronInput.HEIGHT;
+    }
+    else if (neuralInput instanceof TouchSensor)
+    {
+      input = EnumNeuronInput.TOUCH;
+    }
+    else
+    {
+      input = EnumNeuronInput.CONSTANT;
+    }
+    return input;
   }
 }
