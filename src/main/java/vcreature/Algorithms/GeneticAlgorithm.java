@@ -108,12 +108,12 @@ public class GeneticAlgorithm
 
 
     //hack to generate random population
-    for(Being being : population)
+/*    for(Being being : population)
     {
       mutation(being);
       LinkedList<Gene> genes = being.getGenotype().getGenes();
     }
-
+*/
     Vector<Being> newParents = new Vector();
     Random rnd = new Random();
 
