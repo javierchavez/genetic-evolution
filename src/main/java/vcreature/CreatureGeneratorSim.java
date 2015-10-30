@@ -133,13 +133,14 @@ public class CreatureGeneratorSim extends SimpleApplication implements ActionLis
     }
     else if (name.equals("Quit"))
     {
-      System.out.format("Creature Fitness (Maximium height of lowest point) = %.3f meters]\n", creature.getFitness());
+      System.out.format("Creature Fitness (Maximum height of lowest point) = %.3f meters]\n", creature.getFitness());
       System.exit(0);
     }
     else if (isPressed && name.equals("Generate New Creature"))
     {
       creature.remove();
       creature = CreatureGenerator.init(env).generateCreature();
+      elapsedSimulationTime = 0;
     }
   }
 
@@ -148,8 +149,6 @@ public class CreatureGeneratorSim extends SimpleApplication implements ActionLis
   public void simpleUpdate(float deltaSeconds)
   {
     elapsedSimulationTime += deltaSeconds;
-    //print("simpleUpdate() elapsedSimulationTime=", (float)elapsedSimulationTime);
-    //print("simpleUpdate() joint1.getHingeAngle()=", joint1.getHingeAngle());
     creature.updateBrain(elapsedSimulationTime);
 
     if (isCameraRotating)
