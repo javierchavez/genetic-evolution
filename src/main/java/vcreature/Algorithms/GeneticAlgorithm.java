@@ -37,7 +37,7 @@ public class GeneticAlgorithm
 {
 
 
-
+  private int totalGenerations;
   private int populationSize;
   private int pctMutations = 50;
   private int pctCrossover = 90;
@@ -53,11 +53,12 @@ public class GeneticAlgorithm
   {
     this.populationSize = 200;
     this.pctCrossover = 90;
-    this.pctMutations = 0;
+    this.pctMutations = 90;
     this.generationNumber = 0;
     this.bestFitness = 0;
     this.bestBeing = null;
     this.initialPopulation = initPop;
+    this.totalGenerations = 10;
 
 
 
@@ -86,22 +87,50 @@ public class GeneticAlgorithm
 
   protected void printFitnessStats(Vector<Being> beings)
   {
-    float bestFitness = 0;
-    float avgFitness = 0;
+    float bestFitness = 0f;
+    float avgFitness = 0f;
+    float summedFitness = 0f;
+    float currentBeingFitness;
     for(Being being : beings)
     {
-      if(being.getFitness() > bestFitness)
+      currentBeingFitness = being.getFitness();
+      System.out.println(currentBeingFitness);
+      if(currentBeingFitness > bestFitness)
       {
+
         bestFitness = being.getFitness();
       }
-      avgFitness = avgFitness + being.getFitness();
+      summedFitness = summedFitness + currentBeingFitness;
     }
-    avgFitness = avgFitness / beings.size();
+    avgFitness = summedFitness / beings.size();
+    System.out.println(beings.size());
+    System.out.println("Generation: " + generationNumber);
     System.out.println("Best fitness " + bestFitness);
     System.out.println("Avg fitness " + avgFitness);
+   /* System.out.println("Best being");
+    if(this.bestBeing != null)
+    {
+      printBeing(this.bestBeing);
+    }
+    */
   }
 
+  private void printBeing(Being being)
+  {
 
+
+    int geneNumber = 0;
+
+
+    for(Gene gene : being.getGenotype().getGenes())
+    {
+      geneNumber++;
+      System.out.println("Gene " + geneNumber);
+      System.out.println("h " + gene.getHeightY() + " w " + gene.getWidthZ() + " l " + gene.getLengthX());
+      System.out.println("fitness " + being.getFitness());
+
+    }
+  }
 
   protected Vector<Being> selection (Vector<Being> population)
   {
@@ -256,38 +285,41 @@ public class GeneticAlgorithm
     return nextGeneration;
   }
 
-  private Vector<Being> evolvePopulation()
+  protected Vector<Being> evolvePopulation()
   {
 
     double currentGenBestFitness; //best fitness from current generation
     Being genBestBeing; ///most fit creature from current generation
     Vector<Being> currentGeneration= this.initialPopulation.getBeings();
     Vector<Being> nextGeneration = new Vector();
-    while(generationNumber < 5)
-    {
+
+    do {
       double summedFitness = 0;
       double averageFitness = 0;
       currentGenBestFitness = 0;
       genBestBeing = null;
       nextGeneration = createNextGeneration(currentGeneration);
       this.generationNumber++;
-      for(Being individual : nextGeneration)
-      {
+      for (Being individual : nextGeneration) {
         double fitness = calcFitness(individual);
         summedFitness = summedFitness + fitness;
-        if(fitness > currentGenBestFitness)
-        {
+        if (fitness > currentGenBestFitness) {
           currentGenBestFitness = fitness;
+          genBestBeing = individual;
         }
-        if(fitness > this.bestFitness)
-        {
+        if (fitness > this.bestFitness) {
           this.bestFitness = fitness;
+          this.bestBeing = individual;
         }
       }
+      printFitnessStats(nextGeneration);
 
-      averageFitness = summedFitness/nextGeneration.size();
+      currentGeneration = nextGeneration;
+
+      averageFitness = summedFitness / nextGeneration.size();
 
     }
+    while (generationNumber < this.totalGenerations);
     return nextGeneration;
   }
 

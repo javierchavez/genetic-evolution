@@ -32,27 +32,13 @@ public class GAGame extends MainSim implements ActionListener
     Population initPop = evolution.getPopulation();
     GeneticAlgorithm GA = new GeneticAlgorithm(initPop);
 
-
-    System.out.println("Orig pop");
-    printBeings(initPop.getBeings());
     GA.printFitnessStats(initPop.getBeings());
 
 
 
-    Vector<Being> newParents = GA.selection(GA.getInitialPopulation().getBeings());
+    Vector<Being> newParents = GA.evolvePopulation();
 
-    System.out.println("mutated pop");
 
-    GA.printFitnessStats(initPop.getBeings());
-
-    System.out.println("new Parents");
-
-    GA.printFitnessStats(newParents);
-
-    System.out.println("next generation");
-    Vector<Being> nextGen = GA.createNextGeneration(newParents);
-
-    GA.printFitnessStats(nextGen);
 
 
 
@@ -62,24 +48,7 @@ public class GAGame extends MainSim implements ActionListener
 
   }
 
-  private void printBeings(Vector<Being> p)
-  {
 
-    int beingNumber = 0;
-    int geneNumber = 0;
-    for(Being being : p)
-    {
-      beingNumber++;
-      geneNumber = 0;
-      for(Gene gene : being.getGenotype().getGenes())
-      {
-        geneNumber++;
-        System.out.println("Being " + beingNumber + ", Gene " + geneNumber);
-        System.out.println("h " + gene.getHeightY() + " w " + gene.getWidthZ() + " l " + gene.getLengthX());
-        System.out.println("fitness " + being.getFitness());
-      }
-    }
-  }
 
   private void initKeys() {
 
