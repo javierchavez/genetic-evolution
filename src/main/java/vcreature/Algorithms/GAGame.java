@@ -32,11 +32,15 @@ public class GAGame extends MainSim implements ActionListener
     Population initPop = evolution.getPopulation();
     GeneticAlgorithm GA = new GeneticAlgorithm(initPop);
 
-    GA.printFitnessStats(initPop.getBeings());
+    Being parent1 = initPop.getBeings().get(0);
+    Being parent2 = initPop.getBeings().get(1);
+    System.out.println("Parent 1 ");
+    GA.printBeing(parent1);
+    System.out.println("Parent 2 ");
+    GA.printBeing(parent2);
+    GA.crossover(parent1, parent2);
 
-
-
-    Vector<Being> newParents = GA.evolvePopulation();
+    //Vector<Being> evolvedPopulation = GA.evolvePopulation();
 
 
 

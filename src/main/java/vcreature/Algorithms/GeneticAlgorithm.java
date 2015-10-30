@@ -45,6 +45,8 @@ public class GeneticAlgorithm
   private double bestFitness;
   private Being bestBeing;
   private Population initialPopulation;
+  private Genome temp1 = new Genome(); //for re-use in each crossover operation
+  private Genome temp2 = new Genome(); //for re-use in each crossover operation
 
 
 
@@ -115,7 +117,7 @@ public class GeneticAlgorithm
     */
   }
 
-  private void printBeing(Being being)
+  protected void printBeing(Being being)
   {
 
 
@@ -201,11 +203,83 @@ public class GeneticAlgorithm
   }
 
 
-  private void crossover(Being parent1, Being parent2)
+  protected void crossover(Being parent1, Being parent2)
   {
+    if(parent1.getGenotype().getGenes().size() < 2 || parent2.getGenotype().getGenes().size() < 2)
+    {
+      System.out.println("CROSSOVER not performed; crossover not implemented for parent size 1");
+      return;
+    }
+
+    temp1.getGenes().addFirst(parent1.getGenotype().getGenes().get(0));
+    temp2.getGenes().addFirst(parent2.getGenotype().getGenes().get(0));
+    for(int i = 1; i < parent1.getGenotype().getGenes().size(); i++)
+    {
+      temp1.getGenes().add(parent1.getGenotype().getGenes().get(i));
+    }
+    for(int i = 1; i < parent2.getGenotype().getGenes().size(); i++)
+    {
+      temp2.getGenes().add(parent2.getGenotype().getGenes().get(i));
+    }
+    int geneNumber = 0;
+    for(Gene gene : temp1.getGenes())
+    {
+      geneNumber++;
+      System.out.println("temp1");
+      System.out.println("Gene " + geneNumber);
+      System.out.println("h " + gene.getHeightY() + " w " + gene.getWidthZ() + " l " + gene.getLengthX());
+
+    }
+
+    geneNumber = 0;
+    for(Gene gene : temp2.getGenes())
+    {
+      geneNumber++;
+      System.out.println("temp2");
+      System.out.println("Gene " + geneNumber);
+      System.out.println("h " + gene.getHeightY() + " w " + gene.getWidthZ() + " l " + gene.getLengthX());
+
+    }
+
     Random rnd = new Random();
-    int crossoverPoint1 = rnd.nextInt(parent1.getGenotype().getGenes().size());
-    int crossoverPoint2 = rnd.nextInt(parent2.getGenotype().getGenes().size());
+    //index of first gene to be swapped on each parent
+    int crossoverPoint1 = 1 + rnd.nextInt((parent1.getGenotype().getGenes().size() - 1));
+    System.out.println("Crossover point 1 =" + crossoverPoint1);
+    int crossoverPoint2 = 1 + rnd.nextInt((parent2.getGenotype().getGenes().size() - 1));
+    System.out.println("Crossover point 2 =" + crossoverPoint2);
+    for(int i = parent1.getGenotype().size() - 1; i >= crossoverPoint1; i--)
+    {
+      parent1.getGenotype().getGenes().remove(i);
+    }
+
+    for(int i = parent2.getGenotype().size() - 1; i >= crossoverPoint2; i--)
+    {
+      parent2.getGenotype().getGenes().remove(i);
+    }
+    System.out.println("Crossover test phase 1");
+    System.out.println("Parent 1:");
+    printBeing(parent1);
+    geneNumber = 0;
+    for(Gene gene : temp1.getGenes())
+    {
+      geneNumber++;
+      System.out.println("temp1");
+      System.out.println("Gene " + geneNumber);
+      System.out.println("h " + gene.getHeightY() + " w " + gene.getWidthZ() + " l " + gene.getLengthX());
+
+    }
+    System.out.println("Parent 2:");
+    printBeing(parent2);
+    geneNumber = 0;
+    for(Gene gene : temp2.getGenes())
+    {
+      geneNumber++;
+      System.out.println("temp2");
+      System.out.println("Gene " + geneNumber);
+      System.out.println("h " + gene.getHeightY() + " w " + gene.getWidthZ() + " l " + gene.getLengthX());
+
+    }
+
   }
 
   protected void mutation(Being individual)
