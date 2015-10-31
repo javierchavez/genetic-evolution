@@ -53,12 +53,12 @@ public class GeneticAlgorithm
   {
     this.populationSize = 200;
     this.pctCrossover = 90;
-    this.pctMutations = 90;
+    this.pctMutations = 50;
     this.generationNumber = 0;
     this.bestFitness = 0;
     this.bestBeing = null;
     this.initialPopulation = initPop;
-    this.totalGenerations = 10;
+    this.totalGenerations = 200;
 
 
 
@@ -246,14 +246,14 @@ public class GeneticAlgorithm
     //  System.out.println("PARENT 2 BEFORE");
     //  printBeing(parent2);
 
-      currentGenotype.remove(currentGene);
+      currentGenotype.getGenes().remove(currentGene);
       currentGenotype.append(currentGene2);
 
       currentGenotype.linkGenes(crossoverPoint1 - 1, currentGenotype.size() - 1);
       currentGenotype.getGenes().get(crossoverPoint1 - 1).addEdge(currentGenotype.size() - 1);
 
 
-      currentGenotype2.remove(currentGene2);
+      currentGenotype2.getGenes().remove(currentGene2);
       currentGenotype2.append(currentGene);
 
       currentGenotype2.linkGenes(crossoverPoint2 - 1, currentGenotype2.size() - 1);
