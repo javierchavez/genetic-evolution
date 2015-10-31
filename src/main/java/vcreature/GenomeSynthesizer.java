@@ -63,7 +63,6 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
           blockParent.put(next, currentBlock);
         }
       }
-
     }
     creature.placeOnGround();
     return creature;
@@ -76,8 +75,6 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
 
     if (parent == null)
     {
-      // start the creature at the origin
-      // creature.placeOnGround() will move it as necessary
       block = creature.addRoot(new Vector3f(0, Attributes.VERTICAL_OFFSET, 0), size);
       block.setMaterial(Block.MATERIAL_RED);
     }
