@@ -36,6 +36,96 @@ public class Effector
     neuralNet = new ArrayList<>();
   }
 
+  public float getParentX()
+  {
+    return parentX;
+  }
+
+  public void setParentX(float parentX)
+  {
+    this.parentX = parentX;
+  }
+
+  public float getParentY()
+  {
+    return parentY;
+  }
+
+  public void setParentY(float parentY)
+  {
+    this.parentY = parentY;
+  }
+
+  public float getParentZ()
+  {
+    return parentZ;
+  }
+
+  public void setParentZ(float parentZ)
+  {
+    this.parentZ = parentZ;
+  }
+
+  public float getChildX()
+  {
+    return childX;
+  }
+
+  public void setChildX(float childX)
+  {
+    this.childX = childX;
+  }
+
+  public float getChildY()
+  {
+    return childY;
+  }
+
+  public void setChildY(float childY)
+  {
+    this.childY = childY;
+  }
+
+  public float getChildZ()
+  {
+    return childZ;
+  }
+
+  public void setChildZ(float childZ)
+  {
+    this.childZ = childZ;
+  }
+
+  public float getPivotAxisX()
+  {
+    return pivotAxisX;
+  }
+
+  public void setPivotAxisX(float pivotAxisX)
+  {
+    this.pivotAxisX = pivotAxisX;
+  }
+
+  public float getPivotAxisY()
+  {
+    return pivotAxisY;
+  }
+
+  public void setPivotAxisY(float pivotAxisY)
+  {
+    this.pivotAxisY = pivotAxisY;
+  }
+
+  public float getPivotAxisZ()
+  {
+    return pivotAxisZ;
+  }
+
+  public void setPivotAxisZ(float pivotAxisZ)
+  {
+    this.pivotAxisZ = pivotAxisZ;
+  }
+
   public float getMaxForce()
   {
     return maxForce;

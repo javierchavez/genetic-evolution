@@ -9,6 +9,7 @@ import com.jme3.system.JmeContext;
 import vcreature.*;
 import vcreature.genotype.Gene;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Vector;
@@ -19,6 +20,7 @@ public class GAGame extends MainSim implements ActionListener
 
   private static Environment environment;
   private Evolution evolution;
+  private static Vector<Being> evolvedPopulation;
   int beingIndx = 0;
 
   @Override
@@ -31,14 +33,9 @@ public class GAGame extends MainSim implements ActionListener
 
     evolution = new Evolution(environment);
     Population initPop = evolution.getPopulation();
-
     GeneticAlgorithm GA = new GeneticAlgorithm(initPop);
 
-    Vector<Being> evolvedPopulation = GA.evolvePopulation();
-
-
-
-
+    evolvedPopulation = GA.evolvePopulation();
 
 
     initKeys();
@@ -66,7 +63,7 @@ public class GAGame extends MainSim implements ActionListener
     {
       beingIndx++;
       // environment.removeFromWorld(); // bug in creature.remove(); ????
-      Being being = evolution.getBeing(beingIndx);
+      Being being = evolvedPopulation.get(beingIndx);
       environment.addToWorld(being);
 
 
@@ -96,8 +93,8 @@ public class GAGame extends MainSim implements ActionListener
     GAGame app = new GAGame();
     app.setShowSettings(false);
     app.setSettings(settings);
-    //app.start();
-    app.start(JmeContext.Type.Headless);
+    app.start();
+    //app.start(JmeContext.Type.Headless);
 
 
     //        app.evolution.addToWorld(new Being());
