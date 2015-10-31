@@ -10,6 +10,7 @@ import vcreature.*;
 import vcreature.genotype.Gene;
 
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.Vector;
 
 
@@ -30,17 +31,10 @@ public class GAGame extends MainSim implements ActionListener
 
     evolution = new Evolution(environment);
     Population initPop = evolution.getPopulation();
+
     GeneticAlgorithm GA = new GeneticAlgorithm(initPop);
 
-    Being parent1 = initPop.getBeings().get(0);
-    Being parent2 = initPop.getBeings().get(1);
-    System.out.println("Parent 1 ");
-    GA.printBeing(parent1);
-    System.out.println("Parent 2 ");
-    GA.printBeing(parent2);
-    GA.crossover(parent1, parent2);
-
-    //Vector<Being> evolvedPopulation = GA.evolvePopulation();
+    Vector<Being> evolvedPopulation = GA.evolvePopulation();
 
 
 

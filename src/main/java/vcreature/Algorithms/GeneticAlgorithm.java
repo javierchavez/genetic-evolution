@@ -20,15 +20,13 @@ import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
 import com.jme3.texture.Texture;
 import vcreature.*;
+import vcreature.genotype.Effector;
 import vcreature.genotype.Genome;
 import vcreature.genotype.Gene;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.PhysicsConstants;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * @author Cari
@@ -205,13 +203,14 @@ public class GeneticAlgorithm
 
   protected void crossover(Being parent1, Being parent2)
   {
+
     if(parent1.getGenotype().getGenes().size() < 2 || parent2.getGenotype().getGenes().size() < 2)
     {
       System.out.println("CROSSOVER not performed; crossover not implemented for parent size 1");
       return;
     }
 
-    temp1.getGenes().addFirst(parent1.getGenotype().getGenes().get(0));
+/*    temp1.getGenes().addFirst(parent1.getGenotype().getGenes().get(0));
     temp2.getGenes().addFirst(parent2.getGenotype().getGenes().get(0));
     for(int i = 1; i < parent1.getGenotype().getGenes().size(); i++)
     {
@@ -221,66 +220,59 @@ public class GeneticAlgorithm
     {
       temp2.getGenes().add(parent2.getGenotype().getGenes().get(i));
     }
-    int geneNumber = 0;
-    for(Gene gene : temp1.getGenes())
-    {
-      geneNumber++;
-      System.out.println("temp1");
-      System.out.println("Gene " + geneNumber);
-      System.out.println("h " + gene.getHeightY() + " w " + gene.getWidthZ() + " l " + gene.getLengthX());
 
-    }
-
-    geneNumber = 0;
-    for(Gene gene : temp2.getGenes())
-    {
-      geneNumber++;
-      System.out.println("temp2");
-      System.out.println("Gene " + geneNumber);
-      System.out.println("h " + gene.getHeightY() + " w " + gene.getWidthZ() + " l " + gene.getLengthX());
-
-    }
+*/
 
     Random rnd = new Random();
     //index of first gene to be swapped on each parent
     int crossoverPoint1 = 1 + rnd.nextInt((parent1.getGenotype().getGenes().size() - 1));
-    System.out.println("Crossover point 1 =" + crossoverPoint1);
+ //   System.out.println("Crossover point 1 =" + crossoverPoint1);
     int crossoverPoint2 = 1 + rnd.nextInt((parent2.getGenotype().getGenes().size() - 1));
-    System.out.println("Crossover point 2 =" + crossoverPoint2);
-    for(int i = parent1.getGenotype().size() - 1; i >= crossoverPoint1; i--)
-    {
-      parent1.getGenotype().getGenes().remove(i);
-    }
+ //   System.out.println("Crossover point 2 =" + crossoverPoint2);
+    Genome currentGenotype = parent1.getGenotype();
+    Gene currentGene = currentGenotype.getGenes().get(crossoverPoint1);
+    Genome currentGenotype2 = parent2.getGenotype();
+    Gene currentGene2 =  parent2.getGenotype().getGenes().get(crossoverPoint2);
 
-    for(int i = parent2.getGenotype().size() - 1; i >= crossoverPoint2; i--)
-    {
-      parent2.getGenotype().getGenes().remove(i);
-    }
-    System.out.println("Crossover test phase 1");
-    System.out.println("Parent 1:");
-    printBeing(parent1);
-    geneNumber = 0;
-    for(Gene gene : temp1.getGenes())
-    {
-      geneNumber++;
-      System.out.println("temp1");
-      System.out.println("Gene " + geneNumber);
-      System.out.println("h " + gene.getHeightY() + " w " + gene.getWidthZ() + " l " + gene.getLengthX());
+    List<Gene> neighbors;
 
-    }
-    System.out.println("Parent 2:");
-    printBeing(parent2);
-    geneNumber = 0;
-    for(Gene gene : temp2.getGenes())
+    neighbors = currentGenotype.neighbors(currentGene);
+
+
+    if(neighbors.size() == 0 && currentGenotype2.neighbors(currentGene2).size() == 0)
     {
-      geneNumber++;
-      System.out.println("temp2");
-      System.out.println("Gene " + geneNumber);
-      System.out.println("h " + gene.getHeightY() + " w " + gene.getWidthZ() + " l " + gene.getLengthX());
+    //  System.out.println("PARENT 1 BEFORE");
+    //  printBeing(parent1);
+    //  System.out.println("PARENT 2 BEFORE");
+    //  printBeing(parent2);
 
+      currentGenotype.remove(currentGene);
+      currentGenotype.append(currentGene2);
+
+      currentGenotype.linkGenes(crossoverPoint1 - 1, currentGenotype.size() - 1);
+      currentGenotype.getGenes().get(crossoverPoint1 - 1).addEdge(currentGenotype.size() - 1);
+
+
+      currentGenotype2.remove(currentGene2);
+      currentGenotype2.append(currentGene);
+
+      currentGenotype2.linkGenes(crossoverPoint2 - 1, currentGenotype2.size() - 1);
+      currentGenotype2.getGenes().get(crossoverPoint2 - 1).addEdge(currentGenotype2.size() - 1);
+
+
+     // System.out.println("PARENT 1  AFTER");
+     // printBeing(parent1);
+     // System.out.println("PARENT 2  AFTER");
+     // printBeing(parent2);
     }
-
+    for(Gene neighbor : neighbors)
+    {
+     // System.out.println(neighbor.getLengthX() + " " + neighbor.getHeightY() + " " + neighbor.getWidthZ());
+    }
   }
+
+
+
 
   protected void mutation(Being individual)
   {
