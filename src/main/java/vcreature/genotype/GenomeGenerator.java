@@ -339,10 +339,10 @@ public class GenomeGenerator
     neuron.setInput(NeuralInput.InputPosition.D, genRandInput(rand, gene));
     neuron.setInput(NeuralInput.InputPosition.E, genRandInput(rand, gene));
 
-    neuron.setOperator(getRandOperator(rand), NeuralNode.NeuralOperatorPosition.FIRST);
-    neuron.setOperator(getRandOperator(rand), NeuralNode.NeuralOperatorPosition.SECOND);
-    neuron.setOperator(getRandOperator(rand), NeuralNode.NeuralOperatorPosition.THIRD);
-    neuron.setOperator(getRandOperator(rand), NeuralNode.NeuralOperatorPosition.FOURTH);
+    neuron.setOperator(getRandOperator(rand, 0), NeuralNode.NeuralOperatorPosition.FIRST);
+    neuron.setOperator(getRandOperator(rand, 1), NeuralNode.NeuralOperatorPosition.SECOND);
+    neuron.setOperator(getRandOperator(rand, 2), NeuralNode.NeuralOperatorPosition.THIRD);
+    neuron.setOperator(getRandOperator(rand, 3), NeuralNode.NeuralOperatorPosition.FOURTH);
     return neuron;
   }
 
@@ -373,8 +373,17 @@ public class GenomeGenerator
     return neuralInput;
   }
 
-  private EnumOperator getRandOperator(Random rand)
+  private EnumOperator getRandOperator(Random rand, int position)
   {
-    return EnumOperator.values()[rand.nextInt(EnumOperator.SIZE)];
+    EnumOperator operator;
+    if (position == 0 || position == 2)
+    { // binary operator
+      operator = EnumOperator.values()[rand.nextInt(7)];
+    }
+    else
+    { // unary operator
+      operator = EnumOperator.values()[7 + rand.nextInt(EnumOperator.SIZE-7)];
+    }
+    return operator;
   }
 }

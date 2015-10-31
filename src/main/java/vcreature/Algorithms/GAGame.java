@@ -9,7 +9,9 @@ import com.jme3.system.JmeContext;
 import vcreature.*;
 import vcreature.genotype.Gene;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.Vector;
 
 
@@ -18,6 +20,8 @@ public class GAGame extends MainSim implements ActionListener
 
   private static Environment environment;
   private Evolution evolution;
+  private static Vector<Being> evolvedPopulation;
+
   int beingIndx = 0;
 
   @Override
@@ -30,31 +34,9 @@ public class GAGame extends MainSim implements ActionListener
 
     evolution = new Evolution(environment);
     Population initPop = evolution.getPopulation();
-    GeneticAlgorithm GA = new GeneticAlgorithm(initPop);
+//    GeneticAlgorithm GA = new GeneticAlgorithm(initPop, this);
 
-
-    System.out.println("Orig pop");
-    printBeings(initPop.getBeings());
-    GA.printFitnessStats(initPop.getBeings());
-
-
-
-    Vector<Being> newParents = GA.selection(GA.getInitialPopulation().getBeings());
-
-    System.out.println("mutated pop");
-
-    GA.printFitnessStats(initPop.getBeings());
-
-    System.out.println("new Parents");
-
-    GA.printFitnessStats(newParents);
-
-    System.out.println("next generation");
-    Vector<Being> nextGen = GA.createNextGeneration(newParents);
-
-    GA.printFitnessStats(nextGen);
-
-
+ //   evolvedPopulation = GA.evolvePopulation();
 
 
     initKeys();
@@ -62,24 +44,7 @@ public class GAGame extends MainSim implements ActionListener
 
   }
 
-  private void printBeings(Vector<Being> p)
-  {
 
-    int beingNumber = 0;
-    int geneNumber = 0;
-    for(Being being : p)
-    {
-      beingNumber++;
-      geneNumber = 0;
-      for(Gene gene : being.getGenotype().getGenes())
-      {
-        geneNumber++;
-        System.out.println("Being " + beingNumber + ", Gene " + geneNumber);
-        System.out.println("h " + gene.getHeightY() + " w " + gene.getWidthZ() + " l " + gene.getLengthX());
-        System.out.println("fitness " + being.getFitness());
-      }
-    }
-  }
 
   private void initKeys() {
 
@@ -99,7 +64,7 @@ public class GAGame extends MainSim implements ActionListener
     {
       beingIndx++;
       // environment.removeFromWorld(); // bug in creature.remove(); ????
-      Being being = evolution.getBeing(beingIndx);
+      Being being = evolvedPopulation.get(beingIndx);
       environment.addToWorld(being);
 
 
