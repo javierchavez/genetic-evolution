@@ -5,6 +5,7 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.system.AppSettings;
+import vcreature.Algorithms.GeneticAlgorithm;
 
 
 public class Game extends MainSim implements ActionListener
@@ -13,6 +14,10 @@ public class Game extends MainSim implements ActionListener
   private static Environment environment;
   private Evolution evolution;
   int beingIndx = 0;
+
+  public Environment getEnvironment() {
+    return environment;
+  }
 
   @Override
   public void simpleInitApp()
@@ -23,7 +28,8 @@ public class Game extends MainSim implements ActionListener
                               rootNode);
 
     evolution = new Evolution(environment);
-
+    GeneticAlgorithm GA = new GeneticAlgorithm(evolution.getPopulation(), this);
+    GA.evolvePopulation();
     initKeys();
 
 

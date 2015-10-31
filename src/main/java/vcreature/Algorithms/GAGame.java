@@ -21,6 +21,7 @@ public class GAGame extends MainSim implements ActionListener
   private static Environment environment;
   private Evolution evolution;
   private static Vector<Being> evolvedPopulation;
+
   int beingIndx = 0;
 
   @Override
@@ -33,9 +34,9 @@ public class GAGame extends MainSim implements ActionListener
 
     evolution = new Evolution(environment);
     Population initPop = evolution.getPopulation();
-    GeneticAlgorithm GA = new GeneticAlgorithm(initPop);
+//    GeneticAlgorithm GA = new GeneticAlgorithm(initPop, this);
 
-    evolvedPopulation = GA.evolvePopulation();
+ //   evolvedPopulation = GA.evolvePopulation();
 
 
     initKeys();
@@ -93,8 +94,8 @@ public class GAGame extends MainSim implements ActionListener
     GAGame app = new GAGame();
     app.setShowSettings(false);
     app.setSettings(settings);
-    app.start();
-    //app.start(JmeContext.Type.Headless);
+    //app.start();
+    app.start(JmeContext.Type.Headless);
 
 
     //        app.evolution.addToWorld(new Being());

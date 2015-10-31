@@ -24,6 +24,7 @@ import vcreature.genotype.Effector;
 import vcreature.genotype.Genome;
 import vcreature.genotype.Gene;
 import vcreature.phenotype.Block;
+import vcreature.phenotype.Creature;
 import vcreature.phenotype.PhysicsConstants;
 
 import java.util.*;
@@ -45,11 +46,13 @@ public class GeneticAlgorithm
   private Population initialPopulation;
   private Genome temp1 = new Genome(); //for re-use in each crossover operation
   private Genome temp2 = new Genome(); //for re-use in each crossover operation
+  private Game simulation;
 
 
 
-  GeneticAlgorithm(Population initPop)
+  public GeneticAlgorithm(Population initPop, Game sim)
   {
+    this.simulation = sim;
     this.populationSize = 200;
     this.pctCrossover = 90;
     this.pctMutations = 50;
@@ -57,7 +60,7 @@ public class GeneticAlgorithm
     this.bestFitness = 0;
     this.bestBeing = null;
     this.initialPopulation = initPop;
-    this.totalGenerations = 200;
+    this.totalGenerations = 10;
 
 
 
@@ -72,9 +75,14 @@ public class GeneticAlgorithm
   //test fitness function; maximize surface area of all blocks; this is to test that the GA works to solve an optimization problem
   protected float calcFitness(Being individual)
   {
+
     float fitness = 0.0f;
     float surfaceArea = 0.0f;
     Genome genotype = individual.getGenotype();
+
+    simulation.getEnvironment().addToWorld(individual);
+
+    individual.setFitness(individual.getPhenotype().getFitness());
     LinkedList<Gene> genes = genotype.getGenes();
     for(Gene gene : genes)
     {
@@ -202,12 +210,13 @@ public class GeneticAlgorithm
 
   protected void setParentJoint (Gene parent, Gene child)
   {
+
     Effector eChild = child.getEffector();
-    System.out.println("CHILD: ");
-    printEffector(eChild);
-    Effector eParent = parent.getEffector();
-    System.out.println("PARENT: ");
-    printEffector(eParent);
+    float x = Math.signum(eChild.getChildX());
+    eChild.setParentX(parent.getLengthX()/2f);
+    eChild.setParentX(parent.getLengthX() / 2f);
+    eChild.setParentX(parent.getLengthX()/2f);
+
   }
 
   protected void printDimensions(Gene g)
@@ -392,7 +401,7 @@ public class GeneticAlgorithm
     return nextGeneration;
   }
 
-  protected Vector<Being> evolvePopulation()
+  public Vector<Being> evolvePopulation()
   {
 
     double currentGenBestFitness; //best fitness from current generation
