@@ -24,18 +24,7 @@ public class GenomeGenerator
   private static GenomeGeneratorParameters params = new GenomeGeneratorParameters();
   private Genome genome = new Genome();
 
-  //public GenomeGenerator(Environment env)
-  //{
-  //  generateGenome();
-  //  this.env = env;
-  //}
-
   private GenomeGenerator() {}
-
-  //public GenomeGenerator()
-  //{
-  //  this(null);
-  //}
 
   public static GenomeGenerator init(Environment environment)
   {
@@ -139,8 +128,6 @@ public class GenomeGenerator
           pivotAxis = Vector3f.UNIT_Y;
         }
         childPivot = new Vector3f(childX, childY, childZ);
-
-        //pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_X : Vector3f.UNIT_Y;
         break;
       case 1: // XY plane 2
         parentX = parentSize.x - (rand.nextFloat()*2*parentSize.x);
@@ -162,8 +149,6 @@ public class GenomeGenerator
           pivotAxis = Vector3f.UNIT_Y;
         }
         childPivot = new Vector3f(childX, childY, childZ);
-
-        //pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_X : Vector3f.UNIT_Y;
         break;
       case 2: // XZ plane 1
         parentX = parentSize.x - (rand.nextFloat()*2*parentSize.x);
@@ -185,8 +170,6 @@ public class GenomeGenerator
           pivotAxis = Vector3f.UNIT_Z;
         }
         childPivot = new Vector3f(childX, childY, childZ);
-
-        //pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_X : Vector3f.UNIT_Z;
         break;
       case 3: // XZ plane 2
         parentX = parentSize.x - (rand.nextFloat()*2*parentSize.x);
@@ -208,8 +191,6 @@ public class GenomeGenerator
           pivotAxis = Vector3f.UNIT_Z;
         }
         childPivot = new Vector3f(childX, childY, childZ);
-
-        //pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_X : Vector3f.UNIT_Z;
         break;
       case 4: // YZ plane 1
         parentX = parentSize.x;
@@ -231,8 +212,6 @@ public class GenomeGenerator
           pivotAxis = Vector3f.UNIT_Z;
         }
         childPivot = new Vector3f(childX, childY, childZ);
-
-        //pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_Y : Vector3f.UNIT_Z;
         break;
       default: // YZ plane 2
         parentX = -parentSize.x;
@@ -254,8 +233,6 @@ public class GenomeGenerator
           pivotAxis = Vector3f.UNIT_Z;
         }
         childPivot = new Vector3f(childX, childY, childZ);
-
-        //pivotAxis = rand.nextBoolean() ? Vector3f.UNIT_Y : Vector3f.UNIT_Z;
         break;
     }
     gene.setDimensions(size);
@@ -380,13 +357,13 @@ public class GenomeGenerator
         neuralInput = new TimeInput();
         break;
       case TOUCH:
-        neuralInput = new TouchSensor(gene);
+        neuralInput = gene.getTouchSensor();
         break;
       case HEIGHT:
-        neuralInput = new HeightSensor(gene);
+        neuralInput = gene.getHeightSensor();
         break;
       case JOINT:
-        neuralInput = new AngleSensor(gene);
+        neuralInput = gene.getAngleSensor();
         break;
       default:
         neuralInput = new ConstantInput();
