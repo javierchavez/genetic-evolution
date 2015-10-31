@@ -47,13 +47,14 @@ public class GeneticAlgorithm
   private Genome temp1 = new Genome(); //for re-use in each crossover operation
   private Genome temp2 = new Genome(); //for re-use in each crossover operation
   private Game simulation;
+  private Timer timer = new Timer();
 
 
 
   public GeneticAlgorithm(Population initPop, Game sim)
   {
     this.simulation = sim;
-    this.populationSize = 200;
+    this.populationSize = 1;
     this.pctCrossover = 90;
     this.pctMutations = 50;
     this.generationNumber = 0;
@@ -80,16 +81,35 @@ public class GeneticAlgorithm
     float surfaceArea = 0.0f;
     Genome genotype = individual.getGenotype();
 
-    simulation.getEnvironment().addToWorld(individual);
+ /*   timer.schedule(new TimerTask()
+    {
+      @Override
+      public void run()
+      {
+
+      }
+    }, 10000);
+  */
+    try
+    {
+      simulation.getEnvironment().addToWorld(individual);
+      Thread.sleep(12000);
+    }
+    catch(InterruptedException e)
+    {
+      Thread.currentThread().interrupt();
+    }
+
 
     individual.setFitness(individual.getPhenotype().getFitness());
+    simulation.getEnvironment().removeFromWorld();
     LinkedList<Gene> genes = genotype.getGenes();
     for(Gene gene : genes)
     {
       surfaceArea = surfaceArea +  2 * gene.getHeightY()*gene.getLengthX() + 2 * gene.getHeightY() * gene.getWidthZ() + 2 * gene.getLengthX() * gene.getWidthZ();
     }
 
-    return surfaceArea;
+    return individual.getFitness();
   }
 
   protected void printFitnessStats(Vector<Being> beings)
@@ -101,7 +121,7 @@ public class GeneticAlgorithm
     for(Being being : beings)
     {
       currentBeingFitness = being.getFitness();
-      System.out.println(currentBeingFitness);
+      System.out.println("current being fitness: " + currentBeingFitness);
       if(currentBeingFitness > bestFitness)
       {
 
@@ -154,7 +174,7 @@ public class GeneticAlgorithm
     Random rnd = new Random();
 
     float currentGenBestFitness = 0f;
-    Being currentGenBestBeing = null;
+    Being currentGenBestBeing = population.get(0);
 
     //get fitness for every member of population
     for(Being being : population)
@@ -215,7 +235,7 @@ public class GeneticAlgorithm
     float x = Math.signum(eChild.getChildX());
     eChild.setParentX(parent.getLengthX()/2f);
     eChild.setParentX(parent.getLengthX() / 2f);
-    eChild.setParentX(parent.getLengthX()/2f);
+    eChild.setParentX(parent.getLengthX() / 2f);
 
   }
 

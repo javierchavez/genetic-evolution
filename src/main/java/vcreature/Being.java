@@ -28,7 +28,15 @@ public class Being /*Comparable<Being>*/
   private int timesHillClimbed;
   private int timesBred;
   private int children;
-  private float fitness;
+  private float fitness =0;
+
+  public Being(Creature bird) {
+    this.phenotype = bird;
+  }
+
+  public Being() {
+
+  }
 
   public Genome getGenotype()
   {

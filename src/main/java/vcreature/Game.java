@@ -26,8 +26,10 @@ public class Game extends MainSim implements ActionListener
     environment = new Environment(getStateManager().getState(BulletAppState.class),
                               assetManager,
                               rootNode);
+    FlappyBird bird = new FlappyBird(environment.getBulletAppState().getPhysicsSpace(), rootNode);
 
     evolution = new Evolution(environment);
+    evolution.getPopulation().add(new Being(bird));
     GeneticAlgorithm GA = new GeneticAlgorithm(evolution.getPopulation(), this);
     GA.evolvePopulation();
     initKeys();
@@ -50,11 +52,11 @@ public class Game extends MainSim implements ActionListener
 
     if (isPressed && name.equals("Update Creature"))
     {
-      beingIndx++;
-      environment.removeFromWorld(); // bug in creature.remove(); ????
-      Being being = evolution.getBeing(beingIndx);
-      environment.addToWorld(being);
-
+//      beingIndx++;
+//      environment.removeFromWorld(); // bug in creature.remove(); ????
+//      Being being = evolution.getBeing(beingIndx);
+//      environment.addToWorld(being);
+//
 
 
 //      Being being = evolution.getBeing(beingIndx);

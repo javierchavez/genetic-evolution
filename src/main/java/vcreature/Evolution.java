@@ -15,16 +15,16 @@ public class Evolution extends Thread
     population = new Population(environment);
     population.initPop();
     subs = new ArrayList<>();
-    for (int i = 0; i < 10; i++)
-    {
-
-      subs.add(new Subpopulation(String.valueOf(i)+ "k",population, i*10, (i*10)+11));
-    }
-
-    for (Subpopulation subpopulation : subs)
-    {
-      subpopulation.start();
-    }
+//    for (int i = 0; i < 10; i++)
+//    {
+//
+//      subs.add(new Subpopulation(String.valueOf(i)+ "k",population, i*10, (i*10)+11));
+//    }
+//
+//    for (Subpopulation subpopulation : subs)
+//    {
+//      subpopulation.start();
+//    }
   }
 
   public Population getPopulation()
