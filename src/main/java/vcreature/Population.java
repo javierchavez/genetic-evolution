@@ -42,7 +42,7 @@ public class Population extends Vector<Being>
 
   public void initPop()
   {
-    for (int i = 0; i < 200; i++)
+    for (int i = 0; i < 1; i++)
     {
       Being a = new Being();
       a.setGenotype(GenomeGenerator.init(environment).generateGenome());
