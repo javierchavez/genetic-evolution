@@ -46,17 +46,17 @@ public class GeneticAlgorithm
   private Population initialPopulation;
   private Genome temp1 = new Genome(); //for re-use in each crossover operation
   private Genome temp2 = new Genome(); //for re-use in each crossover operation
-  private Game simulation;
+  private GAMain simulation;
   private Timer timer = new Timer();
 
 
 
-  public GeneticAlgorithm(Population initPop, Game sim)
+  public GeneticAlgorithm(Population initPop, GAMain sim)
   {
     this.simulation = sim;
-    this.populationSize = 1;
+    this.populationSize = 50;
     this.pctCrossover = 90;
-    this.pctMutations = 50;
+    this.pctMutations = 0;
     this.generationNumber = 0;
     this.bestFitness = 0;
     this.bestBeing = null;
@@ -77,7 +77,7 @@ public class GeneticAlgorithm
   protected float calcFitness(Being individual)
   {
 
-    float fitness = 0.0f;
+
     float surfaceArea = 0.0f;
     Genome genotype = individual.getGenotype();
 
@@ -89,11 +89,11 @@ public class GeneticAlgorithm
 
       }
     }, 10000);
-  */
+*/
     try
     {
       simulation.getEnvironment().addToWorld(individual);
-      Thread.sleep(12000);
+      Thread.sleep(1000);
     }
     catch(InterruptedException e)
     {
@@ -101,15 +101,16 @@ public class GeneticAlgorithm
     }
 
 
-    individual.setFitness(individual.getPhenotype().getFitness());
+//    individual.setFitness(individual.getPhenotype().getFitness());
     simulation.getEnvironment().removeFromWorld();
+
     LinkedList<Gene> genes = genotype.getGenes();
     for(Gene gene : genes)
     {
       surfaceArea = surfaceArea +  2 * gene.getHeightY()*gene.getLengthX() + 2 * gene.getHeightY() * gene.getWidthZ() + 2 * gene.getLengthX() * gene.getWidthZ();
     }
 
-    return individual.getFitness();
+    return surfaceArea;
   }
 
   protected void printFitnessStats(Vector<Being> beings)
@@ -232,10 +233,29 @@ public class GeneticAlgorithm
   {
 
     Effector eChild = child.getEffector();
-    float x = Math.signum(eChild.getChildX());
-    eChild.setParentX(parent.getLengthX()/2f);
-    eChild.setParentX(parent.getLengthX() / 2f);
-    eChild.setParentX(parent.getLengthX() / 2f);
+    Random rnd = new Random();
+    float x = Math.signum(eChild.getParentX());
+    float y = Math.signum(eChild.getParentY());
+    float z = Math.signum(eChild.getParentZ());
+
+    if(eChild.getPivotAxisX() == 1.0)
+    {
+      eChild.setParentX(x*(parent.getLengthX() - (rnd.nextFloat()*parent.getLengthX())));
+      eChild.setParentY(y * parent.getHeightY() / 2f);
+      eChild.setParentZ(z * parent.getWidthZ() / 2f);
+    }
+    else if(eChild.getPivotAxisY() == 1.0)
+    {
+      eChild.setParentY(y * (parent.getHeightY() - (rnd.nextFloat() * parent.getHeightY())));
+      eChild.setParentX(x * parent.getLengthX() / 2f);
+      eChild.setParentZ(z * parent.getWidthZ() / 2f);
+    }
+    else if(eChild.getPivotAxisZ() == 1.0)
+    {
+      eChild.setParentZ(z * (parent.getWidthZ() - (rnd.nextFloat() * parent.getWidthZ())));
+      eChild.setParentY(y * parent.getHeightY() / 2f);
+      eChild.setParentX(x * parent.getLengthX() / 2f);
+    }
 
   }
 
@@ -300,35 +320,52 @@ public class GeneticAlgorithm
  //   System.out.println("Crossover point 1 =" + crossoverPoint1);
     int crossoverPoint2 = 1 + rnd.nextInt((parent2.getGenotype().getGenes().size() - 1));
  //   System.out.println("Crossover point 2 =" + crossoverPoint2);
-    Genome currentGenotype = parent1.getGenotype();
-    Gene currentGene = currentGenotype.getGenes().get(crossoverPoint1);
+    Genome currentGenotype1 = parent1.getGenotype();
+    Gene currentGene = currentGenotype1.getGenes().get(crossoverPoint1);
     Genome currentGenotype2 = parent2.getGenotype();
     Gene currentGene2 =  parent2.getGenotype().getGenes().get(crossoverPoint2);
 
     List<Gene> neighbors;
 
-    neighbors = currentGenotype.neighbors(currentGene);
+    neighbors = currentGenotype1.neighbors(currentGene);
 
 
     if(neighbors.size() == 0 && currentGenotype2.neighbors(currentGene2).size() == 0)
     {
+
     //  System.out.println("PARENT 1 BEFORE");
     //  printBeing(parent1);
     //  System.out.println("PARENT 2 BEFORE");
     //  printBeing(parent2);
 
       //swap genes at crossover points; update parent gene to remove this edge; add new edge from that parent to this new gene
-      currentGenotype.getGenes().remove(currentGene);
-      currentGenotype.getGenes().get(getParentIndex(currentGenotype, crossoverPoint1)).removeEdge((crossoverPoint1));
-      currentGenotype.append(currentGene2);
-      currentGenotype.linkGenes((getParentIndex(currentGenotype, crossoverPoint1)), currentGenotype.size() - 1);
+      currentGenotype1.getGenes().remove(currentGene);
+      currentGenotype1.getGenes().get(getParentIndex(currentGenotype1, crossoverPoint1)).removeEdge((crossoverPoint1));
+      currentGenotype1.append(currentGene2);
+      currentGenotype1.linkGenes((getParentIndex(currentGenotype1, crossoverPoint1)), currentGenotype1.size() - 1);
+      System.out.println("PRIOR PARENT DIMENSIONS");
+      printDimensions(currentGenotype2.getGenes().get((getParentIndex(currentGenotype2, crossoverPoint2))));
+      System.out.println("EFFECTOR BEFORE");
+      printEffector(currentGene2.getEffector());
+      System.out.println("NEW PARENT DIMENSIONS");
+      printDimensions(currentGenotype1.getGenes().get((getParentIndex(currentGenotype1, crossoverPoint1))));
+      setParentJoint(currentGenotype1.getGenes().get((getParentIndex(currentGenotype1, crossoverPoint1))), currentGene2);
+      System.out.println("EFFECTOR After");
+      printEffector(currentGene2.getEffector());
 
       currentGenotype2.getGenes().remove(currentGene2);
-      currentGenotype2.append(currentGene);
       currentGenotype2.getGenes().get(getParentIndex(currentGenotype2, crossoverPoint2)).removeEdge((crossoverPoint2));
+      currentGenotype2.append(currentGene);
       currentGenotype2.linkGenes((getParentIndex(currentGenotype2, crossoverPoint2)), currentGenotype2.size() - 1);
-
-
+      System.out.println("PRIOR PARENT DIMENSIONS");
+      printDimensions(currentGenotype1.getGenes().get((getParentIndex(currentGenotype1, crossoverPoint1))));
+      System.out.println("EFFECTOR BEFORE");
+      printEffector(currentGene.getEffector());
+      setParentJoint(currentGenotype2.getGenes().get((getParentIndex(currentGenotype2, crossoverPoint2))), currentGene);
+      System.out.println("NEW PARENT DIMENSIONS");
+      printDimensions(currentGenotype2.getGenes().get((getParentIndex(currentGenotype2, crossoverPoint2))));
+      System.out.println("EFFECTOR After");
+      printEffector(currentGene.getEffector());
 
      // System.out.println("PARENT 1  AFTER");
      // printBeing(parent1);
