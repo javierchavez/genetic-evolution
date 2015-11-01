@@ -379,21 +379,25 @@ public class GenomeGenerator
     {
       case TIME:
         neuralInput = new TimeInput();
+        neuralInput.setValue(params.MIN_TIME + (rand.nextFloat() * (params.MAX_TIME - params.MIN_TIME)));
         break;
       case TOUCH:
         neuralInput = gene.getTouchSensor();
+        neuralInput.setValue(rand.nextBoolean() ? 1f : 0f);
         break;
       case HEIGHT:
         neuralInput = gene.getHeightSensor();
+        neuralInput.setValue(params.MIN_HEIGHT + (rand.nextFloat() * (params.MAX_HEIGHT - params.MIN_HEIGHT)));
         break;
       case JOINT:
         neuralInput = gene.getAngleSensor();
+        neuralInput.setValue(params.MIN_ANGLE + (rand.nextFloat() * (params.MAX_ANGLE - params.MIN_ANGLE)));
         break;
       default:
         neuralInput = new ConstantInput();
+        neuralInput.setValue(params.MIN_CONST + (rand.nextFloat() * (params.MAX_CONST - params.MIN_CONST)));
         break;
     }
-    neuralInput.setValue(rand.nextFloat() * params.MAX_NEURON_VALUE);
     return neuralInput;
   }
 
@@ -402,10 +406,12 @@ public class GenomeGenerator
     EnumOperator operator;
     if (position == 0 || position == 2)
     { // binary operator
+      //operator = EnumOperator.ADD;
       operator = EnumOperator.values()[rand.nextInt(7)];
     }
     else
     { // unary operator
+      //operator = EnumOperator.IDENTITY;
       operator = EnumOperator.values()[7 + rand.nextInt(EnumOperator.SIZE-7)];
     }
     return operator;
