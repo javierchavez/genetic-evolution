@@ -30,8 +30,7 @@ public class Game extends MainSim implements ActionListener
 
     evolution = new Evolution(environment);
     evolution.getPopulation().add(new Being(bird));
-    GeneticAlgorithm GA = new GeneticAlgorithm(evolution.getPopulation(), this);
-    GA.evolvePopulation();
+
     initKeys();
 
 
