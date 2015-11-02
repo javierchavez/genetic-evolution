@@ -66,7 +66,7 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
   private Gene synthesizeBlock(Block b)
   {
     Gene gene = new Gene(b.getID());
-    gene.setDimensions(b.getSizeY(), b.getSizeX(), b.getHeight());
+    gene.setDimensions(b.getSizeX(), b.getSize(), b.getSizeY());
 
     if (b.getJoint() != null)
     {
