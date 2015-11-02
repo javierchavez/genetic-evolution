@@ -286,11 +286,10 @@ public class GeneticAlgorithm
   }
 
 
-
   protected void crossover(Being parent1, Being parent2)
   {
 
-    if(parent1.getGenotype().getGenes().size() < 2 || parent2.getGenotype().getGenes().size() < 2)
+    if (parent1.getGenotype().getGenes().size() < 2 || parent2.getGenotype().getGenes().size() < 2)
     {
       System.out.println("CROSSOVER not performed; crossover not implemented for parent size 1");
       return;
@@ -306,13 +305,12 @@ public class GeneticAlgorithm
 
     Gene gene1 = genotype1.getGenes().get(crossoverPoint1);
     Genome genotype2 = parent2.getGenotype();
-    Gene gene2 =  parent2.getGenotype().getGenes().get(crossoverPoint2);
-
+    Gene gene2 = parent2.getGenotype().getGenes().get(crossoverPoint2);
 
 
     List<Gene> neighbors1 = new ArrayList();
     List<Gene> neighbors2 = new ArrayList();
- //   ArrayList<Integer> descendants = new ArrayList();
+    //   ArrayList<Integer> descendants = new ArrayList();
 
 
     neighbors1 = genotype1.neighbors(gene1);
@@ -323,27 +321,26 @@ public class GeneticAlgorithm
 
     //make copy of parent1 genes
 
-    for(Gene g: genotype1.getGenes())
+    for (Gene g : genotype1.getGenes())
     {
       genotype1COPY.add(g.clone());
     }
 
 
-    if(neighbors1.size() == 0 && neighbors2.size() == 0)
+    if (neighbors1.size() == 0 && neighbors2.size() == 0)
     {
 
       //swap genes at crossover points; update parent gene to remove this edge; add new edge from that parent to this new gene
       genotype1.getGenes().remove(crossoverPoint1);
-      genotype1.getGenes().add(crossoverPoint1,gene2);
+      genotype1.getGenes().add(crossoverPoint1, gene2);
       setParentJoint(genotype1.getGenes().get(parentIndex1), gene2);
 
       genotype2.getGenes().remove(crossoverPoint2);
-      genotype2.getGenes().add(crossoverPoint2,gene1);
+      genotype2.getGenes().add(crossoverPoint2, gene1);
       setParentJoint(genotype2.getGenes().get(parentIndex2), gene1);
 
 
-    }
-    else
+    } else
     {
 
       ArrayList<Integer> genesToSwap1COPY = new ArrayList();
@@ -389,7 +386,7 @@ public class GeneticAlgorithm
           genotype1.getGenes().add(genesToSwap1.get(0), genotype2.getGenes().get(genesToSwap2.get(0)));
           setParentJoint(genotype1.getGenes().get(parentIndex1), gene2);
           int j = 1;
-          if (genesToSwap2.size() > 1)
+          /*if (genesToSwap2.size() > 1)
           {
             for (int i = 1; i < genesToSwap2.size(); i++)
             {
@@ -400,58 +397,77 @@ public class GeneticAlgorithm
 
             }
           }
-          if (genesToSwap1.size() != genesToSwap2.size())
+          */
+
+          for (int k = genesToSwap1.size() - 1; k >= j; k--)
           {
-            for (int k = genesToSwap1.size() - 1; k >= j; k--)
-            {
-              int parentIdx = getParentIndex(genotype1, (genesToSwap1.get(k)));
-              genotype1.getGenes().get(parentIdx).removeEdge(genesToSwap1.get(k));
-              genotype1.getGenes().remove((int) genesToSwap1.get(k));
+            int parentIdx = getParentIndex(genotype1, ((int)genesToSwap1.get(k)));
+            genotype1.getGenes().get(parentIdx).removeEdge(genesToSwap1.get(k));
+            genotype1.getGenes().remove((int) genesToSwap1.get(k));
 
-            }
+          }
 
-            HashMap<Integer, ArrayList<Integer>> updateEdges = new HashMap();
-            HashMap<Integer, ArrayList<Integer>> removeEdges = new HashMap();
-            for (int m = 0; m < genotype1.getGenes().size(); m++)
+          HashMap<Integer, ArrayList<Integer>> updateEdges = new HashMap();
+          HashMap<Integer, ArrayList<Integer>> removeEdges = new HashMap();
+          for (int m = 0; m < genotype1.getGenes().size(); m++)
+          {
+            ArrayList<Integer> newEdges = new ArrayList();
+            ArrayList<Integer> oldEdges = new ArrayList();
+            for (int edge : genotype1.getGenes().get(m).getEdges())
             {
-              ArrayList<Integer> newEdges = new ArrayList();
-              ArrayList<Integer> oldEdges = new ArrayList();
-              for (int edge : genotype1.getGenes().get(m).getEdges())
+              int count = 0;
+
+              for (int i = 1; i < genesToSwap1.size(); i++)
               {
-                int count = 0;
-
-                for (int i = genesToSwap2.size(); i < genesToSwap1.size(); i++)
+                if (edge > genesToSwap1.get(i))
                 {
-                  if (edge > genesToSwap1.get(i))
-                  {
-                    count++;
-                  }
+                  count++;
                 }
-
-                oldEdges.add(edge);
-                newEdges.add(edge - count);
               }
-              removeEdges.put(m, oldEdges);
-              updateEdges.put(m, newEdges);
 
+              oldEdges.add(edge);
+              newEdges.add(edge - count);
             }
+            removeEdges.put(m, oldEdges);
+            updateEdges.put(m, newEdges);
 
-            for (int m = 0; m < updateEdges.size(); m++)
-            {
-              for (int n : updateEdges.get(m))
-              {
-                genotype1.getGenes().get(m).addEdge(n);
-              }
-            }
+          }
 
-            for (int m = 0; m < removeEdges.size(); m++)
+          for (int m = 0; m < updateEdges.size(); m++)
+          {
+            for (int n : updateEdges.get(m))
             {
-              for (int n : removeEdges.get(m))
-              {
-                genotype1.getGenes().get(m).removeEdge(n);
-              }
+              genotype1.getGenes().get(m).addEdge(n);
             }
           }
+
+          for (int m = 0; m < removeEdges.size(); m++)
+          {
+            for (int n : removeEdges.get(m))
+            {
+              genotype1.getGenes().get(m).removeEdge(n);
+            }
+          }
+
+/*          if(genesToSwap2.size() > 1)
+          {
+            int parent = crossoverPoint1;
+            HashMap<Integer, Integer> addedVerticesMap = new HashMap(); //map index of genesToSwap to new index
+            addedVerticesMap.put(genesToSwap2.get(0), crossoverPoint1);
+            for(int i = 1; i < genesToSwap2.size(); i++)
+            {
+              System.out.println("Gene to swap " + genesToSwap2.get(i) + " parentidx " + getParentIndex(genotype2, (genesToSwap2.get(i))));
+              System.out.println("MAP " + addedVerticesMap);
+              parent = addedVerticesMap.get(getParentIndex(genotype2, (int)(genesToSwap2.get(i))));
+              genotype1.getGenes().add(genotype2.getGenes().get(genesToSwap2.get(i)));
+              genotype1.getGenes().get(parent).addEdge(genotype1.getGenes().size() - 1);
+              addedVerticesMap.put(genesToSwap2.get(i), genotype1.getGenes().size() - 1);
+
+
+            }
+
+          }
+*/
         }
         System.out.println("PARENT1 AFTER");
         for (int i = 0; i < genotype1.getGenes().size(); i++)
@@ -464,16 +480,18 @@ public class GeneticAlgorithm
       }
     }
 
-   /* test = new LinkedList();
-    for(int i = 0; i < genotype1.getGenes().size(); i++)
+
+    LinkedList test = new LinkedList();
+    for (int i = 0; i < genotype1.getGenes().size(); i++)
     {
-      for(int edge : genotype1.getGenes().get(i).getEdges())
+      for (int edge : genotype1.getGenes().get(i).getEdges())
       {
         test.add(edge);
       }
 
     }
-    System.out.println("EDGES AFTER CROSSOVER " + test);*/
+    System.out.println("EDGES AFTER CROSSOVER " + test);
+
 
   }
 
