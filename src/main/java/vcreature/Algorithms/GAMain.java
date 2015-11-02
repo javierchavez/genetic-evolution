@@ -17,7 +17,7 @@ public class GAMain extends MainSim implements ActionListener
   private static Environment environment;
   private Evolution evolution;
   int beingIndx = 0;
-  private Vector<Being> finalPopulation;
+  private Population finalPopulation;
 
   public Environment getEnvironment() {
     return environment;
