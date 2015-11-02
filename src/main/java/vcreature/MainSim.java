@@ -1,39 +1,37 @@
 package vcreature;
 
 
-import vcreature.phenotype.PhysicsConstants;
-import vcreature.phenotype.Block;
-
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
+import com.jme3.light.AmbientLight;
+import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
-import com.jme3.texture.Texture;
-import com.jme3.renderer.queue.RenderQueue.ShadowMode;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.light.DirectionalLight;
-import com.jme3.math.ColorRGBA;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
-import com.jme3.light.AmbientLight;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.KeyTrigger;
 import com.jme3.system.AppSettings;
+import com.jme3.texture.Texture;
+import vcreature.phenotype.PhysicsConstants;
 
 public class MainSim extends SimpleApplication implements ActionListener
 {
   private BulletAppState bulletAppState;
   private PhysicsSpace physicsSpace;
   private float cameraAngle = (float)(Math.PI/2.0);
-  private float elapsedSimulationTime = 0.0f;
+  //private float elapsedSimulationTime = 0.0f;
   
   //Temporary vectors used on each frame. They here to avoid instanciating new vectors on each frame
   private Vector3f tmpVec3; //
-  private FlappyBird myCreature;
+  //private FlappyBird myCreature;
   private boolean isCameraRotating = true;
   
 
@@ -81,8 +79,8 @@ public class MainSim extends SimpleApplication implements ActionListener
             PhysicsConstants.GROUND_ANGULAR_DAMPINING);
     
    
-    Block.initStaticMaterials(assetManager);
-    myCreature = new FlappyBird(physicsSpace, rootNode);
+    //Block.initStaticMaterials(assetManager);
+    //myCreature = new FlappyBird(physicsSpace, rootNode);
     initLighting();
     initKeys();
 
@@ -128,7 +126,7 @@ public class MainSim extends SimpleApplication implements ActionListener
     { isCameraRotating = !isCameraRotating;
     }
     else if (name.equals("Quit"))
-    { System.out.format("Creature Fitness (Maximium height of lowest point) = %.3f meters]\n", myCreature.getFitness());
+    { //System.out.format("Creature Fitness (Maximium height of lowest point) = %.3f meters]\n", myCreature.getFitness());
       System.exit(0);
     }
   }
@@ -138,10 +136,10 @@ public class MainSim extends SimpleApplication implements ActionListener
   @Override
   public void simpleUpdate(float deltaSeconds)
   {
-    elapsedSimulationTime += deltaSeconds;
+    //elapsedSimulationTime += deltaSeconds;
     //print("simpleUpdate() elapsedSimulationTime=", (float)elapsedSimulationTime);
     //print("simpleUpdate() joint1.getHingeAngle()=", joint1.getHingeAngle());
-    myCreature.updateBrain(elapsedSimulationTime);
+    //myCreature.updateBrain(elapsedSimulationTime);
 
     if (isCameraRotating)
     {

@@ -2,11 +2,9 @@ package vcreature;
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
-import com.jme3.bounding.BoundingBox;
 import com.jme3.scene.Node;
-
-import vcreature.phenotype.Creature;
 import vcreature.phenotype.Block;
+import vcreature.phenotype.Creature;
 import vcreature.phenotype.EnumNeuronInput;
 import vcreature.phenotype.Neuron;
 
@@ -42,13 +40,13 @@ public class FlappyBird extends Creature
     Neuron leg1Neuron1 = new Neuron(EnumNeuronInput.TIME, null, EnumNeuronInput.CONSTANT,
                 EnumNeuronInput.CONSTANT, null);
     
-    leg1Neuron1.setInputValue(Neuron.C,11);
+    leg1Neuron1.setInputValue(Neuron.C,1);
     leg1Neuron1.setInputValue(Neuron.D,-Float.MAX_VALUE);
     
     Neuron leg1Neuron2 = new Neuron(EnumNeuronInput.TIME, null, EnumNeuronInput.CONSTANT,
                 EnumNeuronInput.CONSTANT, null);
     
-    leg1Neuron2.setInputValue(Neuron.C,10);
+    leg1Neuron2.setInputValue(Neuron.C,0);
     leg1Neuron2.setInputValue(Neuron.D,Float.MAX_VALUE);
     
     leg1.addNeuron(leg1Neuron1);
@@ -58,13 +56,13 @@ public class FlappyBird extends Creature
     Neuron leg2Neuron1 = new Neuron(EnumNeuronInput.TIME, null, EnumNeuronInput.CONSTANT,
                 EnumNeuronInput.CONSTANT, null);
     
-    leg2Neuron1.setInputValue(Neuron.C,11);
+    leg2Neuron1.setInputValue(Neuron.C,1);
     leg2Neuron1.setInputValue(Neuron.D,Float.MAX_VALUE);
     
     Neuron leg2Neuron2 = new Neuron(EnumNeuronInput.TIME, null, EnumNeuronInput.CONSTANT,
                 EnumNeuronInput.CONSTANT, null);
     
-    leg2Neuron2.setInputValue(Neuron.C,10);
+    leg2Neuron2.setInputValue(Neuron.C,0);
     leg2Neuron2.setInputValue(Neuron.D,-Float.MAX_VALUE);
     
     leg2.addNeuron(leg2Neuron1);

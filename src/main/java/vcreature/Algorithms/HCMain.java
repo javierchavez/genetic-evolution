@@ -60,9 +60,9 @@ public class HCMain extends MainSim implements ActionListener
     if (isPressed && name.equals("Update Creature"))
     {
       beingIndx++;
-      environment.removeFromWorld(); // bug in creature.remove(); ????
+//      environment.removeFromWorld(); // bug in creature.remove(); ????
       Being being = finalPopulation.get(beingIndx);
-      environment.addToWorld(being);
+//      environment.addToWorld(being);
 
     }
   }

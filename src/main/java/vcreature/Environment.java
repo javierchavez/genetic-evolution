@@ -3,13 +3,10 @@ package vcreature;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
-import com.jme3.bullet.PhysicsSpace;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.CameraNode;
 import com.jme3.scene.Node;
 import vcreature.phenotype.Creature;
-
-import java.lang.reflect.InvocationTargetException;
 
 /**
  *
@@ -22,6 +19,7 @@ public class Environment
   private AssetManager assetManager;
   private Node rootNode;
   private Being currentBeing;
+  private float currF;
   private float elapsedSimulationTime = 0.0f;
   CameraNode camNode;
   Camera cam;
@@ -58,46 +56,30 @@ public class Environment
 
   public void update(float tpf)
   {
+
     if (currentBeing != null)
     {
       elapsedSimulationTime += tpf;
-      currentBeing.update(elapsedSimulationTime);
-
+      // System.out.println(elapsedSimulationTime);
+      currentBeing.getPhenotype().updateBrain(elapsedSimulationTime);
+      currF = currentBeing.getPhenotype().getFitness();
+    }
+    else
+    {
+      elapsedSimulationTime += tpf;
     }
   }
 
   public void addToWorld(Being v)
   {
+    if (currentBeing != null)
+    {
+      System.out.println("someone already here");
+      return;
+    }
     v.createPhenotype(this);
     currentBeing = v;
     elapsedSimulationTime = 0.0f;
-    /*
-    Class<? extends Creature> creatureClass = v.getPhenotype().getClass();
-    try
-    {
-      creatureClass.getDeclaredConstructor(PhysicsSpace.class,
-                                           Node.class).newInstance(
-              getBulletAppState().getPhysicsSpace(), getRootNode());
-      elapsedSimulationTime = 0.0f;
-      currentBeing = v;
-    }
-    catch (InstantiationException e)
-    {
-      e.printStackTrace();
-    }
-    catch (IllegalAccessException e)
-    {
-      e.printStackTrace();
-    }
-    catch (InvocationTargetException e)
-    {
-      e.printStackTrace();
-    }
-    catch (NoSuchMethodException e)
-    {
-      e.printStackTrace();
-    }
-    */
   }
 
   public void removeFromWorld(Creature creature)
@@ -105,11 +87,30 @@ public class Environment
 
   }
 
-  public void beginEvaluation(Creature creature)
+  public synchronized float beginEvaluation(Being v)
   {
-    // add creature to world
+    if (currentBeing != null)
+    {
+      System.out.println("someone already here");
+      return -1;
+    }
 
-    // Evaluation
+    // add creature to world
+    addToWorld(v);
+    float initTime = elapsedSimulationTime;
+    // elapsedSimulationTime += .000001;
+
+    while (true)
+    {
+        //System.out.println(elapsedSimulationTime);
+      if (elapsedSimulationTime >= 2.00)
+      {
+        System.out.println("done");
+         removeFromWorld();
+        return currF;
+      }
+
+    }
   }
 
 

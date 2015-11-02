@@ -1,10 +1,11 @@
 package vcreature;
 
 
+import vcreature.Algorithms.GeneticAlgorithm;
 import vcreature.genotype.GenomeGenerator;
-import vcreature.phenotype.Creature;
 
-import java.util.*;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * Vector because of synchronization
@@ -22,12 +23,20 @@ public class Population extends Vector<Being>
   private volatile long currentFailedHillClimbs;
   private volatile long lifetimeRejectedCreatures;
   private volatile long lifetimeFailedHillClimbs;
+
+  public Environment getEnvironment()
+  {
+    return environment;
+  }
+
   private volatile Environment environment;
+  GeneticAlgorithm breeding;
 
   public Population(Vector<Being> beings, Environment environment)
   {
     this.beings = beings;
     this.environment = environment;
+    breeding = new GeneticAlgorithm(environment);
   }
 
   public Population(Environment environment)
@@ -57,16 +66,20 @@ public class Population extends Vector<Being>
 
   public void initPop()
   {
-    for (int i = 0; i < 50; i++)
+    for (int i = 0; i < 5; i++)
     {
       Being a = new Being();
       a.setGenotype(GenomeGenerator.init(environment).generateGenome());
+      // a.setPhenotype(FlappyBird.class, environment);
       beings.add(i, a);
     }
   }
 
   public void update() {
     generations++;
+
+    breeding.evolvePopulation(beings);
+
   }
 
   @Override

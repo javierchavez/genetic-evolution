@@ -7,11 +7,7 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
 import vcreature.*;
-import vcreature.genotype.Gene;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Random;
 import java.util.Vector;
 
 
@@ -65,7 +61,7 @@ public class GAGame extends MainSim implements ActionListener
       beingIndx++;
       // environment.removeFromWorld(); // bug in creature.remove(); ????
       Being being = evolvedPopulation.get(beingIndx);
-      environment.addToWorld(being);
+      // environment.addToWorld(being);
 
 
 

@@ -5,7 +5,7 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.system.AppSettings;
-import vcreature.Algorithms.GeneticAlgorithm;
+import com.jme3.system.JmeContext;
 
 
 public class Game extends MainSim implements ActionListener
@@ -23,14 +23,23 @@ public class Game extends MainSim implements ActionListener
   public void simpleInitApp()
   {
     super.simpleInitApp();
+    // environment is the physics space.
+    // it shouldnt really be used outside of this class.
     environment = new Environment(getStateManager().getState(BulletAppState.class),
                               assetManager,
                               rootNode);
+
+    //example
     FlappyBird bird = new FlappyBird(environment.getBulletAppState().getPhysicsSpace(), rootNode);
 
+    // evolution is the entire population with stats about it.
+    // it has an environment... think of it like a population at a given time or at a specific breeding instance.
     evolution = new Evolution(environment);
+
+
     evolution.getPopulation().add(new Being(bird));
 
+    evolution.start();
     initKeys();
 
 
@@ -83,17 +92,17 @@ public class Game extends MainSim implements ActionListener
     Game app = new Game();
     app.setShowSettings(false);
     app.setSettings(settings);
-    app.start();
+    app.start(JmeContext.Type.Headless);
 
-
-    //        app.evolution.addToWorld(new Being());
   }
 
   @Override
   public void simpleUpdate(float deltaSeconds)
   {
-    super.simpleUpdate(deltaSeconds);
-    environment.update(deltaSeconds);
+    //super.simpleUpdate(deltaSeconds);
+
+     environment.update(deltaSeconds);
+
 
   }
 }

@@ -1,26 +1,25 @@
 package vcreature;
 
-import java.util.List;
+import java.util.Vector;
 
 public class Subpopulation extends Thread
 {
 
-  private final List<Being> subpopulation;
+
   private final Population population;
   private static int TOTAL_SUBPOPULATIONS = 0;
+  private final Population totalPop;
 
-  private volatile boolean paused = true;
+  private volatile boolean paused = false;
   private boolean running = true;
-  private int lowerBound;
-  private int upperBound;
 
   public Subpopulation(String name, Population population, int lowerBound, int upperBound)
   {
     this.setName(name);
-    this.population = population;
-    this.upperBound = upperBound;
-    this.lowerBound = lowerBound;
-    this.subpopulation = population.subList(lowerBound, upperBound);
+    this.totalPop = population;
+    this.population = new Population(new Vector<>(population.subList(lowerBound, upperBound)), population.getEnvironment());
+
+
     TOTAL_SUBPOPULATIONS++;
   }
 
@@ -40,10 +39,10 @@ public class Subpopulation extends Thread
     {
       synchronized (this)
       {
-        if (Thread.interrupted())
-        {
-          paused = !paused;
-        }
+//        if (Thread.interrupted())
+//        {
+//          paused = !paused;
+//        }
 
         if (!paused)
         {
@@ -60,7 +59,7 @@ public class Subpopulation extends Thread
 
   public Being getBeing(int index)
   {
-    return subpopulation.get(index);
+    return population.get(index);
   }
 
   public Population getPopulation()
@@ -75,6 +74,6 @@ public class Subpopulation extends Thread
 
   public int getSize()
   {
-    return subpopulation.size();
+    return population.size();
   }
 }

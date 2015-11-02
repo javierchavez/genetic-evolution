@@ -15,16 +15,21 @@ public class Evolution extends Thread
     population = new Population(environment);
     population.initPop();
     subs = new ArrayList<>();
-//    for (int i = 0; i < 10; i++)
-//    {
-//
-//      subs.add(new Subpopulation(String.valueOf(i)+ "k",population, i*10, (i*10)+11));
-//    }
-//
-//    for (Subpopulation subpopulation : subs)
-//    {
-//      subpopulation.start();
-//    }
+    int chunkSize = 50;
+    int numOfChunks = (int)Math.ceil((double)population.size() / chunkSize);
+
+    for (int i = 0; i < numOfChunks; i++)
+    {
+      int start = i * chunkSize;
+      int length = Math.min(population.size()- start, chunkSize);
+
+      subs.add(new Subpopulation(String.valueOf(i)+ "k",population, start, length));
+    }
+
+    for (Subpopulation subpopulation : subs)
+    {
+      subpopulation.start();
+    }
   }
 
   public Population getPopulation()

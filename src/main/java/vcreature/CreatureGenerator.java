@@ -31,7 +31,7 @@ public class CreatureGenerator
 
   public Creature generateCreature()
   {
-    creature = GenomeSynthesizer.init(env).encode(GenomeGenerator.init(env).generateGenome());
+    creature = GenomeSynthesizer.getInstance().encode(GenomeGenerator.init(env).generateGenome());
     return creature;
   }
 }

@@ -8,8 +8,6 @@ import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
 import vcreature.*;
 
-import java.util.Vector;
-
 
 public class GAMain extends MainSim implements ActionListener
 {
@@ -34,8 +32,8 @@ public class GAMain extends MainSim implements ActionListener
 
     evolution = new Evolution(environment);
 //    evolution.getPopulation().add(new Being(bird));
-    GeneticAlgorithm GA = new GeneticAlgorithm(evolution.getPopulation(), this);
-    finalPopulation = GA.evolvePopulation();
+//    GeneticAlgorithm GA = new GeneticAlgorithm(evolution.getPopulation(), this);
+//    finalPopulation = GA.evolvePopulation();
     initKeys();
 
 
@@ -57,9 +55,9 @@ public class GAMain extends MainSim implements ActionListener
     if (isPressed && name.equals("Update Creature"))
     {
       beingIndx++;
-      environment.removeFromWorld(); // bug in creature.remove(); ????
+      // environment.removeFromWorld(); // bug in creature.remove(); ????
       Being being = finalPopulation.get(beingIndx);
-      environment.addToWorld(being);
+      // environment.addToWorld(being);
 
     }
   }
