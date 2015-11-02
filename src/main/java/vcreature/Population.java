@@ -40,6 +40,21 @@ public class Population extends Vector<Being>
     return beings;
   }
 
+  public void setGenerations(int generations)
+  {
+    this.generations = generations;
+  }
+
+  public void setAverageFitness(float averageFitness)
+  {
+    this.averageFitness = averageFitness;
+  }
+
+  public void setBestFitness(float bestFitness)
+  {
+    this.bestFitness = bestFitness;
+  }
+
   public void initPop()
   {
     for (int i = 0; i < 50; i++)
