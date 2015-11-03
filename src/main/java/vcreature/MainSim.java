@@ -20,6 +20,8 @@ import com.jme3.scene.shape.Box;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
 import com.jme3.texture.Texture;
+import vcreature.phenotype.Block;
+import vcreature.phenotype.Creature;
 import vcreature.phenotype.PhysicsConstants;
 
 public class MainSim extends SimpleApplication implements ActionListener
@@ -27,13 +29,17 @@ public class MainSim extends SimpleApplication implements ActionListener
   private BulletAppState bulletAppState;
   private PhysicsSpace physicsSpace;
   private float cameraAngle = (float)(Math.PI/2.0);
-  //private float elapsedSimulationTime = 0.0f;
+  private float elapsedSimulationTime = 0.0f;
   
   //Temporary vectors used on each frame. They here to avoid instanciating new vectors on each frame
   private Vector3f tmpVec3; //
   //private FlappyBird myCreature;
   private boolean isCameraRotating = true;
-  
+  private Population population;
+   private Creature creature;
+  private CreatureSynthesizer creatureSynthesizer;
+  private GenomeSynthesizer genomeSynthesizer;
+  private boolean add = true;
 
 
   @Override
@@ -50,8 +56,6 @@ public class MainSim extends SimpleApplication implements ActionListener
     physicsSpace.setGravity(PhysicsConstants.GRAVITY);
     physicsSpace.setAccuracy(PhysicsConstants.PHYSICS_UPDATE_RATE);
     physicsSpace.setMaxSubSteps(4);
-    
-   
 
 
     //Set up inmovable floor
@@ -77,14 +81,32 @@ public class MainSim extends SimpleApplication implements ActionListener
     floor_phy.setRestitution(PhysicsConstants.GROUND_BOUNCINESS);
     floor_phy.setDamping(PhysicsConstants.GROUND_LINEAR_DAMPINING, 
             PhysicsConstants.GROUND_ANGULAR_DAMPINING);
-    
-   
-    //Block.initStaticMaterials(assetManager);
-    //myCreature = new FlappyBird(physicsSpace, rootNode);
+
+
+    creatureSynthesizer = new CreatureSynthesizer();
+    genomeSynthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
+
+    Block.initStaticMaterials(assetManager);
     initLighting();
     initKeys();
 
     flyCam.setDragToRotate(true);
+
+
+    //FlappyBird bird = new FlappyBird(physicsSpace, rootNode);
+    //myCreature = new FlappyBird(physicsSpace, rootNode);
+
+
+//    population = new Population();
+//    population.initPop();
+//    Being b = new Being();
+//    // bird.remove();
+//
+    creature = new FlappyBird(physicsSpace, rootNode);
+    creature.remove();
+//    population.add(b);
+//     creature = bird;
+//    bird.remove();
     
   }
 
@@ -136,10 +158,32 @@ public class MainSim extends SimpleApplication implements ActionListener
   @Override
   public void simpleUpdate(float deltaSeconds)
   {
-    //elapsedSimulationTime += deltaSeconds;
+    elapsedSimulationTime += deltaSeconds;
+
+    //we need to spawn a thread to handlethis.
+
+
+    if (add && elapsedSimulationTime > 5)
+    {
+      add = false;
+      creature = new FlappyBird(physicsSpace, rootNode);
+      // creature.remove();
+      // population.get(0).getGenotype()
+//      Genome s = population.get(0).getGenotype();
+//
+//      creature = genomeSynthesizer.encode(s, creature);
+//
+//      creature.placeOnGround();
+//      elapsedSimulationTime = 0;
+    }
+    if (creature != null)
+    {
+      creature.updateBrain(elapsedSimulationTime);
+    }
+
     //print("simpleUpdate() elapsedSimulationTime=", (float)elapsedSimulationTime);
     //print("simpleUpdate() joint1.getHingeAngle()=", joint1.getHingeAngle());
-    //myCreature.updateBrain(elapsedSimulationTime);
+    // myCreature.updateBrain(elapsedSimulationTime);
 
     if (isCameraRotating)
     {

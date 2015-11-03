@@ -2,13 +2,12 @@ package vcreature;
 
 
 import vcreature.Algorithms.GeneticAlgorithm;
-import vcreature.genotype.GenomeGenerator;
 
 import java.util.List;
 import java.util.Vector;
 
 /**
- * Vector because of synchronization
+ *
  */
 public class Population extends Vector<Being>
 {
@@ -23,25 +22,38 @@ public class Population extends Vector<Being>
   private volatile long currentFailedHillClimbs;
   private volatile long lifetimeRejectedCreatures;
   private volatile long lifetimeFailedHillClimbs;
+  private boolean isEvolving =false;
 
-  public Environment getEnvironment()
+  public void setIsEvolving(boolean isEvolving)
   {
-    return environment;
+    this.isEvolving = isEvolving;
   }
 
-  private volatile Environment environment;
+
+//  public Environment getEnvironment()
+//  {
+//    return environment;
+//  }
+
+  // private Environment environment;
   GeneticAlgorithm breeding;
 
-  public Population(Vector<Being> beings, Environment environment)
+//  public Population(Vector<Being> beings, Environment environment)
+//  {
+//    this.beings = beings;
+//    this.environment = environment;
+//    breeding = new GeneticAlgorithm(environment);
+//  }
+  public Population(Vector<Being> beings)
   {
     this.beings = beings;
-    this.environment = environment;
-    breeding = new GeneticAlgorithm(environment);
+    // breeding = new GeneticAlgorithm(environment);
   }
 
-  public Population(Environment environment)
+  public Population()
   {
-    this(new Vector<>(2001), environment);
+//    beings = new Vector<>(2001);
+    this(new Vector<>(2001));
   }
 
   public Vector<Being> getBeings()
@@ -66,19 +78,23 @@ public class Population extends Vector<Being>
 
   public void initPop()
   {
-    for (int i = 0; i < 5; i++)
-    {
-      Being a = new Being();
-      a.setGenotype(GenomeGenerator.init(environment).generateGenome());
-      // a.setPhenotype(FlappyBird.class, environment);
-      beings.add(i, a);
-    }
+//    for (int i = 0; i < 5; i++)
+//    {
+//      Being a = new Being();
+//      //a.setGenotype(GenomeGenerator.init(environment).generateGenome());
+//
+//      beings.add(i, a);
+//    }
   }
 
   public void update() {
     generations++;
+    if (!isEvolving)
+    {
+      isEvolving = true;
+      breeding.evolvePopulation(beings, this);
 
-    breeding.evolvePopulation(beings);
+    }
 
   }
 
@@ -103,5 +119,11 @@ public class Population extends Vector<Being>
   public int getGenerations()
   {
     return generations;
+  }
+
+  @Override
+  public synchronized boolean add(Being being)
+  {
+    return this.beings.add(being);
   }
 }

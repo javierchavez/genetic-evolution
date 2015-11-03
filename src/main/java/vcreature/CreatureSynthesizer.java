@@ -1,5 +1,6 @@
 package vcreature;
 
+import com.jme3.bullet.joints.PhysicsJoint;
 import vcreature.genotype.*;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
@@ -66,7 +67,7 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
   private Gene synthesizeBlock(Block b)
   {
     Gene gene = new Gene(b.getID());
-    gene.setDimensions(b.getSizeX(), b.getSize(), b.getSizeY());
+    gene.setDimensions(b.getSizeX()/2, b.getSize()/2, b.getSizeY()/2);
 
     if (b.getJoint() != null)
     {
@@ -74,7 +75,7 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
       gene.getEffector().setJointParentIndex(b.getIdOfParent());
       gene.getEffector().setParent(b.getJoint().getPivotA());
       gene.getEffector().setChild(b.getJoint().getPivotB());
-      // gene.getEffector().setParentAxis(b.getJoint().getHingeAngle());
+      gene.getEffector().setPivotAxis(((PhysicsJoint) b.getJoint()).getPivotA());
 
 
     }

@@ -82,13 +82,14 @@ public class GeneticAlgorithm
     }
 
 */
-
-      float fitness = environment.beginEvaluation(individual);
-      individual.setFitness(fitness);
-      if (fitness >0) {
-        System.out.println("-->" + fitness);
-      }
-    System.out.println("-->" + fitness);
+      System.out.println("-->CF");
+      // float fitness = environment.beginEvaluation(individual);
+      System.out.println("her");
+//      individual.setFitness(fitness);
+//      if (fitness >0) {
+//        System.out.println("-->" + fitness);
+//      }
+//    System.out.println("-->" + fitness);
 //    simulation.getEnvironment().addToWorld(individual);
 //    simulation.getEnvironment().removeFromWorld();
 
@@ -478,7 +479,7 @@ public class GeneticAlgorithm
     return nextGeneration;
   }
   private static boolean aBoolean = false;
-  public Population evolvePopulation(Vector<Being> population)
+  public Population evolvePopulation(Vector<Being> population, Population beings)
   {
     if (aBoolean)
     {
@@ -490,45 +491,54 @@ public class GeneticAlgorithm
       System.out.println("evol");
       aBoolean = true;
     }
-    double currentGenBestFitness; //best fitness from current generation
-    Being genBestBeing; ///most fit creature from current generation
-    Vector<Being> currentGeneration=population;
-    Vector<Being> nextGeneration = new Vector();
-    double summedFitness;
-    double averageFitness;
+    new Thread(new Runnable()
+    {
+      @Override
+      public void run()
+      {
+        double currentGenBestFitness; //best fitness from current generation
+        Being genBestBeing; ///most fit creature from current generation
+        Vector<Being> currentGeneration=population;
+        Vector<Being> nextGeneration = new Vector();
+        double summedFitness;
+        double averageFitness;
 
-    do {
-      summedFitness = 0;
-      averageFitness = 0;
-      currentGenBestFitness = 0;
-      genBestBeing = currentGeneration.get(0);
-      nextGeneration = createNextGeneration(currentGeneration);
-      this.generationNumber++;
-      for (Being individual : nextGeneration) {
-        double fitness = calcFitness(individual);
-        summedFitness = summedFitness + fitness;
-        if (fitness > currentGenBestFitness) {
-          currentGenBestFitness = fitness;
-          genBestBeing = individual;
+        do {
+          summedFitness = 0;
+          averageFitness = 0;
+          currentGenBestFitness = 0;
+          genBestBeing = currentGeneration.get(0);
+          nextGeneration = createNextGeneration(currentGeneration);
+          generationNumber++;
+          for (Being individual : nextGeneration) {
+            double fitness = calcFitness(individual);
+            summedFitness = summedFitness + fitness;
+            if (fitness > currentGenBestFitness) {
+              currentGenBestFitness = fitness;
+              genBestBeing = individual;
+            }
+            if (fitness > bestFitness) {
+              bestFitness = fitness;
+              bestBeing = individual;
+            }
+          }
+          averageFitness = summedFitness / nextGeneration.size();
+          printFitnessStats(nextGeneration);
+
+          currentGeneration = nextGeneration;
+
+
+
         }
-        if (fitness > this.bestFitness) {
-          this.bestFitness = fitness;
-          this.bestBeing = individual;
-        }
+        while (generationNumber < totalGenerations);
+        //Population finalPop = new Population(nextGeneration, this.simulation.getEnvironment());
+        //    finalPop.setGenerations(this.totalGenerations);
+        //    finalPop.setAverageFitness((float) averageFitness);
+        //    finalPop.setBestFitness((float)this.bestFitness);
+        beings.setIsEvolving(false);
       }
-      averageFitness = summedFitness / nextGeneration.size();
-      printFitnessStats(nextGeneration);
+    }).start();
 
-      currentGeneration = nextGeneration;
-
-
-
-    }
-    while (generationNumber < this.totalGenerations);
-    //Population finalPop = new Population(nextGeneration, this.simulation.getEnvironment());
-//    finalPop.setGenerations(this.totalGenerations);
-//    finalPop.setAverageFitness((float) averageFitness);
-//    finalPop.setBestFitness((float)this.bestFitness);
     aBoolean = false;
     return null;
   }

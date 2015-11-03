@@ -1,12 +1,14 @@
 package vcreature.Algorithms;
 
-import com.jme3.bullet.BulletAppState;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
-import vcreature.*;
+import vcreature.Being;
+import vcreature.Environment;
+import vcreature.Evolution;
+import vcreature.MainSim;
 
 import java.util.Vector;
 
@@ -24,12 +26,12 @@ public class GAGame extends MainSim implements ActionListener
   public void simpleInitApp()
   {
     super.simpleInitApp();
-    environment = new Environment(getStateManager().getState(BulletAppState.class),
-                              assetManager,
-                              rootNode);
+//    environment = new Environment(getStateManager().getState(BulletAppState.class),
+//                              assetManager,
+//                              rootNode);
 
-    evolution = new Evolution(environment);
-    Population initPop = evolution.getPopulation();
+//    evolution = new Evolution(environment);
+//    Population initPop = evolution.getPopulation();
 //    GeneticAlgorithm GA = new GeneticAlgorithm(initPop, this);
 
  //   evolvedPopulation = GA.evolvePopulation();
@@ -101,7 +103,7 @@ public class GAGame extends MainSim implements ActionListener
   public void simpleUpdate(float deltaSeconds)
   {
     super.simpleUpdate(deltaSeconds);
-    environment.update(deltaSeconds);
+    // environment.update(deltaSeconds);
 
   }
 }

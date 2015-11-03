@@ -1,6 +1,5 @@
 package vcreature;
 
-import com.jme3.bullet.BulletAppState;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
@@ -12,8 +11,8 @@ public class Game extends MainSim implements ActionListener
 {
 
   private static Environment environment;
-  private Evolution evolution;
-  int beingIndx = 0;
+  private float elapTime = 0f;
+  Population population;
 
   public Environment getEnvironment() {
     return environment;
@@ -25,21 +24,24 @@ public class Game extends MainSim implements ActionListener
     super.simpleInitApp();
     // environment is the physics space.
     // it shouldnt really be used outside of this class.
-    environment = new Environment(getStateManager().getState(BulletAppState.class),
-                              assetManager,
-                              rootNode);
-
-    //example
-    FlappyBird bird = new FlappyBird(environment.getBulletAppState().getPhysicsSpace(), rootNode);
+    //    environment = new Environment(getStateManager().getState(BulletAppState.class),
+    //                              assetManager,
+    //                              rootNode);
+    //
+    //    //example
+    //    FlappyBird bird = new FlappyBird(environment.getBulletAppState().getPhysicsSpace(), rootNode);
+    //    population = new Population(environment);
+    //    population.initPop();
+    //    population.add(new Being(bird));
 
     // evolution is the entire population with stats about it.
     // it has an environment... think of it like a population at a given time or at a specific breeding instance.
-    evolution = new Evolution(environment);
+    // evolution = new Evolution(environment);
 
 
-    evolution.getPopulation().add(new Being(bird));
+    //evolution.getPopulation().add(new Being(bird));
 
-    evolution.start();
+    //evolution.start();
     initKeys();
 
 
@@ -100,9 +102,12 @@ public class Game extends MainSim implements ActionListener
   public void simpleUpdate(float deltaSeconds)
   {
     //super.simpleUpdate(deltaSeconds);
-
-     environment.update(deltaSeconds);
-
-
+    elapTime += deltaSeconds;
+    if (elapTime >= 5)
+    {
+      population.update();
+      elapTime = 0;
+    }
+//     environment.update(deltaSeconds);
   }
 }

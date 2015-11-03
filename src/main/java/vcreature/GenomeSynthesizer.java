@@ -1,7 +1,9 @@
 package vcreature;
 
 
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 import vcreature.genotype.*;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
@@ -11,33 +13,27 @@ import vcreature.phenotype.Neuron;
 import java.util.*;
 
 public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
+
 {
-  private final static GenomeSynthesizer ourInstance = new GenomeSynthesizer();
-  private static Environment env;
+  private final PhysicsSpace physicsSpace;
+  private final Node rootNode;
   private Genome genome;
   private Creature creature;
 
-  public static GenomeSynthesizer getInstance()
+
+  public  GenomeSynthesizer(PhysicsSpace physicsSpace, Node node)
   {
-    return ourInstance;
+    this.physicsSpace = physicsSpace;
+    this.rootNode = node;
   }
 
-  private GenomeSynthesizer()
-  {
-  }
 
-  public static GenomeSynthesizer init(Environment environment)
-  {
-    env = environment;
-    return ourInstance;
-  }
 
-  @Override
-  public Creature encode(Genome typeToConvert)
+
+  public Creature encode(Genome typeToConvert, Creature c)
   {
     this.genome = typeToConvert;
-    this.creature = new Creature(env.getBulletAppState().getPhysicsSpace(),
-                                     env.getRootNode());
+    creature = c;
 
     Queue<Gene> frontier = new LinkedList<>();
     frontier.add(genome.getRoot());
@@ -71,7 +67,7 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
   private Block synthesizeGene(Gene current, Block parent)
   {
     Block block;
-    Vector3f size = new Vector3f(current.getLengthX()/2, current.getHeightY()/2, current.getWidthZ()/2);
+    Vector3f size = new Vector3f(current.getLengthX(), current.getHeightY(), current.getWidthZ());
 
     if (parent == null)
     {
@@ -99,6 +95,12 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
       }
     }
     return block;
+  }
+
+  @Override
+  public Creature encode(Genome typeToConvert)
+  {
+    return null;
   }
 
   @Override

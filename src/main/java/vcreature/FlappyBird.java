@@ -40,13 +40,13 @@ public class FlappyBird extends Creature
     Neuron leg1Neuron1 = new Neuron(EnumNeuronInput.TIME, null, EnumNeuronInput.CONSTANT,
                 EnumNeuronInput.CONSTANT, null);
     
-    leg1Neuron1.setInputValue(Neuron.C,1);
+    leg1Neuron1.setInputValue(Neuron.C,5);
     leg1Neuron1.setInputValue(Neuron.D,-Float.MAX_VALUE);
     
     Neuron leg1Neuron2 = new Neuron(EnumNeuronInput.TIME, null, EnumNeuronInput.CONSTANT,
                 EnumNeuronInput.CONSTANT, null);
     
-    leg1Neuron2.setInputValue(Neuron.C,0);
+    leg1Neuron2.setInputValue(Neuron.C,4);
     leg1Neuron2.setInputValue(Neuron.D,Float.MAX_VALUE);
     
     leg1.addNeuron(leg1Neuron1);
@@ -56,13 +56,13 @@ public class FlappyBird extends Creature
     Neuron leg2Neuron1 = new Neuron(EnumNeuronInput.TIME, null, EnumNeuronInput.CONSTANT,
                 EnumNeuronInput.CONSTANT, null);
     
-    leg2Neuron1.setInputValue(Neuron.C,1);
+    leg2Neuron1.setInputValue(Neuron.C,5);
     leg2Neuron1.setInputValue(Neuron.D,Float.MAX_VALUE);
     
     Neuron leg2Neuron2 = new Neuron(EnumNeuronInput.TIME, null, EnumNeuronInput.CONSTANT,
                 EnumNeuronInput.CONSTANT, null);
     
-    leg2Neuron2.setInputValue(Neuron.C,0);
+    leg2Neuron2.setInputValue(Neuron.C,4);
     leg2Neuron2.setInputValue(Neuron.D,-Float.MAX_VALUE);
     
     leg2.addNeuron(leg2Neuron1);

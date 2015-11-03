@@ -1,6 +1,5 @@
 package vcreature.Algorithms;
 
-import com.jme3.bullet.BulletAppState;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
@@ -25,12 +24,12 @@ public class GAMain extends MainSim implements ActionListener
   public void simpleInitApp()
   {
     super.simpleInitApp();
-    environment = new Environment(getStateManager().getState(BulletAppState.class),
-                              assetManager,
-                              rootNode);
+//    environment = new Environment(getStateManager().getState(BulletAppState.class),
+//                              assetManager,
+//                              rootNode);
 //    FlappyBird bird = new FlappyBird(environment.getBulletAppState().getPhysicsSpace(), rootNode);
 
-    evolution = new Evolution(environment);
+//    evolution = new Evolution(environment);
 //    evolution.getPopulation().add(new Being(bird));
 //    GeneticAlgorithm GA = new GeneticAlgorithm(evolution.getPopulation(), this);
 //    finalPopulation = GA.evolvePopulation();
@@ -92,7 +91,7 @@ public class GAMain extends MainSim implements ActionListener
   public void simpleUpdate(float deltaSeconds)
   {
     super.simpleUpdate(deltaSeconds);
-    environment.update(deltaSeconds);
+//    environment.update(deltaSeconds);
 
   }
 }

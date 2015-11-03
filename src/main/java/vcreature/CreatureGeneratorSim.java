@@ -88,7 +88,7 @@ public class CreatureGeneratorSim extends SimpleApplication implements ActionLis
 
     flyCam.setDragToRotate(true);
 
-    env = new Environment(getStateManager().getState(BulletAppState.class), assetManager, rootNode);
+    //env = new Environment(getStateManager().getState(BulletAppState.class), assetManager, rootNode);
     creature = CreatureGenerator.init(env).generateCreature();
   }
 
@@ -161,7 +161,7 @@ public class CreatureGeneratorSim extends SimpleApplication implements ActionLis
       cam.setLocation(tmpVec3);
       cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
     }
-    env.update(deltaSeconds);
+    // env.update(deltaSeconds);
   }
 
   public static void main(String[] args)

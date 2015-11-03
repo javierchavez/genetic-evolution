@@ -1,7 +1,6 @@
 package vcreature;
 
 
-import vcreature.genotype.GenomeGenerator;
 import vcreature.phenotype.Creature;
 
 /**
@@ -31,7 +30,7 @@ public class CreatureGenerator
 
   public Creature generateCreature()
   {
-    creature = GenomeSynthesizer.getInstance().encode(GenomeGenerator.init(env).generateGenome());
+    // creature = GenomeSynthesizer.getInstance().encode(GenomeGenerator.init(env).generateGenome());
     return creature;
   }
 }

@@ -10,14 +10,14 @@ public class Subpopulation extends Thread
   private static int TOTAL_SUBPOPULATIONS = 0;
   private final Population totalPop;
 
-  private volatile boolean paused = false;
+  private volatile boolean paused = true;
   private boolean running = true;
 
   public Subpopulation(String name, Population population, int lowerBound, int upperBound)
   {
     this.setName(name);
     this.totalPop = population;
-    this.population = new Population(new Vector<>(population.subList(lowerBound, upperBound)), population.getEnvironment());
+    this.population = new Population(new Vector<>(population.subList(lowerBound, upperBound)));
 
 
     TOTAL_SUBPOPULATIONS++;
@@ -39,10 +39,10 @@ public class Subpopulation extends Thread
     {
       synchronized (this)
       {
-//        if (Thread.interrupted())
-//        {
-//          paused = !paused;
-//        }
+        if (Thread.interrupted())
+        {
+          paused = !paused;
+        }
 
         if (!paused)
         {

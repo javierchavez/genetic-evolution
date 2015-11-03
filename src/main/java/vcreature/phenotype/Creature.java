@@ -395,6 +395,7 @@ public class Creature
    */
   public float updateBrain(float elapsedSimulationTime)
   {
+
     if (body.size() < 1) return 0;
     if (this.elapsedSimulationTime == 0f) 
     { 
