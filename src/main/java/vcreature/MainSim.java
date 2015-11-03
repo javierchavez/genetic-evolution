@@ -19,6 +19,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
+import com.jme3.system.JmeContext;
 import com.jme3.texture.Texture;
 import vcreature.Algorithms.GeneticAlgorithm;
 import vcreature.genotype.Genome;
@@ -107,7 +108,7 @@ public class MainSim extends SimpleApplication implements ActionListener
     flappyBird.remove();
     //    creature = genomeSynthesizer.encode(genome);
 
-    breeding = new GeneticAlgorithm(this);
+    //breeding = new GeneticAlgorithm(this);
     population = new Population(breeding);
 //    population.initPop();
     Being b = new Being();
@@ -308,8 +309,8 @@ public class MainSim extends SimpleApplication implements ActionListener
     app.setShowSettings(false);
     app.setSettings(settings);
 
-    //app.start(JmeContext.Type.OffscreenSurface);
-    app.start();
+    app.start(JmeContext.Type.OffscreenSurface);
+//    app.start();
   }
   Random random = new Random();
   private int genRandDim(int max)

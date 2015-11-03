@@ -33,6 +33,6 @@ sourceSets {
     }
 }
 
-mainClassName = "vcreature.MainSim"
+mainClassName = "vcreature.Environment"
 
 

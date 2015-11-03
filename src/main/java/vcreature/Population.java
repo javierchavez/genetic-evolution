@@ -2,6 +2,7 @@ package vcreature;
 
 
 import vcreature.Algorithms.GeneticAlgorithm;
+import vcreature.utils.Logger;
 
 import java.util.*;
 
@@ -14,6 +15,7 @@ import java.util.*;
 public class Population extends Vector<Being>
 {
   private final Vector<Being> beings;
+  Logger logger = new Logger();
 
   private volatile int generations;
   private volatile float averageFitness;
@@ -86,8 +88,13 @@ public class Population extends Vector<Being>
     if (!isEvolving)
     {
       isEvolving = true;
-      breeding.evolvePopulation(beings, this);
 
+      for (Being being : beings)
+      {
+        logger.export(being.getGenotype());
+      }
+
+      breeding.evolvePopulation(beings, this);
     }
   }
 
@@ -95,6 +102,12 @@ public class Population extends Vector<Being>
   public synchronized List<Being> subList(int fromIndex, int toIndex)
   {
     return beings.subList(fromIndex, toIndex);
+  }
+
+  @Override
+  public synchronized Being remove(int index)
+  {
+    return beings.remove(index);
   }
 
   @Override

@@ -1,14 +1,20 @@
 package vcreature.genotype;
 
 import com.jme3.math.Vector3f;
+import vcreature.utils.Savable;
 
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
 
 /**
  * Rigid Part our creature this will be a Block
  */
-public class Gene extends AbstractGene<Gene>
+public class Gene extends AbstractGene<Gene> implements Savable
 {
+
+
+  private FileHandler fileHandler;
+
   private float lengthX;
   private float widthZ;
   private float heightY;
@@ -26,7 +32,6 @@ public class Gene extends AbstractGene<Gene>
   private HeightSensor heightSensor;
 
   private Effector effector;
-
 
 
   public Gene(int position)
@@ -178,5 +183,32 @@ public class Gene extends AbstractGene<Gene>
   public String toString()
   {
     return "|B()|";
+  }
+
+  @Override
+  public void write(StringBuilder s)
+  {
+    super.write(s);
+    s.append(position).append(",");
+    s.append(lengthX).append(",");
+    s.append(widthZ).append(",");
+    s.append(heightY).append(",");
+    s.append(rotationY).append(",");
+    s.append(rotationZ).append(",");
+    s.append(rotationX).append(",");
+    s.append(recursiveLimit).append(",");
+
+    angleSensor.write(s);
+    touchSensor.write(s);
+    heightSensor.write(s);
+    effector.write(s);
+
+  }
+
+
+  @Override
+  public void read(String s)
+  {
+
   }
 }

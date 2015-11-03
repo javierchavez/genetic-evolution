@@ -1,7 +1,7 @@
 package vcreature.Algorithms;
 
-import com.jme3.app.SimpleApplication;
 import vcreature.Being;
+import vcreature.Environment;
 import vcreature.Population;
 import vcreature.genotype.Effector;
 import vcreature.genotype.Gene;
@@ -25,15 +25,15 @@ public class GeneticAlgorithm
   private double bestFitness;
   private Being bestBeing;
 //  private Population initialPopulation;
-  private SimpleApplication simulation;
+  private Environment simulation;
   private ConcurrentLinkedQueue<Being> queue;
 //  private Timer timer = new Timer();
 
 
 
-  public GeneticAlgorithm(SimpleApplication mainSim)
+  public GeneticAlgorithm(Environment simulation)
   {
-    this.simulation = mainSim;
+    this.simulation = simulation;
     this.generationNumber = 0;
     this.bestFitness = 0;
     this.bestBeing = null;
@@ -572,6 +572,7 @@ public class GeneticAlgorithm
     double currentGenBestFitness; //best fitness from current generation
     Being genBestBeing; ///most fit creature from current generation
     Vector<Being> currentGeneration= beings;
+
     Vector<Being> nextGeneration = new Vector();
     double summedFitness;
     double averageFitness;
@@ -585,16 +586,19 @@ public class GeneticAlgorithm
       this.generationNumber++;
       for (Being individual : nextGeneration) {
 
-        queue.add(individual);
+        simulation.beginEvaluation(individual);
         while (true)
         {
-          if (queue.isEmpty())
+          if (!individual.isUnderEvaluation())
           {
             break;
           }
         }
 
+
+
         double fitness = calcFitness(individual);
+        System.out.println("Eval Complete " + fitness);
         System.out.println(individual.getFitness());
 
 
@@ -617,10 +621,14 @@ public class GeneticAlgorithm
 
     }
     while (generationNumber < this.totalGenerations);
-//    Population finalPop = new Population(nextGeneration, this.simulation.getEnvironment());
-//    finalPop.setGenerations(this.totalGenerations);
-//    finalPop.setAverageFitness((float) averageFitness);
-//    finalPop.setBestFitness((float)this.bestFitness);
+    for (int i = 0; i < Math.min(population.size(), generationNumber); i++)
+    {
+      population.remove(i);
+      population.add(nextGeneration.get(i));
+    }
+    population.setAverageFitness(((float) averageFitness));
+    population.setBestFitness((float)this.bestFitness);
+
     generationNumber = 0;
     return null;
   }

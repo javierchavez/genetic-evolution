@@ -1,7 +1,9 @@
 package vcreature.genotype;
 
 
-public interface NeuralInput<V>
+import vcreature.utils.Savable;
+
+public interface NeuralInput<V> extends Savable
 {
   enum InputPosition
   {

@@ -1,5 +1,7 @@
 package vcreature.genotype;
 
+import vcreature.utils.Savable;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.List;
  * nodes and connections. More simply, genome is analogous
  * to a directed graph and AbstractGene is the vertex, edges and weights are stored in the AbstractGene.
  */
-public class Genome
+public class Genome implements Savable
 {
 
   private LinkedList<Gene> genes;
@@ -146,5 +148,21 @@ public class Genome
     }
     newGenome.setRoot(getRoot().clone());
     return newGenome;
+  }
+
+  @Override
+  public void write(StringBuilder s)
+  {
+    for (Gene gene : genes)
+    {
+      gene.write(s);
+      s.append("\n");
+    }
+  }
+
+  @Override
+  public void read(String s)
+  {
+
   }
 }

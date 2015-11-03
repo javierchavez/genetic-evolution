@@ -1,5 +1,7 @@
 package vcreature.genotype;
 
+import vcreature.utils.Savable;
+
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -8,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
  * @param <T> type of sensor
  * @param <V> sensors value type
  */
-public abstract class Sensor<T extends Sensor<?, ?>, V> implements NeuralInput<V>, EffectorInput
+public abstract class Sensor<T extends Sensor<?, ?>, V> implements NeuralInput<V>, EffectorInput, Savable
 {
   private V sensorValue;
   private Gene source;
@@ -68,5 +70,18 @@ public abstract class Sensor<T extends Sensor<?, ?>, V> implements NeuralInput<V
       e.printStackTrace();
     }
     return null;
+  }
+
+  @Override
+  public void write(StringBuilder s)
+  {
+    s.append(sensorValue).append(",");
+    //s.append(sensorValue).append(",");
+  }
+
+  @Override
+  public void read(String s)
+  {
+
   }
 }

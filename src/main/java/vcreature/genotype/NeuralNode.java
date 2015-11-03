@@ -4,13 +4,14 @@ package vcreature.genotype;
 import vcreature.genotype.NeuralInput.InputPosition;
 import vcreature.phenotype.EnumOperator;
 import vcreature.phenotype.Neuron;
+import vcreature.utils.Savable;
 
 import java.util.HashMap;
 
 /**
  *  This is a Neuron
  */
-public class NeuralNode implements EffectorInput
+public class NeuralNode implements EffectorInput, Savable
 {
   private HashMap<InputPosition, NeuralInput> inputs;
   private HashMap<NeuralOperatorPosition, EnumOperator> operators;
@@ -62,6 +63,26 @@ public class NeuralNode implements EffectorInput
     neuron.setOperator(operators.get(NeuralOperatorPosition.THIRD), NeuralOperatorPosition.THIRD);
     neuron.setOperator(operators.get(NeuralOperatorPosition.FOURTH), NeuralOperatorPosition.FOURTH);
     return neuron;
+  }
+
+  @Override
+  public void write(StringBuilder s)
+  {
+    inputs.get(InputPosition.A).write(s);
+    inputs.get(InputPosition.B).write(s);
+    inputs.get(InputPosition.C).write(s);
+    inputs.get(InputPosition.D).write(s);
+    inputs.get(InputPosition.E).write(s);
+    s.append(operators.get(NeuralOperatorPosition.FIRST)).append(",");
+    s.append(operators.get(NeuralOperatorPosition.SECOND)).append(",");
+    s.append(operators.get(NeuralOperatorPosition.THIRD)).append(",");
+    s.append(operators.get(NeuralOperatorPosition.FOURTH)).append(",");
+  }
+
+  @Override
+  public void read(String s)
+  {
+
   }
 
   public enum NeuralOperatorPosition

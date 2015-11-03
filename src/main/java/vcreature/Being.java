@@ -19,17 +19,29 @@ public class Being /*Comparable<Being>*/
   private int timesHillClimbed;
   private int timesBred;
   private int children;
-  private float fitness =0;
+  private float fitness = 0;
+  private boolean underEvaluation = false;
 
-  public Being(Genome bird) {
+
+  public Being()
+  {
+  }
+
+  public Being(Genome bird)
+  {
     this.genotype = bird;
   }
 
-
-
-  public Being() {
-
+  public synchronized boolean isUnderEvaluation()
+  {
+    return underEvaluation;
   }
+
+  public synchronized void setUnderEvaluation(boolean underEvaluation)
+  {
+    this.underEvaluation = underEvaluation;
+  }
+
 
   public Genome getGenotype()
   {

@@ -1,7 +1,9 @@
 package vcreature.genotype;
 
 
-public class ConstantInput implements NeuralInput<Float>, EffectorInput
+import vcreature.utils.Savable;
+
+public class ConstantInput implements NeuralInput<Float>, EffectorInput, Savable
 {
   private float constant;
 
@@ -16,5 +18,18 @@ public class ConstantInput implements NeuralInput<Float>, EffectorInput
   {
     constant = value;
     return this;
+  }
+
+
+  @Override
+  public void write(StringBuilder s)
+  {
+    s.append(constant).append(",");
+  }
+
+  @Override
+  public void read(String s)
+  {
+
   }
 }

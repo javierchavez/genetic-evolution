@@ -1,9 +1,11 @@
 package vcreature.genotype;
 
 
+import vcreature.utils.Savable;
+
 import java.util.ArrayList;
 
-public abstract class AbstractGene<T extends AbstractGene<?>>
+public abstract class AbstractGene<T extends AbstractGene<?>> implements Savable
 {
   private GeneType geneType;
   private boolean active;
@@ -71,6 +73,21 @@ public abstract class AbstractGene<T extends AbstractGene<?>>
     this.edges = edges;
   }
 
+  @Override
+  public void write(StringBuilder s)
+  {
+    s.append("|");
+    for (Integer integer : getEdges())
+    {
+      s.append(integer).append("-");
+    }
+    s.append("|").append(",");
+  }
 
+  @Override
+  public void read(String s)
+  {
+
+  }
 }
 

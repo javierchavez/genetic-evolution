@@ -2,13 +2,14 @@ package vcreature.genotype;
 
 
 import com.jme3.math.Vector3f;
+import vcreature.utils.Savable;
 
 import java.util.ArrayList;
 
 /**
  * Effector is analogous to a joint
  */
-public class Effector
+public class Effector implements Savable
 {
   private float maxForce;
   private int jointParentIndex;
@@ -223,6 +224,33 @@ public class Effector
     }
     effector.setNeuralNet(newNeuralNet);
     return effector;
+  }
+
+  @Override
+  public void write(StringBuilder s)
+  {
+    s.append(maxForce).append(",");
+    s.append(jointParentIndex).append(",");
+    s.append(parentX).append(",");
+    s.append(parentY).append(",");
+    s.append(parentZ).append(",");
+    s.append(childX).append(",");
+    s.append(childY).append(",");
+    s.append(childZ).append(",");
+    s.append(pivotAxisX).append(",");
+    s.append(pivotAxisY).append(",");
+    s.append(pivotAxisZ).append(",");
+
+    for (NeuralNode node : neuralNet)
+    {
+      node.write(s);
+    }
+  }
+
+  @Override
+  public void read(String s)
+  {
+
   }
 
   /**

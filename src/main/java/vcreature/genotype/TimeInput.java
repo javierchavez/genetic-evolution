@@ -1,7 +1,9 @@
 package vcreature.genotype;
 
 
-public class TimeInput implements NeuralInput<Float>
+import vcreature.utils.Savable;
+
+public class TimeInput implements NeuralInput<Float>, Savable
 {
 
   private float time;
@@ -19,5 +21,17 @@ public class TimeInput implements NeuralInput<Float>
   {
     this.time = value;
     return this;
+  }
+
+  @Override
+  public void write(StringBuilder s)
+  {
+    s.append(time).append(",");
+  }
+
+  @Override
+  public void read(String s)
+  {
+
   }
 }
