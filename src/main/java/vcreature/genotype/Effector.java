@@ -206,6 +206,25 @@ public class Effector
     vector3f.z = parentZ;
   }
 
+  @Override
+  public Effector clone()
+  {
+    Effector effector = new Effector();
+    effector.setMaxForce(maxForce);
+    effector.setJointParentIndex(jointParentIndex);
+    effector.setParent(new Vector3f(parentX, parentY, parentZ));
+    effector.setChild(new Vector3f(childX, childY, childZ));
+    effector.setPivotAxis(new Vector3f(pivotAxisX, pivotAxisY, pivotAxisZ));
+
+    ArrayList<NeuralNode> newNeuralNet = new ArrayList<>();
+    for (NeuralNode neuron : neuralNet)
+    {
+      newNeuralNet.add(neuron.clone());
+    }
+    effector.setNeuralNet(newNeuralNet);
+    return effector;
+  }
+
   /**
    * Source of the stimulation either from Sensor or Neural source
    *

@@ -154,12 +154,20 @@ public class Gene extends AbstractGene<Gene>
   {
     Gene _newGene = new Gene();
     _newGene.setDimensions(lengthX, widthZ, heightY);
-    _newGene.setEffector(effector);
+    _newGene.setRotations(new float[] {rotationY, rotationZ, rotationX});
+    _newGene.setEffector(effector.clone());
+    _newGene.setTouchSensor(touchSensor.clone());
+    _newGene.setAngleSensor(angleSensor.clone());
+    _newGene.setHeightSensor(heightSensor.clone());
 
+    /*
+    the _newGene will have an pointer to the effector and sensors, but I don't think we want that
+    We want new effectors and sensors as they relate to _newGene, not this one
+    _newGene.setEffector(effector);
     _newGene.setTouchSensor(touchSensor);
     _newGene.setAngleSensor(angleSensor);
     _newGene.setHeightSensor(heightSensor);
-
+    */
     return _newGene;
   }
 

@@ -120,4 +120,13 @@ public class Being /*Comparable<Being>*/
   {
     phenotype.remove();
   }
+
+  @Override
+  public Being clone()
+  {
+    Being newBeing = new Being();
+    newBeing.setGenotype(genotype.clone());
+    newBeing.setFitness(fitness);
+    return newBeing;
+  }
 }
