@@ -15,7 +15,7 @@ import java.util.*;
 public class Population extends Vector<Being>
 {
   private final Vector<Being> beings;
-  Logger logger = new Logger();
+  private Logger logger = new Logger();
 
   private volatile int generations;
   private volatile float averageFitness;
