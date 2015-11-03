@@ -71,7 +71,8 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
   private Block synthesizeGene(Gene current, Block parent)
   {
     Block block;
-    Vector3f size = new Vector3f(current.getLengthX()/2, current.getHeightY()/2, current.getWidthZ()/2);
+    Vector3f size = new Vector3f();
+    current.getDimensions(size);
 
     if (parent == null)
     {
@@ -131,28 +132,22 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
 
   private Neuron synthesizeNeuralNode(NeuralNode neuralNode)
   {
-    EnumNeuronInput inputA = synthesizeInput(neuralNode.getInputs().get(NeuralInput.InputPosition.A));
-    EnumNeuronInput inputB = synthesizeInput(neuralNode.getInputs().get(NeuralInput.InputPosition.B));
-    EnumNeuronInput inputC = synthesizeInput(neuralNode.getInputs().get(NeuralInput.InputPosition.C));
-    EnumNeuronInput inputD = synthesizeInput(neuralNode.getInputs().get(NeuralInput.InputPosition.D));
-    EnumNeuronInput inputE = synthesizeInput(neuralNode.getInputs().get(NeuralInput.InputPosition.E));
+    Neuron neuron = new Neuron(null, null, null, null, null);
 
-    Neuron neuron = new Neuron(inputA, inputB, inputC, inputD, inputE);
-    neuron.setInputValue(Neuron.A, (Float) neuralNode.getInputs().get(NeuralInput.InputPosition.A).getValue());
-    neuron.setInputValue(Neuron.B, (Float) neuralNode.getInputs().get(NeuralInput.InputPosition.B).getValue());
-    neuron.setInputValue(Neuron.C, (Float) neuralNode.getInputs().get(NeuralInput.InputPosition.C).getValue());
-    neuron.setInputValue(Neuron.D, (Float) neuralNode.getInputs().get(NeuralInput.InputPosition.D).getValue());
-    neuron.setInputValue(Neuron.E, (Float) neuralNode.getInputs().get(NeuralInput.InputPosition.E).getValue());
+    synthesizeInput(Neuron.A, neuralNode.getInputs().get(NeuralInput.InputPosition.A), neuron);
+    synthesizeInput(Neuron.B, neuralNode.getInputs().get(NeuralInput.InputPosition.B), neuron);
+    synthesizeInput(Neuron.C, neuralNode.getInputs().get(NeuralInput.InputPosition.C), neuron);
+    synthesizeInput(Neuron.D, neuralNode.getInputs().get(NeuralInput.InputPosition.D), neuron);
+    synthesizeInput(Neuron.E, neuralNode.getInputs().get(NeuralInput.InputPosition.E), neuron);
 
     neuron.setOp(neuralNode.getOperators().get(NeuralNode.NeuralOperatorPosition.FIRST), 0);
     neuron.setOp(neuralNode.getOperators().get(NeuralNode.NeuralOperatorPosition.SECOND), 1);
     neuron.setOp(neuralNode.getOperators().get(NeuralNode.NeuralOperatorPosition.THIRD), 2);
     neuron.setOp(neuralNode.getOperators().get(NeuralNode.NeuralOperatorPosition.FOURTH), 3);
-
     return neuron;
   }
 
-  private EnumNeuronInput synthesizeInput(NeuralInput neuralInput)
+  private EnumNeuronInput synthesizeInput(int position, NeuralInput neuralInput, Neuron neuron)
   {
     EnumNeuronInput input;
     if (neuralInput instanceof TimeInput)
@@ -174,7 +169,9 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
     else
     {
       input = EnumNeuronInput.CONSTANT;
+      neuron.setInputValue(position, (Float) neuralInput.getValue());
     }
+    neuron.setInputType(position, input);
     return input;
   }
 }
