@@ -635,6 +635,10 @@ public class GeneticAlgorithm
     return null;
   }
 
+  public ConcurrentLinkedQueue<Being> getQueue()
+  {
+    return queue;
+  }
 }
 
 
