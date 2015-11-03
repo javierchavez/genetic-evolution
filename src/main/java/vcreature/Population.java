@@ -6,6 +6,9 @@ import vcreature.Algorithms.GeneticAlgorithm;
 import java.util.*;
 
 /**
+ * Class that handles the entire population... at every update
+ * some number of beings are chosen and sent to the breeder to be
+ * evolved
  *
  */
 public class Population extends Vector<Being>
@@ -42,21 +45,6 @@ public class Population extends Vector<Being>
     this.isEvolving = isEvolving;
   }
 
-
-//  public Environment getEnvironment()
-//  {
-//    return environment;
-//  }
-
-  // private Environment environment;
-
-
-//  public Population(Vector<Being> beings, Environment environment)
-//  {
-//    this.beings = beings;
-//    this.environment = environment;
-//    breeding = new GeneticAlgorithm(environment);
-//  }
   public Population(Vector<Being> beings, GeneticAlgorithm breeding)
   {
     this.beings = beings;
@@ -65,7 +53,6 @@ public class Population extends Vector<Being>
 
   public Population(GeneticAlgorithm breeding)
   {
-//    beings = new Vector<>(2001);
     this(new Vector<>(2001), breeding);
   }
 
@@ -89,7 +76,11 @@ public class Population extends Vector<Being>
     this.bestFitness = bestFitness;
   }
 
-
+  /**
+   * This is called by the subpopulation threads. I have a check(isEvovling) just
+   * in case we want to use it.
+   *
+   */
   public void update() {
     generations++;
     if (!isEvolving)
@@ -98,7 +89,6 @@ public class Population extends Vector<Being>
       breeding.evolvePopulation(beings, this);
 
     }
-
   }
 
   @Override

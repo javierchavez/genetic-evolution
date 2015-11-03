@@ -2,12 +2,19 @@ package vcreature;
 
 import java.util.Vector;
 
+
+/**
+ * Sub Population mainly to handle evolving creatures on different threads since
+ * the update() method (see Population.update()) could take a long time to complete
+ * if it does evolving can scale horizontally.
+ *
+ */
 public class Subpopulation extends Thread
 {
 
 
   private final Population population;
-  private static int TOTAL_SUBPOPULATIONS = 0;
+  public static int TOTAL_SUBPOPULATIONS = 0;
   private final Population totalPop;
 
   private volatile boolean paused = true;

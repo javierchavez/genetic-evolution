@@ -3,6 +3,12 @@ package vcreature;
 
 import java.util.ArrayList;
 
+
+/**
+ * This is the wrapper for actually splitting the large population up
+ * into smaller ones so that threads can handle scaling.
+ *
+ */
 public class Evolution extends Thread
 {
   public ArrayList<Subpopulation> getSubs()
