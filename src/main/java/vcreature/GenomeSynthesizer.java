@@ -1,7 +1,9 @@
 package vcreature;
 
 
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 import vcreature.genotype.*;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
@@ -12,32 +14,25 @@ import java.util.*;
 
 public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
 {
-  private final static GenomeSynthesizer ourInstance = new GenomeSynthesizer();
-  private static Environment env;
+
+
   private Genome genome;
   private Creature creature;
+  PhysicsSpace physicsSpace;
+  Node rootNode;
 
-  public static GenomeSynthesizer getInstance()
+  public GenomeSynthesizer(PhysicsSpace physicsSpace, Node rootNode)
   {
-    return ourInstance;
+    this.physicsSpace = physicsSpace;
+    this.rootNode = rootNode;
   }
 
-  private GenomeSynthesizer()
-  {
-  }
-
-  public static GenomeSynthesizer init(Environment environment)
-  {
-    env = environment;
-    return ourInstance;
-  }
 
   @Override
   public Creature encode(Genome typeToConvert)
   {
     this.genome = typeToConvert;
-    this.creature = new Creature(env.getBulletAppState().getPhysicsSpace(),
-                                     env.getRootNode());
+    this.creature = new Creature(physicsSpace, rootNode);
 
     Queue<Gene> frontier = new LinkedList<>();
     frontier.add(genome.getRoot());
@@ -134,11 +129,21 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
   {
     Neuron neuron = new Neuron(null, null, null, null, null);
 
-    synthesizeInput(Neuron.A, neuralNode.getInputs().get(NeuralInput.InputPosition.A), neuron);
-    synthesizeInput(Neuron.B, neuralNode.getInputs().get(NeuralInput.InputPosition.B), neuron);
-    synthesizeInput(Neuron.C, neuralNode.getInputs().get(NeuralInput.InputPosition.C), neuron);
-    synthesizeInput(Neuron.D, neuralNode.getInputs().get(NeuralInput.InputPosition.D), neuron);
-    synthesizeInput(Neuron.E, neuralNode.getInputs().get(NeuralInput.InputPosition.E), neuron);
+    synthesizeInput(Neuron.A,
+                    neuralNode.getInputs().get(NeuralInput.InputPosition.A),
+                    neuron);
+    synthesizeInput(Neuron.B,
+                    neuralNode.getInputs().get(NeuralInput.InputPosition.B),
+                    neuron);
+    synthesizeInput(Neuron.C,
+                    neuralNode.getInputs().get(NeuralInput.InputPosition.C),
+                    neuron);
+    synthesizeInput(Neuron.D,
+                    neuralNode.getInputs().get(NeuralInput.InputPosition.D),
+                    neuron);
+    synthesizeInput(Neuron.E,
+                    neuralNode.getInputs().get(NeuralInput.InputPosition.E),
+                    neuron);
 
     neuron.setOp(neuralNode.getOperators().get(NeuralNode.NeuralOperatorPosition.FIRST), 0);
     neuron.setOp(neuralNode.getOperators().get(NeuralNode.NeuralOperatorPosition.SECOND), 1);

@@ -1,33 +1,14 @@
 package vcreature.Algorithms;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.bullet.BulletAppState;
-import com.jme3.bullet.PhysicsSpace;
-import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.KeyTrigger;
-import com.jme3.light.AmbientLight;
-import com.jme3.light.DirectionalLight;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector2f;
-import com.jme3.math.Vector3f;
-import com.jme3.renderer.queue.RenderQueue;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.shape.Box;
-import com.jme3.shadow.DirectionalLightShadowRenderer;
-import com.jme3.system.AppSettings;
-import com.jme3.texture.Texture;
-import vcreature.*;
+import vcreature.Being;
+import vcreature.Population;
 import vcreature.genotype.Effector;
-import vcreature.genotype.Genome;
 import vcreature.genotype.Gene;
-import vcreature.phenotype.Block;
-import vcreature.phenotype.Creature;
-import vcreature.phenotype.PhysicsConstants;
+import vcreature.genotype.Genome;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * @author Cari
@@ -43,27 +24,29 @@ public class GeneticAlgorithm
   private int generationNumber;
   private double bestFitness;
   private Being bestBeing;
-  private Population initialPopulation;
-  private GAMain simulation;
-  private Timer timer = new Timer();
+//  private Population initialPopulation;
+  private SimpleApplication simulation;
+  private ConcurrentLinkedQueue<Being> queue;
+//  private Timer timer = new Timer();
 
 
 
-  public GeneticAlgorithm(Population initPop, GAMain sim)
+  public GeneticAlgorithm(SimpleApplication mainSim)
   {
-    this.simulation = sim;
+    this.simulation = mainSim;
     this.generationNumber = 0;
     this.bestFitness = 0;
     this.bestBeing = null;
-    this.initialPopulation = initPop;
-    this.populationSize = initPop.size();
+    queue = new ConcurrentLinkedQueue<>();
+//    this.initialPopulation = initPop;
+//    this.populationSize = initPop.size();
 
   }
 
-  public Population getInitialPopulation()
-  {
-    return initialPopulation;
-  }
+//  public Population getInitialPopulation()
+//  {
+//    return initialPopulation;
+//  }
 
   //TODO: make real fitness function
   //test fitness function; maximize surface area of all blocks; this is to test that the GA works to solve an optimization problem
@@ -94,7 +77,7 @@ public class GeneticAlgorithm
     }
 
 */
-//    individual.setFitness(individual.getPhenotype().getFitness());
+    //individual.setFitness(individual.getFitness());
 //    simulation.getEnvironment().addToWorld(individual);
 //    simulation.getEnvironment().removeFromWorld();
 
@@ -578,12 +561,17 @@ public class GeneticAlgorithm
     return nextGeneration;
   }
 
-  public Population evolvePopulation()
+  public int currGen()
+  {
+    return generationNumber;
+  }
+
+  public Population evolvePopulation(Vector<Being> beings, Population population)
   {
 
     double currentGenBestFitness; //best fitness from current generation
     Being genBestBeing; ///most fit creature from current generation
-    Vector<Being> currentGeneration= this.initialPopulation.getBeings();
+    Vector<Being> currentGeneration= beings;
     Vector<Being> nextGeneration = new Vector();
     double summedFitness;
     double averageFitness;
@@ -596,7 +584,20 @@ public class GeneticAlgorithm
       nextGeneration = createNextGeneration(currentGeneration);
       this.generationNumber++;
       for (Being individual : nextGeneration) {
+
+        queue.add(individual);
+        while (true)
+        {
+          if (queue.isEmpty())
+          {
+            break;
+          }
+        }
+
         double fitness = calcFitness(individual);
+        System.out.println(individual.getFitness());
+
+
         summedFitness = summedFitness + fitness;
         if (fitness > currentGenBestFitness) {
           currentGenBestFitness = fitness;
@@ -616,14 +617,18 @@ public class GeneticAlgorithm
 
     }
     while (generationNumber < this.totalGenerations);
-    Population finalPop = new Population(nextGeneration, this.simulation.getEnvironment());
-    finalPop.setGenerations(this.totalGenerations);
-    finalPop.setAverageFitness((float) averageFitness);
-    finalPop.setBestFitness((float)this.bestFitness);
-
-    return finalPop;
+//    Population finalPop = new Population(nextGeneration, this.simulation.getEnvironment());
+//    finalPop.setGenerations(this.totalGenerations);
+//    finalPop.setAverageFitness((float) averageFitness);
+//    finalPop.setBestFitness((float)this.bestFitness);
+    generationNumber = 0;
+    return null;
   }
 
+  public ConcurrentLinkedQueue<Being> getQueue()
+  {
+    return queue;
+  }
 }
 
 

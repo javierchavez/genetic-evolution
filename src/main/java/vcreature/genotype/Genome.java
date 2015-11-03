@@ -144,7 +144,7 @@ public class Genome
     {
       newGenome.append(gene.clone());
     }
-    newGenome.setRoot(rootVertex.clone());
+    newGenome.setRoot(getRoot().clone());
     return newGenome;
   }
 }

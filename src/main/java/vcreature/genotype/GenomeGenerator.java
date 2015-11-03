@@ -3,7 +3,6 @@ package vcreature.genotype;
 
 import com.jme3.collision.CollisionResults;
 import com.jme3.math.Vector3f;
-import vcreature.Environment;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.EnumNeuronInput;
 import vcreature.phenotype.EnumOperator;
@@ -16,18 +15,11 @@ import java.util.*;
  */
 public class GenomeGenerator
 {
-  private static final GenomeGenerator thisInstance = new GenomeGenerator();
-  private static Environment env;
   private static GenomeGeneratorParameters params = new GenomeGeneratorParameters();
   private Genome genome = new Genome();
 
-  private GenomeGenerator() {}
+  public GenomeGenerator() {}
 
-  public static GenomeGenerator init(Environment environment)
-  {
-    env = environment;
-    return thisInstance;
-  }
 
   public void clearGenome()
   {

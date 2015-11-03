@@ -20,9 +20,14 @@ import com.jme3.scene.shape.Box;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
 import com.jme3.texture.Texture;
+import vcreature.Algorithms.GeneticAlgorithm;
+import vcreature.genotype.Genome;
+import vcreature.genotype.GenomeGenerator;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
 import vcreature.phenotype.PhysicsConstants;
+
+import java.util.Random;
 
 public class MainSim extends SimpleApplication implements ActionListener
 {
@@ -40,6 +45,9 @@ public class MainSim extends SimpleApplication implements ActionListener
   private CreatureSynthesizer creatureSynthesizer;
   private GenomeSynthesizer genomeSynthesizer;
   private boolean add = true;
+  private GeneticAlgorithm breeding;
+  Evolution evolution;
+  GenomeGenerator generator;
 
 
   @Override
@@ -83,8 +91,6 @@ public class MainSim extends SimpleApplication implements ActionListener
             PhysicsConstants.GROUND_ANGULAR_DAMPINING);
 
 
-    creatureSynthesizer = new CreatureSynthesizer();
-    genomeSynthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
 
     Block.initStaticMaterials(assetManager);
     initLighting();
@@ -92,21 +98,40 @@ public class MainSim extends SimpleApplication implements ActionListener
 
     flyCam.setDragToRotate(true);
 
+    creatureSynthesizer = new CreatureSynthesizer();
+    genomeSynthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
 
-    //FlappyBird bird = new FlappyBird(physicsSpace, rootNode);
-    //myCreature = new FlappyBird(physicsSpace, rootNode);
 
+    FlappyBird flappyBird = new FlappyBird(physicsSpace, rootNode);
+    Genome genome = creatureSynthesizer.encode(flappyBird);
+    flappyBird.remove();
+    //    creature = genomeSynthesizer.encode(genome);
 
-//    population = new Population();
+    breeding = new GeneticAlgorithm(this);
+    population = new Population(breeding);
 //    population.initPop();
-//    Being b = new Being();
-//    // bird.remove();
+    Being b = new Being();
+    b.setGenotype(genome);
+    population.add(b);
+
+
+    generator = new GenomeGenerator();
+    generator.generateGenome();
 //
-    creature = new FlappyBird(physicsSpace, rootNode);
-    creature.remove();
-//    population.add(b);
+    for (int i = 0; i < 100; i++)
+    {
+      Being bb = new Being();
+      Genome g = generator.generateGenome();
+      bb.setGenotype(g);
+      population.add(bb);
+    }
+
+
 //     creature = bird;
 //    bird.remove();
+
+    evolution = new Evolution(population);
+
     
   }
 
@@ -153,6 +178,11 @@ public class MainSim extends SimpleApplication implements ActionListener
     }
   }
 
+
+  boolean inSim =false;
+  boolean newGenerationSpwan = false;
+  boolean flipFlop = true;
+  Being b = null;
   
   /* Use the main event loop to trigger repeating actions. */
   @Override
@@ -163,18 +193,61 @@ public class MainSim extends SimpleApplication implements ActionListener
     //we need to spawn a thread to handlethis.
 
 
-    if (add && elapsedSimulationTime > 5)
+    if (flipFlop && elapsedSimulationTime > 11)
     {
-      add = false;
-      creature = new FlappyBird(physicsSpace, rootNode);
+      flipFlop = false;
+      // creature = new FlappyBird(physicsSpace, rootNode);
       // creature.remove();
-      // population.get(0).getGenotype()
-//      Genome s = population.get(0).getGenotype();
-//
-//      creature = genomeSynthesizer.encode(s, creature);
-//
-//      creature.placeOnGround();
-//      elapsedSimulationTime = 0;
+      Genome genome = null;
+
+      if (inSim)
+      {
+        b.setFitness(creature.getFitness());
+        if (!breeding.getQueue().isEmpty())
+        {
+          breeding.getQueue().poll();
+        }
+        // System.out.println(creature.getFitness());
+        creature.remove();
+//        if (evolution.generations() < 30 && newGenerationSpwan)
+//        {
+//          newGenerationSpwan = false;
+//        }
+      }
+
+
+      if (!breeding.getQueue().isEmpty())
+      {
+        b = (Being) breeding.getQueue().peek();
+        if (b != null)
+        {
+          System.out.println("Creature being evaluated.");
+          inSim = true;
+          genome = b.getGenotype();
+
+          creature = genomeSynthesizer.encode(genome);
+          elapsedSimulationTime = 0;
+        }
+      }
+      else
+      {
+        if (!newGenerationSpwan || breeding.currGen() >= 200)
+        {
+          System.out.println("New generation kicked off");
+          newGenerationSpwan = true;
+          new Thread(new Runnable()
+          {
+            @Override
+            public void run()
+            {
+              evolution.getSubs().get(genRandDim(evolution.getSubs().size())).nextGeneration();
+            }
+          }).start();
+        }
+
+      }
+      flipFlop = true;
+
     }
     if (creature != null)
     {
@@ -234,6 +307,13 @@ public class MainSim extends SimpleApplication implements ActionListener
     MainSim app = new MainSim();
     app.setShowSettings(false);
     app.setSettings(settings);
+
+    //app.start(JmeContext.Type.OffscreenSurface);
     app.start();
+  }
+  Random random = new Random();
+  private int genRandDim(int max)
+  {
+    return random.nextInt(max - 1) + 0;
   }
 }
