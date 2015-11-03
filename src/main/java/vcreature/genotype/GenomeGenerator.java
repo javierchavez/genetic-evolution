@@ -117,14 +117,12 @@ public class GenomeGenerator
         {
           childX = rand.nextBoolean() ? size.x : -size.x;
           parentX = rand.nextBoolean() ? parentSize.x : -parentSize.x;
-          //parentX = Math.signum(childX) == 1 ? -parentSize.x : parentSize.x;
           pivotAxis = Vector3f.UNIT_Y;
         }
         else // y axis
         {
           childY = rand.nextBoolean() ? size.y : -size.y;
           parentY = rand.nextBoolean() ? parentSize.y : -parentSize.y;
-          //parentY = Math.signum(childY) == 1 ? -parentSize.y : parentSize.y;
           pivotAxis = Vector3f.UNIT_X;
         }
         parentPivot = new Vector3f(parentX, parentY, parentZ);
@@ -142,14 +140,12 @@ public class GenomeGenerator
         {
           childX = rand.nextBoolean() ? size.x : -size.x;
           parentX = rand.nextBoolean() ? parentSize.x : -parentSize.x;
-          //parentX = Math.signum(childX) == 1 ? -parentSize.x : parentSize.x;
           pivotAxis = Vector3f.UNIT_Y;
         }
         else // y axis
         {
           childY = rand.nextBoolean() ? size.y : -size.y;
           parentY = rand.nextBoolean() ? parentSize.y : -parentSize.y;
-          //parentY = Math.signum(childY) == 1 ? -parentSize.y : parentSize.y;
           pivotAxis = Vector3f.UNIT_X;
         }
         parentPivot = new Vector3f(parentX, parentY, parentZ);
@@ -167,14 +163,12 @@ public class GenomeGenerator
         {
           childX = rand.nextBoolean() ? size.x : -size.x;
           parentX = rand.nextBoolean() ? parentSize.x : -parentSize.x;
-          //parentX = Math.signum(childX) == 1 ? -parentSize.x : parentSize.x;
           pivotAxis = Vector3f.UNIT_Z;
         }
         else // z axis
         {
           childZ = rand.nextBoolean() ? size.z : -size.z;
           parentZ = rand.nextBoolean() ? parentSize.z : -parentSize.z;
-          //parentZ = Math.signum(childZ) == 1 ? -parentSize.z : parentSize.z;
           pivotAxis = Vector3f.UNIT_X;
         }
         parentPivot = new Vector3f(parentX, parentY, parentZ);
@@ -192,14 +186,12 @@ public class GenomeGenerator
         {
           childX = rand.nextBoolean() ? size.x : -size.x;
           parentX = rand.nextBoolean() ? parentSize.x : -parentSize.x;
-          //parentX = Math.signum(childX) == 1 ? -parentSize.x : parentSize.x;
           pivotAxis = Vector3f.UNIT_Z;
         }
         else // z axis
         {
           childZ = rand.nextBoolean() ? size.z : -size.z;
           parentZ = rand.nextBoolean() ? parentSize.z : -parentSize.z;
-          //parentZ = Math.signum(childZ) == 1 ? -parentSize.x : parentSize.x;
           pivotAxis = Vector3f.UNIT_X;
         }
         parentPivot = new Vector3f(parentX, parentY, parentZ);
@@ -217,14 +209,12 @@ public class GenomeGenerator
         {
           childY = rand.nextBoolean() ? size.y : -size.y;
           parentY = rand.nextBoolean() ? parentSize.y : -parentSize.y;
-          //parentY = Math.signum(childY) == 1 ? -parentSize.y : parentSize.y;
           pivotAxis = Vector3f.UNIT_Z;
         }
         else // z axis
         {
           childZ = rand.nextBoolean() ? size.z : -size.z;
           parentZ = rand.nextBoolean() ? parentSize.z : -parentSize.z;
-          //parentZ = Math.signum(childZ) == 1 ? -parentSize.z : parentSize.z;
           pivotAxis = Vector3f.UNIT_Y;
         }
         parentPivot = new Vector3f(parentX, parentY, parentZ);
@@ -242,14 +232,12 @@ public class GenomeGenerator
         {
           childY = rand.nextBoolean() ? size.y : -size.y;
           parentY = rand.nextBoolean() ? parentSize.y : -parentSize.y;
-          //parentY = Math.signum(childY) == 1 ? -parentSize.y : parentSize.y;
           pivotAxis = Vector3f.UNIT_Z;
         }
         else // z axis
         {
           childZ = rand.nextBoolean() ? size.z : -size.z;
           parentZ = rand.nextBoolean() ? parentSize.z : -parentSize.z;
-          //parentZ = Math.signum(childZ) == 1 ? -parentSize.z : parentSize.z;
           pivotAxis = Vector3f.UNIT_Y;
         }
         parentPivot = new Vector3f(parentX, parentY, parentZ);
@@ -376,19 +364,15 @@ public class GenomeGenerator
     {
       case TIME:
         neuralInput = new TimeInput();
-        neuralInput.setValue(params.MIN_TIME + (rand.nextFloat() * (params.MAX_TIME - params.MIN_TIME)));
         break;
       case TOUCH:
         neuralInput = gene.getTouchSensor();
-        neuralInput.setValue(rand.nextBoolean() ? 1f : 0f);
         break;
       case HEIGHT:
         neuralInput = gene.getHeightSensor();
-        neuralInput.setValue(params.MIN_HEIGHT + (rand.nextFloat() * (params.MAX_HEIGHT - params.MIN_HEIGHT)));
         break;
       case JOINT:
         neuralInput = gene.getAngleSensor();
-        neuralInput.setValue(params.MIN_ANGLE + (rand.nextFloat() * (params.MAX_ANGLE - params.MIN_ANGLE)));
         break;
       default:
         neuralInput = new ConstantInput();
@@ -403,12 +387,10 @@ public class GenomeGenerator
     EnumOperator operator;
     if (position == 0 || position == 2)
     { // binary operator
-      //operator = EnumOperator.ADD;
       operator = EnumOperator.values()[rand.nextInt(7)];
     }
     else
     { // unary operator
-      //operator = EnumOperator.IDENTITY;
       operator = EnumOperator.values()[7 + rand.nextInt(EnumOperator.SIZE-7)];
     }
     return operator;

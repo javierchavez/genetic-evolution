@@ -136,4 +136,15 @@ public class Genome
     return neighbors;
   }
 
+  @Override
+  public Genome clone()
+  {
+    Genome newGenome = new Genome();
+    for (Gene gene : genes)
+    {
+      newGenome.append(gene.clone());
+    }
+    newGenome.setRoot(rootVertex.clone());
+    return newGenome;
+  }
 }
