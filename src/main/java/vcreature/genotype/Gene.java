@@ -2,6 +2,8 @@ package vcreature.genotype;
 
 import com.jme3.math.Vector3f;
 
+import java.util.ArrayList;
+
 /**
  * Rigid Part our creature this will be a Block
  */
@@ -159,6 +161,7 @@ public class Gene extends AbstractGene<Gene>
     _newGene.setTouchSensor(touchSensor.clone());
     _newGene.setAngleSensor(angleSensor.clone());
     _newGene.setHeightSensor(heightSensor.clone());
+    _newGene.setEdges(new ArrayList<>(this.getEdges()));
 
     /*
     the _newGene will have an pointer to the effector and sensors, but I don't think we want that

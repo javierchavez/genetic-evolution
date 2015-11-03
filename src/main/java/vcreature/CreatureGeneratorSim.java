@@ -1,6 +1,7 @@
 package vcreature;
 
 
+import vcreature.genotype.Genome;
 import vcreature.phenotype.Creature;
 import vcreature.phenotype.PhysicsConstants;
 import vcreature.phenotype.Block;
@@ -91,7 +92,11 @@ public class CreatureGeneratorSim extends SimpleApplication implements ActionLis
     flyCam.setDragToRotate(true);
 
     env = new Environment(getStateManager().getState(BulletAppState.class), assetManager, rootNode);
-    creature = CreatureGenerator.init(env).generateCreature();
+    CreatureSynthesizer synthesizer = new CreatureSynthesizer();
+    FlappyBird flappyBird = new FlappyBird(physicsSpace, rootNode);
+    Genome genome = synthesizer.encode(flappyBird);
+    flappyBird.remove();
+    creature = GenomeSynthesizer.init(env).encode(genome);
   }
 
   private void initLighting()

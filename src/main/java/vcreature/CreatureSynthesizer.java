@@ -1,5 +1,6 @@
 package vcreature;
 
+import com.jme3.math.Vector3f;
 import vcreature.genotype.*;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
@@ -7,6 +8,7 @@ import vcreature.phenotype.EnumNeuronInput;
 import vcreature.phenotype.Neuron;
 import vcreature.genotype.NeuralInput.InputPosition;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 
@@ -77,15 +79,31 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
       gene.getEffector().setParent(b.getJoint().getPivotA());
       gene.getEffector().setChild(b.getJoint().getPivotB());
 
+      try
+      {
+        Field field = b.getJoint().getClass().getDeclaredField("axisA");
+        field.setAccessible(true);
+        Vector3f axis = (Vector3f) field.get(b.getJoint());
+        gene.getEffector().setPivotAxis(axis);
+      }
+      catch (NoSuchFieldException e)
+      {
+        e.printStackTrace();
+        gene.getEffector().setPivotAxis(Vector3f.UNIT_Y);
+      }
+      catch (IllegalAccessException e)
+      {
+        e.printStackTrace();
+        gene.getEffector().setPivotAxis(Vector3f.UNIT_Y);
+      }
+
       /*
        * Need to figure out how to get axisA from the joint
        * when a block is added it needs an axisA... the last argument i.e. Vector3f.UNIT_Z
        *
        * Block leg2  = addBlock(eulerAngles, leg2Size,torso, pivotC,  pivotD, Vector3f.UNIT_Z);
        */
-      System.out.println(b.getGeometry());
-      //gene.getEffector().setPivotAxis();
-
+      //System.out.println(b.getGeometry())
 
     }
     return gene;
