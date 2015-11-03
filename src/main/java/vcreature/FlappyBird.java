@@ -10,6 +10,8 @@ import vcreature.phenotype.Block;
 import vcreature.phenotype.EnumNeuronInput;
 import vcreature.phenotype.Neuron;
 
+import java.lang.reflect.Field;
+
 
 public class FlappyBird extends Creature
 {
@@ -69,5 +71,21 @@ public class FlappyBird extends Creature
     
     leg2.addNeuron(leg2Neuron1);
     leg2.addNeuron(leg2Neuron2);
+
+    try
+    {
+      Field field = leg1.getJoint().getClass().getDeclaredField("axisA");
+      field.setAccessible(true);
+      Vector3f value = (Vector3f) field.get(leg1.getJoint());
+      System.out.println(value);
+    }
+    catch (NoSuchFieldException e)
+    {
+      e.printStackTrace();
+    }
+    catch (IllegalAccessException e)
+    {
+      e.printStackTrace();
+    }
   }
 }
