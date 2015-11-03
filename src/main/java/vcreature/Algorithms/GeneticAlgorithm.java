@@ -36,7 +36,7 @@ public class GeneticAlgorithm
 {
 
 
-  private int totalGenerations = 200;
+  private int totalGenerations = 1;
   private int populationSize;
   private int pctMutations = 0;
   private int pctCrossover = 100;
@@ -44,6 +44,7 @@ public class GeneticAlgorithm
   private double bestFitness;
   private Being bestBeing;
   private Population initialPopulation;
+ // private GAMain simulation;
   private GAMain simulation;
   private Timer timer = new Timer();
 
@@ -95,8 +96,8 @@ public class GeneticAlgorithm
 
 */
 //    individual.setFitness(individual.getPhenotype().getFitness());
-//    simulation.getEnvironment().addToWorld(individual);
-//    simulation.getEnvironment().removeFromWorld();
+    simulation.getEnvironment().addToWorld(individual);
+    simulation.getEnvironment().removeFromWorld();
 
     LinkedList<Gene> genes = genotype.getGenes();
     for(Gene gene : genes)
@@ -218,6 +219,8 @@ public class GeneticAlgorithm
   }
 
 //
+
+
   protected void setParentJoint (Gene parent, Gene child)
   {
 
