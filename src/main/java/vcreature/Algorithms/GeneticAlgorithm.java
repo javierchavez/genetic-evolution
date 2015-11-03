@@ -3,6 +3,7 @@ package vcreature.Algorithms;
 import vcreature.Being;
 import vcreature.Environment;
 import vcreature.Population;
+import vcreature.Subpopulation;
 import vcreature.genotype.Effector;
 import vcreature.genotype.Gene;
 import vcreature.genotype.Genome;
@@ -566,22 +567,24 @@ public class GeneticAlgorithm
     return generationNumber;
   }
 
-  public Population evolvePopulation(Vector<Being> beings, Population population)
+  public Population evolvePopulation(Subpopulation beings, Population population)
   {
 
     double currentGenBestFitness; //best fitness from current generation
     Being genBestBeing; ///most fit creature from current generation
-    Vector<Being> currentGeneration= beings;
+    Vector<Being> currentGeneration= beings.getPopulation().getBeings();
 
     Vector<Being> nextGeneration = new Vector();
     double summedFitness;
     double averageFitness;
+    System.out.println("Next gen from " + beings.getName());
 
     do {
       summedFitness = 0;
       averageFitness = 0;
       currentGenBestFitness = 0;
       genBestBeing = currentGeneration.get(0);
+
       nextGeneration = createNextGeneration(currentGeneration);
       this.generationNumber++;
       for (Being individual : nextGeneration) {
@@ -598,7 +601,7 @@ public class GeneticAlgorithm
 
 
         double fitness = calcFitness(individual);
-        System.out.println("Eval Complete " + fitness);
+        System.out.println("Evaluation complete...");
         System.out.println(individual.getFitness());
 
 

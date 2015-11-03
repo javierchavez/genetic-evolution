@@ -19,6 +19,7 @@ public class Subpopulation extends Thread
 
   private volatile boolean paused = true;
   private boolean running = true;
+  private boolean isEvolving = false;
 
   public Subpopulation(String name, Population population, int lowerBound, int upperBound)
   {
@@ -34,6 +35,12 @@ public class Subpopulation extends Thread
   {
     synchronized (this)
     {
+      if (!isEvolving)
+      {
+        isEvolving = true;
+        totalPop.getBreeding().evolvePopulation(this, totalPop);
+      }
+
       population.update();
     }
   }

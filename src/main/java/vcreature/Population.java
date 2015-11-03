@@ -2,9 +2,11 @@ package vcreature;
 
 
 import vcreature.Algorithms.GeneticAlgorithm;
-import vcreature.utils.Logger;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.List;
+import java.util.Queue;
+import java.util.Vector;
 
 /**
  * Class that handles the entire population... at every update
@@ -15,7 +17,6 @@ import java.util.*;
 public class Population extends Vector<Being>
 {
   private final Vector<Being> beings;
-  private Logger logger = new Logger();
 
   private volatile int generations;
   private volatile float averageFitness;
@@ -85,6 +86,9 @@ public class Population extends Vector<Being>
    */
   public void update() {
     generations++;
+    /*
+      OR maybe this is where the population gets switched.
+
     if (!isEvolving)
     {
       isEvolving = true;
@@ -96,6 +100,7 @@ public class Population extends Vector<Being>
 
       breeding.evolvePopulation(beings, this);
     }
+    */
   }
 
   @Override

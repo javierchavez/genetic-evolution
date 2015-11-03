@@ -1,28 +1,25 @@
 package vcreature;
 
 
+import vcreature.utils.Logger;
+
 import java.util.ArrayList;
 
 
 /**
  * This is the wrapper for actually splitting the large population up
  * into smaller ones so that threads can handle scaling.
- *
  */
 public class Evolution extends Thread
 {
-  public ArrayList<Subpopulation> getSubs()
-  {
-    return subs;
-  }
 
   private ArrayList<Subpopulation> subs;
-
   private Population population;
+  private Logger logger = new Logger();
 
   public Evolution(Population population)
   {
-    ;
+
     this.population = population;
     // population.initPop();
     subs = new ArrayList<>();
@@ -34,16 +31,30 @@ public class Evolution extends Thread
       int start = i * chunkSize;
       int length = Math.min(population.size() - start, chunkSize);
 
-      subs.add(new Subpopulation(String.valueOf(i) + "k",
+      subs.add(new Subpopulation(String.valueOf(i) + " population",
                                  population,
                                  start,
-                                 length+start));
+                                 length + start));
     }
 
     for (Subpopulation subpopulation : subs)
     {
       subpopulation.start();
     }
+  }
+
+  public ArrayList<Subpopulation> getSubs()
+  {
+    return subs;
+  }
+  public void crossSubpopulation(int subpopulation)
+  {
+    for (Being being : subs.get(subpopulation).getPopulation().getBeings())
+    {
+      logger.export(being.getGenotype());
+    }
+
+    subs.get(subpopulation).interrupt();
   }
 
 
@@ -56,11 +67,11 @@ public class Evolution extends Thread
   {
     return population;
   }
-//
-//  public Being getBeing(int i)
-//  {
-//    return population.get(i);
-//  }
+  //
+  //  public Being getBeing(int i)
+  //  {
+  //    return population.get(i);
+  //  }
 
 
 }
