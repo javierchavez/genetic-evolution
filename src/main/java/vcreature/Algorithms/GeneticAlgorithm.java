@@ -584,7 +584,6 @@ public class GeneticAlgorithm
       averageFitness = 0;
       currentGenBestFitness = 0;
       genBestBeing = currentGeneration.get(0);
-
       nextGeneration = createNextGeneration(currentGeneration);
       this.generationNumber++;
       for (Being individual : nextGeneration) {
@@ -636,10 +635,6 @@ public class GeneticAlgorithm
     return null;
   }
 
-  public ConcurrentLinkedQueue<Being> getQueue()
-  {
-    return queue;
-  }
 }
 
 
