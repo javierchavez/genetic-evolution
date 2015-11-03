@@ -17,7 +17,7 @@ public class Subpopulation extends Thread
   {
     this.setName(name);
     this.totalPop = population;
-    this.population = new Population(new Vector<>(population.subList(lowerBound, upperBound)));
+    this.population = new Population(new Vector<>(population.subList(lowerBound, upperBound)), population.getBreeding());
 
 
     TOTAL_SUBPOPULATIONS++;

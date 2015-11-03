@@ -3,8 +3,7 @@ package vcreature;
 
 import vcreature.Algorithms.GeneticAlgorithm;
 
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 /**
  *
@@ -24,6 +23,20 @@ public class Population extends Vector<Being>
   private volatile long lifetimeFailedHillClimbs;
   private boolean isEvolving =false;
 
+  public GeneticAlgorithm getBreeding()
+  {
+    return breeding;
+  }
+
+  private GeneticAlgorithm breeding;
+
+  public Queue getQueue()
+  {
+    return queue;
+  }
+
+  private Queue queue = new ArrayDeque<>();
+
   public void setIsEvolving(boolean isEvolving)
   {
     this.isEvolving = isEvolving;
@@ -36,7 +49,7 @@ public class Population extends Vector<Being>
 //  }
 
   // private Environment environment;
-  GeneticAlgorithm breeding;
+
 
 //  public Population(Vector<Being> beings, Environment environment)
 //  {
@@ -44,16 +57,16 @@ public class Population extends Vector<Being>
 //    this.environment = environment;
 //    breeding = new GeneticAlgorithm(environment);
 //  }
-  public Population(Vector<Being> beings)
+  public Population(Vector<Being> beings, GeneticAlgorithm breeding)
   {
     this.beings = beings;
-    // breeding = new GeneticAlgorithm(environment);
+    this.breeding = breeding;
   }
 
-  public Population()
+  public Population(GeneticAlgorithm breeding)
   {
 //    beings = new Vector<>(2001);
-    this(new Vector<>(2001));
+    this(new Vector<>(2001), breeding);
   }
 
   public Vector<Being> getBeings()
@@ -76,16 +89,6 @@ public class Population extends Vector<Being>
     this.bestFitness = bestFitness;
   }
 
-  public void initPop()
-  {
-//    for (int i = 0; i < 5; i++)
-//    {
-//      Being a = new Being();
-//      //a.setGenotype(GenomeGenerator.init(environment).generateGenome());
-//
-//      beings.add(i, a);
-//    }
-  }
 
   public void update() {
     generations++;
