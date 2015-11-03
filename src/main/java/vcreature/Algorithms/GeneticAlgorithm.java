@@ -59,6 +59,7 @@ public class GeneticAlgorithm
     this.bestBeing = null;
     this.initialPopulation = initPop;
     this.populationSize = initPop.size();
+
   }
 
   public Population getInitialPopulation()
@@ -161,14 +162,6 @@ public class GeneticAlgorithm
   protected Vector<Being> selection (Vector<Being> population)
   {
 
-
-    //hack to generate random population
-/*    for(Being being : population)
-    {
-      mutation(being);
-      LinkedList<Gene> genes = being.getGenotype().getGenes();
-    }
-*/
     Vector<Being> newParents = new Vector();
     Random rnd = new Random();
 
@@ -373,10 +366,7 @@ public class GeneticAlgorithm
         swapParents2.put((int) genesToSwap2.get(i), getParentIndex(genotype2, (int) (genesToSwap2.get(i))));
       }
 
-
-
-
-      if(genesToSwap2.size() > genesToSwap1.size())
+      if(genesToSwap2.size() > genesToSwap1.size() && genesToSwap1.size() > 1)
       {
         System.out.println("TESTING SWAP2 > SWAP 1");
       }
@@ -785,6 +775,13 @@ public class GeneticAlgorithm
 
   public Population evolvePopulation()
   {
+    int testIndex = -1;
+    for(Being b: this.initialPopulation.getBeings())
+    {
+      testIndex++;
+      System.out.println("Being " + testIndex);
+      printBeing(b);
+    }
 
     double currentGenBestFitness; //best fitness from current generation
     Being genBestBeing; ///most fit creature from current generation
