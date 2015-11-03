@@ -14,11 +14,12 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
 {
 
   private Genome genome;
+  Creature  c;
 
   @Override
   public Genome encode(Creature creature)
   {
-
+    c = creature;
     // BUILD THE RIGID GENOME
     genome = new Genome();
     // root of the genome is index 0
@@ -66,7 +67,8 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
   private Gene synthesizeBlock(Block b)
   {
     Gene gene = new Gene(b.getID());
-    gene.setDimensions(b.getSizeY(), b.getSizeX(), b.getHeight());
+    gene.setDimensions(b.getSizeX(), b.getSize(), b.getSizeY());
+
 
     if (b.getJoint() != null)
     {
@@ -74,7 +76,15 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
       gene.getEffector().setJointParentIndex(b.getIdOfParent());
       gene.getEffector().setParent(b.getJoint().getPivotA());
       gene.getEffector().setChild(b.getJoint().getPivotB());
-      // gene.getEffector().setParentAxis(b.getJoint().getHingeAngle());
+
+      /*
+       * Need to figure out how to get axisA from the joint
+       * when a block is added it needs an axisA... the last argument i.e. Vector3f.UNIT_Z
+       *
+       * Block leg2  = addBlock(eulerAngles, leg2Size,torso, pivotC,  pivotD, Vector3f.UNIT_Z);
+       */
+      System.out.println(b.getGeometry());
+      //gene.getEffector().setPivotAxis();
 
 
     }
