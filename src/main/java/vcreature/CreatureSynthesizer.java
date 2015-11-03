@@ -89,10 +89,12 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
       catch (NoSuchFieldException e)
       {
         e.printStackTrace();
+        gene.getEffector().setPivotAxis(Vector3f.UNIT_Y);
       }
       catch (IllegalAccessException e)
       {
         e.printStackTrace();
+        gene.getEffector().setPivotAxis(Vector3f.UNIT_Y);
       }
 
       /*
