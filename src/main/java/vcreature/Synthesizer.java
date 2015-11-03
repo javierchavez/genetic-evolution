@@ -1,6 +1,11 @@
 package vcreature;
 
 
+/**
+ * Base class for converting T -> V
+ * @param <T>
+ * @param <V>
+ */
 public abstract class Synthesizer<T, V>
 {
 
@@ -12,16 +17,6 @@ public abstract class Synthesizer<T, V>
    */
   public abstract V encode(T typeToConvert);
 
-
-  /**
-   * Decode V into T
-   * @param typeToConvert object that needs to be converted
-   * @return new converted object
-   */
-  public abstract T decode(V typeToConvert);
-
-
   public abstract String toString();
 
-  public abstract String synthesizedToString();
 }

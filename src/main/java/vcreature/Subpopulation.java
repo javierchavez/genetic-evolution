@@ -14,7 +14,7 @@ public class Subpopulation extends Thread
 
 
   private final Population population;
-  public static int TOTAL_SUBPOPULATIONS = 0;
+  public static int TOTAL_SUB_POPULATIONS = 0;
   private final Population totalPop;
 
   private volatile boolean paused = true;
@@ -28,7 +28,7 @@ public class Subpopulation extends Thread
     this.population = new Population(new Vector<>(population.subList(lowerBound, upperBound)), population.getBreeding());
 
 
-    TOTAL_SUBPOPULATIONS++;
+    TOTAL_SUB_POPULATIONS++;
   }
 
   public void nextGeneration()

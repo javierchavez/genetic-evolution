@@ -5,7 +5,10 @@ import vcreature.utils.Savable;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * Page 13 Slide 26 the sensor is for joint, touch, height
+ * Page 13 Slide 26 the sensor is for joint, touch, height.
+ *
+ * Main point of Sensors in the Genome is to house values. The term Sensor is just
+ * a fancy term for Class that holds value
  *
  * @param <T> type of sensor
  * @param <V> sensors value type

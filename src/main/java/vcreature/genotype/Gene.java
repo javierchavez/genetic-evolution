@@ -4,16 +4,12 @@ import com.jme3.math.Vector3f;
 import vcreature.utils.Savable;
 
 import java.util.ArrayList;
-import java.util.logging.FileHandler;
 
 /**
  * Rigid Part our creature this will be a Block
  */
 public class Gene extends AbstractGene<Gene> implements Savable
 {
-
-
-  private FileHandler fileHandler;
 
   private float lengthX;
   private float widthZ;
@@ -33,7 +29,11 @@ public class Gene extends AbstractGene<Gene> implements Savable
 
   private Effector effector;
 
-
+  /**
+   * Create a gene with index position.
+   *
+   * @param position location of gene in list
+   */
   public Gene(int position)
   {
     this();
@@ -51,6 +51,11 @@ public class Gene extends AbstractGene<Gene> implements Savable
   }
 
 
+  /**
+   * Sensor for hinge joint
+   *
+   * @return sensor
+   */
   public AngleSensor getAngleSensor()
   {
     return angleSensor;
@@ -61,6 +66,11 @@ public class Gene extends AbstractGene<Gene> implements Savable
     this.angleSensor = angleSensor;
   }
 
+  /**
+   * Collision sensor
+   *
+   * @return sensor determining collision
+   */
   public TouchSensor getTouchSensor()
   {
     return touchSensor;
@@ -71,6 +81,12 @@ public class Gene extends AbstractGene<Gene> implements Savable
     this.touchSensor = touchSensor;
   }
 
+
+  /**
+   * Sensor for monitoring height
+   *
+   * @return sensor for height
+   */
   public HeightSensor getHeightSensor()
   {
     return heightSensor;
@@ -81,6 +97,11 @@ public class Gene extends AbstractGene<Gene> implements Savable
     this.heightSensor = heightSensor;
   }
 
+  /**
+   * Effector is a joint
+   *
+   * @return effector or joint
+   */
   public Effector getEffector()
   {
     return effector;
@@ -128,6 +149,11 @@ public class Gene extends AbstractGene<Gene> implements Savable
     this.heightY = y;
   }
 
+  /**
+   * Set the dimensions of the gene
+   *
+   * @param size input
+   */
   public void setDimensions(Vector3f size)
   {
     this.lengthX = 2*size.x;
@@ -135,6 +161,11 @@ public class Gene extends AbstractGene<Gene> implements Savable
     this.widthZ = 2*size.z;
   }
 
+  /**
+   * Get the dimensions of the gene
+   *
+   * @param size output
+   */
   public void getDimensions(Vector3f size)
   {
     size.x = lengthX / 2;
@@ -142,6 +173,11 @@ public class Gene extends AbstractGene<Gene> implements Savable
     size.z = widthZ / 2;
   }
 
+  /**
+   * Get the rotation of the the block
+   *
+   * @param rotations list of rotations [y,z,x]
+   */
   public void setRotations(float[] rotations)
   {
     rotationY = rotations[0];
@@ -149,6 +185,11 @@ public class Gene extends AbstractGene<Gene> implements Savable
     rotationX = rotations[2];
   }
 
+  /**
+   * Get the rotation of the the block
+   *
+   * @param rotations list of rotations [y,z,x]
+   */
   public void getRotation(float[] rotations)
   {
     rotations[0] = rotationY;
@@ -168,14 +209,6 @@ public class Gene extends AbstractGene<Gene> implements Savable
     _newGene.setHeightSensor(heightSensor.clone());
     _newGene.setEdges(new ArrayList<>(this.getEdges()));
 
-    /*
-    the _newGene will have an pointer to the effector and sensors, but I don't think we want that
-    We want new effectors and sensors as they relate to _newGene, not this one
-    _newGene.setEffector(effector);
-    _newGene.setTouchSensor(touchSensor);
-    _newGene.setAngleSensor(angleSensor);
-    _newGene.setHeightSensor(heightSensor);
-    */
     return _newGene;
   }
 

@@ -7,7 +7,7 @@ package vcreature;
  * Parameters that describe how a random creature is
  * procedurally generated
  */
-public class RandomCreatureParameters
+public final class RandomCreatureParameters
 {
   public static final float MIN_BLOCK_DIM = 1.0f; // minimum size in any x, y, or z direction
   public static final float MAX_BLOCK_DIM = 10.0f; // maximum size in any x, y, or z direction

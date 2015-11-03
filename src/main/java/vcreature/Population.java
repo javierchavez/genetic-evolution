@@ -21,13 +21,13 @@ public class Population extends Vector<Being>
   private volatile int generations;
   private volatile float averageFitness;
   private volatile float bestFitness;
-  private volatile long lifetimeOffspring;
-  private volatile long lifetimeHillClimbs;
-  private volatile long currentRejectedCreatures;
-  private volatile long currentFailedHillClimbs;
-  private volatile long lifetimeRejectedCreatures;
-  private volatile long lifetimeFailedHillClimbs;
-  private boolean isEvolving =false;
+  // private volatile long lifetimeOffspring;
+  // private volatile long lifetimeHillClimbs;
+  // private volatile long currentRejectedCreatures;
+  // private volatile long currentFailedHillClimbs;
+  // private volatile long lifetimeRejectedCreatures;
+  // private volatile long lifetimeFailedHillClimbs;
+  // private boolean isEvolving = false;
 
   public GeneticAlgorithm getBreeding()
   {
@@ -43,10 +43,10 @@ public class Population extends Vector<Being>
 
   private Queue queue = new ArrayDeque<>();
 
-  public void setIsEvolving(boolean isEvolving)
-  {
-    this.isEvolving = isEvolving;
-  }
+//  public void setIsEvolving(boolean isEvolving)
+//  {
+//    this.isEvolving = isEvolving;
+//  }
 
   public Population(Vector<Being> beings, GeneticAlgorithm breeding)
   {

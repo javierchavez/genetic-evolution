@@ -43,11 +43,21 @@ public class Genome implements Savable
     genes.get(lastLink).addEdge(lastLink+1);
   }
 
+  /**
+   * Append a gene to list. No links are made!
+   *
+   * @param gene to append
+   */
   public void append(Gene gene)
   {
     genes.add(gene);
   }
 
+  /**
+   * Remove a gene and its edges.
+   *
+   * @param gene gene to remove
+   */
   public void remove(Gene gene)
   {
     for (Gene neighbor : neighbors(gene))
@@ -100,7 +110,8 @@ public class Genome implements Savable
 
   /**
    * Size of the Genome
-   * @return
+   *
+   * @return number of genes
    */
   public int size()
   {
@@ -122,7 +133,13 @@ public class Genome implements Savable
     g1.addEdge(geneIndex2);
   }
 
-
+  /**
+   * Get all the neighbors of given the current location. Does not include self
+   * only its links in the graph
+   *
+   * @param current location
+   * @return List of neighbors
+   */
   public List<Gene> neighbors (Gene current)
   {
     ArrayList<Integer> edges = current.getEdges();

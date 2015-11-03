@@ -4,17 +4,15 @@ package vcreature;
 import vcreature.genotype.Genome;
 
 /**
- * Wrapper for Genome and Creature
+ * Mainly to house the Genome and data about the Being.
  *
- * The population will consist of many Beings
  */
 public class Being /*Comparable<Being>*/
 {
 
-  private static int totalBeings = 0;
-
-  private String name;
-  private int age;
+  public static int TOTAL = 0;
+  // private String name;
+  // private int age;
   private Genome genotype;
   private int timesHillClimbed;
   private int timesBred;
@@ -25,11 +23,13 @@ public class Being /*Comparable<Being>*/
 
   public Being()
   {
+    TOTAL++;
   }
 
   public Being(Genome bird)
   {
     this.genotype = bird;
+    TOTAL++;
   }
 
   public synchronized boolean isUnderEvaluation()
@@ -41,7 +41,6 @@ public class Being /*Comparable<Being>*/
   {
     this.underEvaluation = underEvaluation;
   }
-
 
   public Genome getGenotype()
   {

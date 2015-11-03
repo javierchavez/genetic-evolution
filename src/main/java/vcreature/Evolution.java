@@ -17,15 +17,21 @@ public class Evolution extends Thread
   private Population population;
   private Logger logger = new Logger();
 
+  /**
+   * Create a evolution given a population
+   *
+   * @param population population that will be split into SubPopulations
+   */
   public Evolution(Population population)
   {
 
     this.population = population;
-    // population.initPop();
+
     subs = new ArrayList<>();
     int chunkSize = 10;
     int numOfChunks = (int) Math.ceil((double) population.size() / chunkSize);
 
+    // Given a list split into equal parts of 10.
     for (int i = 0; i < numOfChunks; i++)
     {
       int start = i * chunkSize;
@@ -36,17 +42,24 @@ public class Evolution extends Thread
                                  start,
                                  length + start));
     }
-
+    // Start all the SubPopulation threads
     for (Subpopulation subpopulation : subs)
     {
       subpopulation.start();
     }
+
   }
 
   public ArrayList<Subpopulation> getSubs()
   {
     return subs;
   }
+
+  /**
+   * Cross a population of creatures
+   *
+   * @param subpopulation index of SubPopulation
+   */
   public void crossSubpopulation(int subpopulation)
   {
     for (Being being : subs.get(subpopulation).getPopulation().getBeings())

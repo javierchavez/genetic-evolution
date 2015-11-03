@@ -1,16 +1,16 @@
 package vcreature;
 
 
-import java.util.Random;
-
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.collision.CollisionResults;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
-import com.jme3.scene.Node;
-import com.jme3.math.Vector3f;
 import vcreature.phenotype.EnumNeuronInput;
 import vcreature.phenotype.Neuron;
+
+import java.util.Random;
 
 
 /**
@@ -20,7 +20,7 @@ import vcreature.phenotype.Neuron;
  */
 public class RandomCreature extends Creature
 {
-  private RandomCreatureParameters params = new RandomCreatureParameters();
+  // private RandomCreatureParameters params = new RandomCreatureParameters();
 
   public RandomCreature(PhysicsSpace physicsSpace, Node jMonkeyRootNode)
   {
@@ -39,7 +39,7 @@ public class RandomCreature extends Creature
       addBlocks(root);
       attempts++;
     }
-    while (!validCreature() && attempts < params.MAX_GENERATION_ATTEMPTS);
+    while (!validCreature() && attempts < RandomCreatureParameters.MAX_GENERATION_ATTEMPTS);
 
     if (!validCreature())
     {
@@ -65,7 +65,7 @@ public class RandomCreature extends Creature
     Random rand = new Random();
     Block child;
 
-    if (getDepth(parent, 0) > params.MAX_DEPTH)
+    if (getDepth(parent, 0) > RandomCreatureParameters.MAX_DEPTH)
     {
       return;
     }
@@ -74,12 +74,12 @@ public class RandomCreature extends Creature
     //        Joel does not support removing a block from the creature anymore so
     //        I have to throw away an entire creature instead of just a block
     //        when a creature is invalid (colliding blocks)
-    while (attempts < params.MAX_GENERATION_ATTEMPTS && validCreature())
+    while (attempts < RandomCreatureParameters.MAX_GENERATION_ATTEMPTS && validCreature())
     {
-      if (parent.getChildList().size() <= params.MAX_CHILDREN && rand.nextFloat() < params.CHILD_SPAWN_CHANCE)
+      if (parent.getChildList().size() <= RandomCreatureParameters.MAX_CHILDREN && rand.nextFloat() < RandomCreatureParameters.CHILD_SPAWN_CHANCE)
       {
         child = generateBlock(parent);
-        if (rand.nextFloat() < params.RECURSE_CHANCE)
+        if (rand.nextFloat() < RandomCreatureParameters.RECURSE_CHANCE)
         {
           addBlocks(child);
         }
@@ -263,7 +263,7 @@ public class RandomCreature extends Creature
 
   private float genRandDim(Random rand)
   {
-    return params.MIN_BLOCK_DIM + (rand.nextFloat() * (params.MAX_BLOCK_DIM - params.MIN_BLOCK_DIM));
+    return RandomCreatureParameters.MIN_BLOCK_DIM + (rand.nextFloat() * (RandomCreatureParameters.MAX_BLOCK_DIM - RandomCreatureParameters.MIN_BLOCK_DIM));
   }
 
   private Vector3f genRandSize(Random rand)
@@ -296,11 +296,11 @@ public class RandomCreature extends Creature
     EnumNeuronInput inputE = getRandInput(rand);
 
     Neuron neuron = new Neuron(inputA, inputB, inputC, inputD, inputE);
-    neuron.setInputValue(Neuron.A, rand.nextInt(params.MAX_NEURON_VALUE));
-    neuron.setInputValue(Neuron.B, rand.nextInt(params.MAX_NEURON_VALUE));
-    neuron.setInputValue(Neuron.C, rand.nextInt(params.MAX_NEURON_VALUE));
-    neuron.setInputValue(Neuron.D, rand.nextInt(params.MAX_NEURON_VALUE));
-    neuron.setInputValue(Neuron.E, rand.nextInt(params.MAX_NEURON_VALUE));
+    neuron.setInputValue(Neuron.A, rand.nextInt(RandomCreatureParameters.MAX_NEURON_VALUE));
+    neuron.setInputValue(Neuron.B, rand.nextInt(RandomCreatureParameters.MAX_NEURON_VALUE));
+    neuron.setInputValue(Neuron.C, rand.nextInt(RandomCreatureParameters.MAX_NEURON_VALUE));
+    neuron.setInputValue(Neuron.D, rand.nextInt(RandomCreatureParameters.MAX_NEURON_VALUE));
+    neuron.setInputValue(Neuron.E, rand.nextInt(RandomCreatureParameters.MAX_NEURON_VALUE));
 
     return neuron;
   }

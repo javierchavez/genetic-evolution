@@ -3,18 +3,24 @@ package vcreature.utils;
 
 import java.io.*;
 
+
+/**
+ * Class that helps with continual logging.
+ *
+ */
 public class Logger
 {
-
-  private String fileName = "temp.txt";
-  // Assume default encoding.
-  private File file;
   private StringBuilder stringBuilder = new StringBuilder();
   private BufferedWriter writer = null;
 
-  public Logger()
+  /**
+   * Start the logger with a supplied filename.
+   *
+   * @param fileName name of file default path is proj root.
+   */
+  public Logger(String fileName)
   {
-    file = new File(fileName);
+    File file = new File(fileName);
     try
     {
       writer = new BufferedWriter(new FileWriter(file, true));
@@ -25,6 +31,20 @@ public class Logger
     }
   }
 
+  /**
+   * Defaults to saving data to logger.txt at project root
+   *
+   */
+  public Logger()
+  {
+    this("temp.txt");
+  }
+
+  /**
+   * Export or Save a object to file.
+   *
+   * @param s Savable object
+   */
   public synchronized void export(Savable s)
   {
     s.write(stringBuilder);

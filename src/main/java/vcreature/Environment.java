@@ -10,32 +10,46 @@ import vcreature.phenotype.Creature;
 import java.util.Random;
 
 /**
- * Wrapper to hold physics this should only belong to evolution.
+ *  Environment housing all the applications main functionality.
+ *
  */
 public class Environment extends AbstractApplication
 {
 
   private float elapsedSimulationTime = 0.0f;
 
-
+  // Main population
   private Population population;
+
+  // Wrapper for population and controlling populations
+  private Evolution evolution;
+
+
+  // Turning creatures into DNA and Blocks
   private CreatureSynthesizer creatureSynthesizer;
   private GenomeSynthesizer genomeSynthesizer;
 
+  // Current creature, being, genome
   private Creature creature;
   private Being being = null;
   private Genome genome;
 
-
+  // Used for crossing
   private GeneticAlgorithm breeding;
-  private Evolution evolution;
+
+  // Generate random genomes
   private GenomeGenerator generator;
 
+  // Generation currently spawning
   boolean newGenerationSpwan = false;
 
 
   static boolean creaturePresent = false;
-  private static int EVALUATION_TIME = 11; // seconds
+
+  // Amount of time creatures are left in environment
+  private static int EVALUATION_TIME = 6; // seconds
+
+  // Used for getting random subpopulation for crossing
   private Random random = new Random();
   private boolean beingAdded;
 
@@ -63,15 +77,16 @@ public class Environment extends AbstractApplication
     b.setGenotype(genome);
     population.add(b);
 
-    // random generator
+    // initialize population
     generator = new GenomeGenerator();
-    generator.generateGenome();
 
-    // init population
+    // Fill up the population
     for (int i = 0; i < 100; i++)
     {
       FlappyBird daBird = new FlappyBird(getPhysicsSpace(), rootNode);
       Genome genotype = creatureSynthesizer.encode(daBird);
+
+      // generator.generateGenome();
       daBird.remove();
 
       Being bb = new Being();
@@ -80,6 +95,7 @@ public class Environment extends AbstractApplication
       population.add(bb);
     }
 
+    // set the population to a evolution
     evolution = new Evolution(population);
 
 
@@ -94,7 +110,7 @@ public class Environment extends AbstractApplication
 
     elapsedSimulationTime += deltaSeconds;
 
-
+    // A being is in queue ready for evaluation
     if (beingAdded)
     {
       genome = being.getGenotype();
@@ -104,12 +120,17 @@ public class Environment extends AbstractApplication
       elapsedSimulationTime = 0;
     }
 
-    if (elapsedSimulationTime >= EVALUATION_TIME)
+    // check if the evaluation is complete
+    if (creature != null && elapsedSimulationTime >= EVALUATION_TIME)
     {
       being.setFitness(creature.getFitness());
       being.setUnderEvaluation(false);
       creature.remove();
+      creature = null;
     }
+
+    // On cross populations when one is complete.
+    // avoid adding more than more to engine
     if (elapsedSimulationTime > 5 && !newGenerationSpwan || breeding.currGen() == 200)
     {
       System.out.println("New generation kicked off");
@@ -119,26 +140,27 @@ public class Environment extends AbstractApplication
       }).start();
     }
 
+    // update the brain
     if (creature != null)
     {
       creature.updateBrain(elapsedSimulationTime);
     }
 
-
   }
 
-
+  /**
+   * Add a being into the environment for evaluation.
+   *
+   * @param v Being with genotype to be added to physics space.
+   */
   public void beginEvaluation(Being v)
   {
-
-    this.being = v;
-
     System.out.println("Creature being evaluated.");
 
+    this.being = v;
     being.setUnderEvaluation(true);
     beingAdded = true;
     genome = being.getGenotype();
-
   }
 
   private int genRandDim(int max)

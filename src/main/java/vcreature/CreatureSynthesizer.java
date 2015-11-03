@@ -54,12 +54,6 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
     return genome;
   }
 
-  @Override
-  public Creature decode(Genome typeToConvert)
-  {
-    return null;
-  }
-
   private Block synthesizeGene(Gene current)
   {
     return null;
@@ -235,37 +229,4 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
     return null;
   }
 
-  @Override
-  public String synthesizedToString()
-  {
-    StringBuffer s = new StringBuffer();
-
-    Queue<Gene> frontier = new LinkedList<>();
-    frontier.add(genome.getRoot());
-    HashMap<Gene, Gene> cameFrom = new HashMap<>();
-    cameFrom.put(genome.getRoot(), null);
-
-    while (!frontier.isEmpty())
-    {
-      Gene current = frontier.remove();
-      List<Gene> neighbors = genome.neighbors(current);
-
-      if (neighbors.size() > 0)
-      {
-        s.append(current.toString()+ "p");
-      }
-
-      for (Gene next : neighbors)
-      {
-        if (!cameFrom.containsKey(next))
-        {
-          frontier.add(next);
-          cameFrom.put(next, current);
-          s.append("->" + next.toString());
-        }
-      }
-      s.append("\n");
-    }
-    return s.toString();
-  }
 }

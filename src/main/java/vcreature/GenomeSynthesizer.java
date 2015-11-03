@@ -98,21 +98,9 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
   }
 
   @Override
-  public Genome decode(Creature typeToConvert)
-  {
-    return null;
-  }
-
-  @Override
   public String toString()
   {
     return null;
-  }
-
-  @Override
-  public String synthesizedToString()
-  {
-    return creature.toString();
   }
 
   private List<Neuron> synthesizeNeurons(Gene gene)

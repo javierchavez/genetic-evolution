@@ -31,6 +31,9 @@ public class Effector implements Savable
   // Sims 3.3 first sentence
   // private EffectorInput inputSource;
 
+  /**
+   * Effectors shall only be instantiated by Genes
+   */
   protected Effector()
   {
     this.maxForce = 0;
@@ -142,26 +145,51 @@ public class Effector implements Savable
     return neuralNet;
   }
 
+  /**
+   * Append neuron to list
+   *
+   * @param node neuron to be appended.
+   */
   public void addNeuralNode(NeuralNode node)
   {
     neuralNet.add(node);
   }
 
+  /**
+   * Set all the Nurons controlling this joint/Effector
+   *
+   * @param neuralNet list of neurons
+   */
   public void setNeuralNet(ArrayList<NeuralNode> neuralNet)
   {
     this.neuralNet = neuralNet;
   }
 
+  /**
+   * Get the index to which this gene in attached to by a joint
+   *
+   * @return index of parent
+   */
   public int getJointParentIndex()
   {
     return jointParentIndex;
   }
 
+  /**
+   * Set the index to which this gene in attached to by a joint
+   *
+   * @param jointParentIndex
+   */
   public void setJointParentIndex(int jointParentIndex)
   {
     this.jointParentIndex = jointParentIndex;
   }
 
+  /**
+   * Set the axis to which the joint in aligned
+   *
+   * @param vector3f containing data
+   */
   public void setPivotAxis(Vector3f vector3f)
   {
     pivotAxisX = vector3f.x;
@@ -169,6 +197,11 @@ public class Effector implements Savable
     pivotAxisZ = vector3f.z;
   }
 
+  /**
+   * Set the child joint attach location
+   *
+   * @param vector3f containing parent data
+   */
   public void setChild(Vector3f vector3f)
   {
     childX = vector3f.x;
@@ -176,6 +209,11 @@ public class Effector implements Savable
     childZ = vector3f.z;
   }
 
+  /**
+   * Set the parent joint attach location
+   *
+   * @param vector3f containing parent data
+   */
   public void setParent(Vector3f vector3f)
   {
     parentX = vector3f.x;
@@ -183,7 +221,11 @@ public class Effector implements Savable
     parentZ = vector3f.z;
   }
 
-
+  /**
+   * Get the pivot of which the joint is aligned
+   *
+   * @param vector3f output
+   */
   public void getPivotAxis(Vector3f vector3f)
   {
     vector3f.x = pivotAxisX;
@@ -191,7 +233,11 @@ public class Effector implements Savable
     vector3f.z = pivotAxisZ;
   }
 
-
+  /**
+   * Get location on the child of connection
+   *
+   * @param vector3f output
+   */
   public void getChild(Vector3f vector3f)
   {
     vector3f.x = childX;
@@ -199,7 +245,11 @@ public class Effector implements Savable
     vector3f.z = childZ;
   }
 
-
+  /**
+   * Get location on the parent of connection
+   *
+   * @param vector3f output
+   */
   public void getParent(Vector3f vector3f)
   {
     vector3f.x = parentX;
@@ -253,19 +303,4 @@ public class Effector implements Savable
 
   }
 
-  /**
-   * Source of the stimulation either from Sensor or Neural source
-   *
-   * @param inputSource
-   */
-//  public void addConnection(EffectorInput inputSource)
-//  {
-//    this.inputSource = inputSource;
-//  }
-//
-//
-//  public void addConnection()
-//  {
-//    this.inputSource = inputSource;
-//  }
 }
