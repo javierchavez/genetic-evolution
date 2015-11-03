@@ -153,11 +153,13 @@ public class Genome implements Savable
   @Override
   public void write(StringBuilder s)
   {
+    s.append("START\n");
     for (Gene gene : genes)
     {
       gene.write(s);
       s.append("\n");
     }
+    s.append("END\n");
   }
 
   @Override
