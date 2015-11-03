@@ -6,26 +6,31 @@ import java.io.*;
 public class Logger
 {
 
-  String fileName = "temp.txt";
+  private String fileName = "temp.txt";
   // Assume default encoding.
-  File file;
+  private File file;
+  private StringBuilder stringBuilder = new StringBuilder();
+  private BufferedWriter writer = null;
 
   public Logger()
   {
     file = new File(fileName);
+    try
+    {
+      writer = new BufferedWriter(new FileWriter(file, true));
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }
   }
 
   public synchronized void export(Savable s)
   {
-    // Always wrap FileWriter in BufferedWriter.
-
-    //    BufferedWriter bufferedWriter
-    StringBuilder stringBuilder = new StringBuilder();
     s.write(stringBuilder);
-    BufferedWriter writer = null;
+
     try
     {
-      writer = new BufferedWriter(new FileWriter(file));
       writer.append(stringBuilder);
       writer.flush();
     }
