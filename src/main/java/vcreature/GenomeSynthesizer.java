@@ -1,9 +1,23 @@
 package vcreature;
 
+/**
+ * @author Javier Chavez
+ * @author Alex Baker
+ * @author Dominic Salas
+ * @author Carrie Martinez
+ * <p>
+ * Date November 4, 2015
+ * CS 351
+ * Genetic Evolution
+ * <p>
+ * Module description here
+ */
+
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
+
 import vcreature.genotype.*;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
@@ -11,6 +25,7 @@ import vcreature.phenotype.EnumNeuronInput;
 import vcreature.phenotype.Neuron;
 
 import java.util.*;
+
 
 public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
 {
@@ -24,7 +39,6 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
     this.physicsSpace = physicsSpace;
     this.rootNode = rootNode;
   }
-
 
   @Override
   public Creature encode(Genome typeToConvert)

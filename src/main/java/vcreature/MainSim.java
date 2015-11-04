@@ -1,8 +1,18 @@
-
 package vcreature;
 
-import vcreature.phenotype.PhysicsConstants;
-import vcreature.phenotype.Block;
+/**
+ * @author Javier Chavez
+ * @author Alex Baker
+ * @author Dominic Salas
+ * @author Carrie Martinez
+ * <p>
+ * Date November 4, 2015
+ * CS 351
+ * Genetic Evolution
+ * <p>
+ * Module description here
+ */
+
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
@@ -23,7 +33,11 @@ import com.jme3.light.AmbientLight;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.system.AppSettings;
+
+import vcreature.phenotype.PhysicsConstants;
+import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
+
 
 public class MainSim extends SimpleApplication implements ActionListener
 {

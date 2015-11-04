@@ -1,9 +1,22 @@
 package vcreature.genotype;
 
+/**
+ * @author Javier Chavez
+ * @author Alex Baker
+ * @author Dominic Salas
+ * @author Carrie Martinez
+ * <p>
+ * Date November 4, 2015
+ * CS 351
+ * Genetic Evolution
+ * <p>
+ * Module description here
+ */
+
+
 import com.jme3.math.Vector3f;
 import vcreature.utils.Savable;
 
-import java.util.ArrayList;
 
 /**
  * Rigid Part our creature this will be a Block

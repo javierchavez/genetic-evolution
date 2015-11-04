@@ -1,5 +1,19 @@
 package vcreature.Algorithms;
 
+/**
+ * @author Javier Chavez
+ * @author Alex Baker
+ * @author Dominic Salas
+ * @author Carrie Martinez
+ * <p>
+ * Date November 4, 2015
+ * CS 351
+ * Genetic Evolution
+ * <p>
+ * Module description here
+ */
+
+
 import vcreature.Being;
 import vcreature.Environment;
 import vcreature.Population;
@@ -11,13 +25,12 @@ import vcreature.genotype.Genome;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+
 /**
  * @author Cari
  */
 public class GeneticAlgorithm
 {
-
-
   private int totalGenerations = 50;
   private int populationSize;
   private int pctMutations = 0;

@@ -1,5 +1,19 @@
 package vcreature.genotype;
 
+/**
+ * @author Javier Chavez
+ * @author Alex Baker
+ * @author Dominic Salas
+ * @author Carrie Martinez
+ * <p>
+ * Date November 4, 2015
+ * CS 351
+ * Genetic Evolution
+ * <p>
+ * Module description here
+ */
+
+
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.collision.CollisionResults;
 import com.jme3.scene.Node;
@@ -12,6 +26,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+
 
 /**
  * Genome is a collection of genes. Genetic representation of this morphology is a directed graph of

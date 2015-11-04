@@ -1,8 +1,23 @@
 package vcreature.genotype;
 
+/**
+ * @author Javier Chavez
+ * @author Alex Baker
+ * @author Dominic Salas
+ * @author Carrie Martinez
+ * <p>
+ * Date November 4, 2015
+ * CS 351
+ * Genetic Evolution
+ * <p>
+ * Module description here
+ */
+
+
 import vcreature.utils.Savable;
 
 import java.lang.reflect.InvocationTargetException;
+
 
 /**
  * Page 13 Slide 26 the sensor is for joint, touch, height.
