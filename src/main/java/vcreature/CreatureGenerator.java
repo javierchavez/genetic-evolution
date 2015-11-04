@@ -1,6 +1,9 @@
 package vcreature;
 
 
+import com.jme3.bullet.PhysicsSpace;
+import com.jme3.scene.Node;
+import vcreature.genotype.GenomeGenerator;
 import vcreature.phenotype.Creature;
 
 /**
@@ -8,29 +11,24 @@ import vcreature.phenotype.Creature;
  */
 public class CreatureGenerator
 {
-  private static final CreatureGenerator thisInstance = new CreatureGenerator();
-  private static  Environment env;
+  private PhysicsSpace physicsSpace;
+  private Node rootNode;
 
+  private GenomeSynthesizer synthesizer;
+  private GenomeGenerator generator;
   private Creature creature;
 
-  private CreatureGenerator()
+  public CreatureGenerator(PhysicsSpace physicsSpace, Node rootNode)
   {
-  }
-
-  public static CreatureGenerator getInstance()
-  {
-    return thisInstance;
-  }
-
-  public static CreatureGenerator init(Environment environment)
-  {
-    env = environment;
-    return thisInstance;
+    this.physicsSpace = physicsSpace;
+    this.rootNode = rootNode;
+    synthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
+    generator = new GenomeGenerator(physicsSpace, rootNode);
   }
 
   public Creature generateCreature()
   {
-    // creature = GenomeSynthesizer.getInstance().encode(GenomeGenerator.init(env).generateGenome());
+    creature = synthesizer.encode(generator.generateGenome());
     return creature;
   }
 }

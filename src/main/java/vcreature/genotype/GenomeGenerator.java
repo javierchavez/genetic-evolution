@@ -2,11 +2,8 @@ package vcreature.genotype;
 
 
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.collision.CollisionResults;
 import com.jme3.math.Vector3f;
 import vcreature.GenomeSynthesizer;
-import vcreature.phenotype.Block;
-import vcreature.phenotype.Creature;
 import vcreature.phenotype.EnumNeuronInput;
 import vcreature.phenotype.EnumOperator;
 

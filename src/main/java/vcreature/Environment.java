@@ -78,7 +78,7 @@ public class Environment extends AbstractApplication
     population.add(b);
 
     // initialize population
-    generator = new GenomeGenerator();
+    generator = new GenomeGenerator(getPhysicsSpace(), rootNode);
 
     // Fill up the population
     for (int i = 0; i < 100; i++)

@@ -20,6 +20,8 @@ import com.jme3.scene.shape.Box;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
 import com.jme3.texture.Texture;
+import vcreature.genotype.GenomeGenerator;
+import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
 import vcreature.phenotype.PhysicsConstants;
 
@@ -30,8 +32,6 @@ import vcreature.phenotype.PhysicsConstants;
  */
 public class CreatureGeneratorSim extends SimpleApplication implements ActionListener
 {
-  private Environment env;
-
   private BulletAppState bulletAppState;
   private PhysicsSpace physicsSpace;
   private float cameraAngle = (float)(Math.PI/2.0);
@@ -41,6 +41,7 @@ public class CreatureGeneratorSim extends SimpleApplication implements ActionLis
   private Vector3f tmpVec3; //
   private Creature creature;
   private boolean isCameraRotating = true;
+  private CreatureGenerator generator;
 
 
   @Override
@@ -80,17 +81,16 @@ public class CreatureGeneratorSim extends SimpleApplication implements ActionLis
     floor_phy.setFriction(PhysicsConstants.GROUND_SLIDING_FRICTION);
     floor_phy.setRestitution(PhysicsConstants.GROUND_BOUNCINESS);
     floor_phy.setDamping(PhysicsConstants.GROUND_LINEAR_DAMPINING,
-            PhysicsConstants.GROUND_ANGULAR_DAMPINING);
+                         PhysicsConstants.GROUND_ANGULAR_DAMPINING);
 
-    //Block.initStaticMaterials(assetManager);
+    Block.initStaticMaterials(assetManager);
     initLighting();
     initKeys();
 
     flyCam.setDragToRotate(true);
 
-    //env = new Environment(getStateManager().getState(BulletAppState.class), assetManager, rootNode);
-    //creature = CreatureGenerator.init(env).generateCreature();
-    creature = new FlappyBird(physicsSpace, rootNode);
+    generator = new CreatureGenerator(physicsSpace, rootNode);
+    creature = generator.generateCreature();
   }
 
   private void initLighting()
@@ -137,9 +137,9 @@ public class CreatureGeneratorSim extends SimpleApplication implements ActionLis
     }
     else if (isPressed && name.equals("Generate New Creature"))
     {
-      //creature.remove();
-      //creature = CreatureGenerator.init(env).generateCreature();
-      elapsedSimulationTime = 0;
+      creature.remove();
+      creature = generator.generateCreature();
+      elapsedSimulationTime = 0.0f;
     }
   }
 
