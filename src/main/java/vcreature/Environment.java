@@ -83,11 +83,11 @@ public class Environment extends AbstractApplication
     // Fill up the population
     for (int i = 0; i < 100; i++)
     {
-      FlappyBird daBird = new FlappyBird(getPhysicsSpace(), rootNode);
-      Genome genotype = creatureSynthesizer.encode(daBird);
+      //FlappyBird daBird = new FlappyBird(getPhysicsSpace(), rootNode);
+      //Genome genotype = creatureSynthesizer.encode(daBird);
 
-      // generator.generateGenome();
-      daBird.remove();
+      Genome genotype = generator.generateGenome();
+      //daBird.remove();
 
       Being bb = new Being();
 

@@ -18,7 +18,7 @@ public class GeneticAlgorithm
 {
 
 
-  private int totalGenerations = 10;
+  private int totalGenerations = 50;
   private int populationSize;
   private int pctMutations = 0;
   private int pctCrossover = 100;
@@ -145,9 +145,9 @@ public class GeneticAlgorithm
       this.bestFitness = currentGenBestBeing.getFitness();
     }
     //elitism;take the best individual unchanged into the next generation
-    newParents.add(currentGenBestBeing.clone());
+    newParents.add(currentGenBestBeing);
     //take one random member of the population to meet spac that requires every member of population has chance of being selected
-    newParents.add(population.get(rnd.nextInt(population.size())).clone());
+    newParents.add(population.get(rnd.nextInt(population.size())));
 
     //tournament selection; tournament size 2; take random pairs from population; compare fitness; take better Being into next generation
     //need to keep population size consistent; take elitism and randomly added beings into account
@@ -240,8 +240,82 @@ public class GeneticAlgorithm
     return parentIndex;
   }
 
+  protected Being[] crossover(Being parent1ARG, Being parent2ARG)
+  {
+    System.out.println("CROSSOVER");
+    Being parent1 = parent1ARG.clone();
+    Being parent2 = parent2ARG.clone();
+
+    Being[] children = {parent1, parent2};
+    if (parent1.getGenotype().getGenes().size() < 2 || parent2.getGenotype().getGenes().size() < 2)
+    {
+      System.out.println("CROSSOVER not performed; crossover not implemented for parent size 1");
+      return children;
+    }
+    Random rnd = new Random();
+    //index of first gene to be swapped on each parent
+    int crossoverPoint1 = 1 + rnd.nextInt((parent1.getGenotype().getGenes().size() - 1));
+    int crossoverPoint2 = 1 + rnd.nextInt((parent2.getGenotype().getGenes().size() - 1));
+    Genome genotype1 = parent1.getGenotype();
+    Gene gene1 = genotype1.getGenes().get(crossoverPoint1);
+    Genome genotype2 = parent2.getGenotype();
+    Gene gene2 = parent2.getGenotype().getGenes().get(crossoverPoint2);
+    //make copies of parents
+    Being parent1CLONE = parent1.clone();
+    Being parent2CLONE = parent2.clone();
+
+    Genome genotype1CLONE = parent1CLONE.getGenotype();
+    Gene gene1CLONE = genotype1CLONE.getGenes().get(crossoverPoint1);
+    Genome genotype2CLONE = parent2CLONE.getGenotype();
+    Gene gene2CLONE = parent2CLONE.getGenotype().getGenes().get(crossoverPoint2);
+
+    System.out.println("PARENT1: ");
+    printBeing(parent1);
+    System.out.println("PARENT2: ");
+    printBeing(parent2);
+
+    ArrayList<Integer> neighbors1 = gene1.getEdges();
+    ArrayList<Integer> neighbors2 = gene2.getEdges();
 
 
+    int parentIndex1 = getParentIndex(genotype1, crossoverPoint1);
+    int parentIndex2 = getParentIndex(genotype2, crossoverPoint2);
+
+
+    if (neighbors1.size() == 0 && neighbors2.size() == 0)
+    {
+      if (rnd.nextInt(100) < 90)
+      {
+
+        //swap genes at crossover points; update parent gene to remove this edge; add new edge from that parent to this new gene
+        genotype1.getGenes().remove(crossoverPoint1);
+        genotype1.getGenes().add(crossoverPoint1, gene2CLONE);
+        setParentJoint(genotype1.getGenes().get(parentIndex1), gene2CLONE);
+
+        genotype2.getGenes().remove(crossoverPoint2);
+        genotype2.getGenes().add(crossoverPoint2, gene1CLONE);
+        setParentJoint(genotype2.getGenes().get(parentIndex2), gene1CLONE);
+      } else
+      {
+        //swap genes at crossover points; update parent gene to remove this edge; add new edge from that parent to this new gene
+        int rndIdx1 = rnd.nextInt(genotype1.getGenes().size());
+        genotype1.getGenes().add(genotype1.getGenes().size() - 1, gene2CLONE);
+        setParentJoint(genotype1.getGenes().get(rndIdx1), gene2CLONE);
+        genotype1.getGenes().get(rndIdx1).addEdge(genotype1.getGenes().size() - 1);
+
+        int rndIdx2 = rnd.nextInt(genotype2.getGenes().size());
+        genotype2.getGenes().add(genotype2.getGenes().size() - 1, gene1CLONE);
+        setParentJoint(genotype2.getGenes().get(rndIdx2), gene1CLONE);
+        genotype2.getGenes().get(rndIdx2).addEdge(genotype2.getGenes().size() - 1);
+
+      }
+    }
+    return children;
+  }
+
+
+////////ORIGINAL CROSSOVER////
+/*
   protected Being[] crossover(Being parent1ARG, Being parent2ARG)
   {
 
@@ -293,12 +367,12 @@ public class GeneticAlgorithm
 
       //swap genes at crossover points; update parent gene to remove this edge; add new edge from that parent to this new gene
       genotype1.getGenes().remove(crossoverPoint1);
-      genotype1.getGenes().add(crossoverPoint1, gene2);
-      setParentJoint(genotype1.getGenes().get(parentIndex1), gene2);
+      genotype1.getGenes().add(crossoverPoint1, gene2CLONE);
+      setParentJoint(genotype1.getGenes().get(parentIndex1), gene2CLONE);
 
       genotype2.getGenes().remove(crossoverPoint2);
-      genotype2.getGenes().add(crossoverPoint2, gene1);
-      setParentJoint(genotype2.getGenes().get(parentIndex2), gene1);
+      genotype2.getGenes().add(crossoverPoint2, gene1CLONE);
+      setParentJoint(genotype2.getGenes().get(parentIndex2), gene1CLONE);
 
 
     } else
@@ -314,14 +388,14 @@ public class GeneticAlgorithm
     System.out.println("PARENT2 AFTER CROSSOVER:");
     printBeing(parent2);
 
-    children[0] = parent1.clone();
-    children[1] = parent2.clone();
+    children[0] = parent1;
+    children[1] = parent2;
 
     return children;
   }
 
 
-
+*/
   private void crossParent(Genome genotype1, Genome genotype2, int crossoverPoint1, int crossoverPoint2, int parentIndex1, Gene gene2)
   {
 
@@ -331,8 +405,7 @@ public class GeneticAlgorithm
     ArrayList<Integer> genesToSwap1 = getDescendants(genotype1, crossoverPoint1, genesToSwap1dummy);
     ArrayList<Integer> genesToSwap2 = getDescendants(genotype2, crossoverPoint2, genesToSwap2dummy);
 
-    if (genesToSwap2.size() < genesToSwap1.size())
-    {
+
     //Create Hash Map for swap1 parent locations//
     HashMap<Integer, Integer> swapParents1 = new HashMap();
 
@@ -448,7 +521,7 @@ public class GeneticAlgorithm
       }
 
     }
-  }
+
   }
 
 
@@ -469,6 +542,7 @@ public class GeneticAlgorithm
     }
     return descendants;
   }
+
 
 
   protected void mutation(Being individual)
@@ -516,23 +590,23 @@ public class GeneticAlgorithm
 
     //elitism: put one copy of unaltered most fit being and one mutated version of most fit being directly into nextGen
     //pick random pairs of parents from population pool
-    nextGeneration.add(this.bestBeing.clone());
-    nextGeneration.add(this.bestBeing.clone());
+    nextGeneration.add(this.bestBeing);
+    nextGeneration.add(this.bestBeing);
 
     while(newParents.size() > 2)
     {
       int parent1index = rnd.nextInt(newParents.size());
 
-      parent1 = newParents.get(parent1index).clone();
+      parent1 = newParents.get(parent1index);
       newParents.remove(newParents.get(parent1index));
       int parent2index = rnd.nextInt(newParents.size());
-      parent2 = newParents.get(parent2index).clone();
+      parent2 = newParents.get(parent2index);
       newParents.remove(newParents.get(parent2index));
       if(rnd.nextInt(100) < this.pctCrossover)
       {
-        Being[] children = crossover(parent1.clone(), parent2.clone());
-        parent1 = children[0].clone();
-        parent2 = children[1].clone();
+        Being[] children = crossover(parent1, parent2);
+        parent1 = children[0];
+        parent2 = children[1];
       }
       if (rnd.nextInt(100) < this.pctMutations)
       {
@@ -542,8 +616,8 @@ public class GeneticAlgorithm
       {
         mutation(parent2);
       }
-      nextGeneration.add(parent1.clone());
-      nextGeneration.add(parent2.clone());
+      nextGeneration.add(parent1);
+      nextGeneration.add(parent2);
     }
 
 
