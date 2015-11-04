@@ -12,36 +12,36 @@ import vcreature.phenotype.Neuron;
 /**
  *
  */
-public class FlappyBird2 extends Creature
+public class FlappyBird3 extends Creature
 {
-  public FlappyBird2(PhysicsSpace physicsSpace, Node rootNode)
+  public FlappyBird3(PhysicsSpace physicsSpace, Node rootNode)
   {
     super(physicsSpace, rootNode);
 
     float[] rotations = new float[] {0,0,0};
-    Vector3f torsoSize = new Vector3f( 2.0f, 1.5f, 1.5f);
-    Vector3f leg1Size  = new Vector3f( 3.0f, 0.5f, 1.0f);
-    Vector3f leg2Size  = new Vector3f( 3.0f, 0.5f, 1.0f);
-    Vector3f leg3Size  = new Vector3f( 1.0f, 0.5f, 3.0f);
-    Vector3f leg4Size  = new Vector3f( 1.0f, 0.5f, 3.0f);
+    Vector3f torsoSize = new Vector3f( 2.0f, 0.5f, 1.5f);
+    Vector3f leg1Size  = new Vector3f( 4.0f, 0.5f, 1.0f);
+    Vector3f leg2Size  = new Vector3f( 4.0f, 0.5f, 1.0f);
+    Vector3f leg3Size  = new Vector3f( 1.0f, 0.5f, 4.0f);
+    Vector3f leg4Size  = new Vector3f( 1.0f, 0.5f, 4.0f);
 
     Block torso = addRoot(new Vector3f(0, 100, 0), torsoSize, rotations);
     torso.setMaterial(Block.MATERIAL_RED);
 
-    Vector3f pivotA = new Vector3f( 2.0f, -1.5f,  0.0f);
-    Vector3f pivotB = new Vector3f(-3.0f,  0.5f,  0.0f);
+    Vector3f pivotA = new Vector3f( 2.0f, -.5f,  0.0f);
+    Vector3f pivotB = new Vector3f(-4.0f,  0.5f,  0.0f);
     Block leg1 = addBlock(rotations, leg1Size, torso, pivotA,  pivotB, Vector3f.UNIT_Z);
 
-    Vector3f pivotC = new Vector3f(-2.0f, -1.5f,  0.0f);
-    Vector3f pivotD = new Vector3f( 3.0f,  0.5f,  0.0f);
+    Vector3f pivotC = new Vector3f(-2.0f, -.5f,  0.0f);
+    Vector3f pivotD = new Vector3f( 4.0f,  0.5f,  0.0f);
     Block leg2 = addBlock(rotations, leg2Size, torso, pivotC,  pivotD, Vector3f.UNIT_Z);
 
-    Vector3f pivotE = new Vector3f(0.0f, -1.5f, -1.5f);
-    Vector3f pivotF = new Vector3f(0.0f, 0.5f, 3.0f);
+    Vector3f pivotE = new Vector3f(0.0f, -.5f, -1.5f);
+    Vector3f pivotF = new Vector3f(0.0f, 0.5f, 4.0f);
     Block leg3 = addBlock(rotations, leg3Size, torso, pivotE, pivotF, Vector3f.UNIT_X);
 
-    Vector3f pivotG = new Vector3f(0.0f, -1.5f, 1.5f);
-    Vector3f pivotH = new Vector3f(0.0f, 0.5f, -3.0f);
+    Vector3f pivotG = new Vector3f(0.0f, -.5f, 1.5f);
+    Vector3f pivotH = new Vector3f(0.0f, 0.5f, -4.0f);
     Block leg4 = addBlock(rotations, leg4Size, torso, pivotG, pivotH, Vector3f.UNIT_X);
 
 

@@ -27,7 +27,6 @@ import vcreature.phenotype.Creature;
 
 public class MainSim extends SimpleApplication implements ActionListener
 {
-  
   private BulletAppState bulletAppState;
   private PhysicsSpace physicsSpace;
   private float cameraAngle = (float)(Math.PI/2.0);
@@ -37,8 +36,6 @@ public class MainSim extends SimpleApplication implements ActionListener
   private Vector3f tmpVec3; //
   private Creature myCreature;
   private boolean isCameraRotating = true;
-  
-
 
   @Override
   public void simpleInitApp()
@@ -54,9 +51,6 @@ public class MainSim extends SimpleApplication implements ActionListener
     physicsSpace.setGravity(PhysicsConstants.GRAVITY);
     physicsSpace.setAccuracy(PhysicsConstants.PHYSICS_UPDATE_RATE);
     physicsSpace.setMaxSubSteps(4);
-    
-   
-
 
     //Set up inmovable floor
     Box floor = new Box(50f, 0.1f, 50f);
@@ -81,20 +75,16 @@ public class MainSim extends SimpleApplication implements ActionListener
     floor_phy.setRestitution(PhysicsConstants.GROUND_BOUNCINESS);
     floor_phy.setDamping(PhysicsConstants.GROUND_LINEAR_DAMPINING, 
             PhysicsConstants.GROUND_ANGULAR_DAMPINING);
-    
-   
+
     Block.initStaticMaterials(assetManager);
     myCreature = new FlappyBird(physicsSpace, rootNode);
     //myCreature = new Tigger(physicsSpace, rootNode);
-    
-    
+
     initLighting();
     initKeys();
 
     flyCam.setDragToRotate(true);
-    
   }
-
   
   private void initLighting()
   {
@@ -115,48 +105,75 @@ public class MainSim extends SimpleApplication implements ActionListener
     dlsr.setLight(sun);
     viewPort.addProcessor(dlsr);
   }
-  
-  
-  
-  private void initKeys() {
+
+  private void initKeys()
+  {
     inputManager.addMapping("Quit",  new KeyTrigger(KeyInput.KEY_Q));
     inputManager.addMapping("Toggle Camera Rotation",  new KeyTrigger(KeyInput.KEY_P));
-    inputManager.addMapping("Change Creature",  new KeyTrigger(KeyInput.KEY_C));
+    inputManager.addMapping("FlappyBird1",  new KeyTrigger(KeyInput.KEY_1));
+    inputManager.addMapping("FlappyBird2",  new KeyTrigger(KeyInput.KEY_2));
+    inputManager.addMapping("FlappyBird3",  new KeyTrigger(KeyInput.KEY_3));
+    inputManager.addMapping("FlappyBird4",  new KeyTrigger(KeyInput.KEY_4));
 
     // Add the names to the action listener.
     inputManager.addListener(this,"Quit");
     inputManager.addListener(this,"Toggle Camera Rotation");
-    inputManager.addListener(this,"Change Creature");
+    inputManager.addListener(this,"FlappyBird1");
+    inputManager.addListener(this,"FlappyBird2");
+    inputManager.addListener(this,"FlappyBird3");
+    inputManager.addListener(this,"FlappyBird4");
   }
   
   public void onAction(String name, boolean isPressed, float timePerFrame) 
   {
     if (isPressed && name.equals("Toggle Camera Rotation"))
-    { isCameraRotating = !isCameraRotating;
+    {
+      isCameraRotating = !isCameraRotating;
     }
-    else if (isPressed && name.equals("Change Creature"))
-    { System.out.format("Creature Fitness (Maximium height of lowest point) = %.3f meters]\n", myCreature.getFitness());
-      
+    else if (isPressed && name.equals("FlappyBird1"))
+    {
       myCreature.remove();
-      myCreature = new FlappyBird2(physicsSpace, rootNode);
+      myCreature = new FlappyBird(physicsSpace, rootNode);
       
       cameraAngle = (float)(Math.PI/2.0);
       elapsedSimulationTime = 0.0f;
     }
+    else if (isPressed && name.equals("FlappyBird2"))
+    {
+      myCreature.remove();
+      myCreature = new FlappyBird2(physicsSpace, rootNode);
+
+      cameraAngle = (float)(Math.PI/2.0);
+      elapsedSimulationTime = 0.0f;
+    }
+    else if (isPressed && name.equals("FlappyBird3"))
+    {
+      myCreature.remove();
+      myCreature = new FlappyBird3(physicsSpace, rootNode);
+
+      cameraAngle = (float)(Math.PI/2.0);
+      elapsedSimulationTime = 0.0f;
+    }
+    else if (isPressed && name.equals("FlappyBird4"))
+    {
+      myCreature.remove();
+      myCreature = new FlappyBird4(physicsSpace, rootNode);
+
+      cameraAngle = (float)(Math.PI/2.0);
+      elapsedSimulationTime = 0.0f;
+    }
     else if (isPressed && name.equals("Quit"))
-    { System.out.format("Creature Fitness (Maximium height of lowest point) = %.3f meters]\n", myCreature.getFitness());
+    {
+      System.out.format("Creature Fitness (Maximium height of lowest point) = %.3f meters]\n", myCreature.getFitness());
       System.exit(0);
     }
   }
 
-  
   /* Use the main event loop to trigger repeating actions. */
   @Override
   public void simpleUpdate(float deltaSeconds)
   {
     elapsedSimulationTime += deltaSeconds;
-    //print("simpleUpdate() elapsedSimulationTime=", (float)elapsedSimulationTime);
-    //print("simpleUpdate() joint1.getHingeAngle()=", joint1.getHingeAngle());
     myCreature.updateBrain(elapsedSimulationTime);
 
     if (isCameraRotating)
@@ -171,22 +188,6 @@ public class MainSim extends SimpleApplication implements ActionListener
       cam.setLocation(tmpVec3);
       cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
     }
-  }
- 
-  
- 
-
-  
-  private void print(String msg, float x)
-  {
-    String className = this.getClass().getSimpleName();
-    System.out.format("%s.%s %.3f\n", className, msg, x);
-  }
-  
-  private void print(String msg, Vector3f vector)
-  {
-    String className = this.getClass().getSimpleName();
-    System.out.format("%s.%s [%.3f, %.3f, %.3f]\n", className, msg, vector.x, vector.y, vector.z);
   }
 
   public static void main(String[] args)
