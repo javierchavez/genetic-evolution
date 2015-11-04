@@ -5,9 +5,7 @@ import vcreature.Population;
 import vcreature.genotype.Gene;
 import vcreature.genotype.Genome;
 
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Created by dsalas on 10/25/15.
@@ -48,27 +46,45 @@ public class HillClimbing
       {
         //Increase height
         case 0:
-          gene.setHeightY(gene.getHeightY() + 1);
+          if (gene.getHeightY() + 0.5f <= 10.0f)
+          {
+            gene.setHeightY(gene.getHeightY() + 0.5f);
+          }
           break;
         //Decrease height
         case 1:
-          gene.setHeightY(gene.getHeightY() - 1);
+          if (gene.getHeightY() - 0.5f >= 0.0f)
+          {
+            gene.setHeightY(gene.getHeightY() - 0.5f);
+          }
           break;
         //Increase length
         case 2:
-          gene.setLengthX(gene.getLengthX() + 1);
+          if (gene.getLengthX() + 0.5f <= 10.0f)
+          {
+            gene.setLengthX(gene.getLengthX() + 1);
+          }
           break;
         //Decrease length
         case 3:
-          gene.setLengthX(gene.getLengthX() - 1);
+          if (gene.getLengthX() - 0.5f >= 0.0f)
+          {
+            gene.setLengthX(gene.getLengthX() - 0.5f);
+          }
           break;
         //Increase width
         case 4:
-          gene.setWidthZ(gene.getWidthZ() + 1);
+          if (gene.getWidthZ() + 0.5f <= 10.0f)
+          {
+            gene.setWidthZ(gene.getWidthZ() + 1);
+          }
           break;
         //Decrease width
         case 5:
-          gene.setWidthZ(gene.getWidthZ() - 1);
+          if (gene.getWidthZ() - 0.5f >= 0.0f)
+          {
+            gene.setWidthZ(gene.getWidthZ() - 0.5f);
+          }
           break;
       }
     }
@@ -90,4 +106,6 @@ public class HillClimbing
 
     return currentGeneration;
   }
+
+  
 }
