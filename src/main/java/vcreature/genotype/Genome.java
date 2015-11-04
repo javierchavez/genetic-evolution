@@ -1,5 +1,11 @@
 package vcreature.genotype;
 
+import com.jme3.bullet.PhysicsSpace;
+import com.jme3.collision.CollisionResults;
+import com.jme3.scene.Node;
+import vcreature.GenomeSynthesizer;
+import vcreature.phenotype.Block;
+import vcreature.phenotype.Creature;
 import vcreature.utils.Savable;
 
 import java.util.ArrayList;
@@ -14,17 +20,13 @@ import java.util.Scanner;
  */
 public class Genome implements Savable
 {
-
   private LinkedList<Gene> genes;
   private Gene rootVertex;
-
 
   public Genome()
   {
     genes = new LinkedList<>();
   }
-
-
 
   /**
    * Merge one genome into this genome
@@ -155,6 +157,41 @@ public class Genome implements Savable
     }
     return neighbors;
   }
+
+  public boolean isValid(PhysicsSpace physicsSpace, Node rootNode)
+  {
+    GenomeSynthesizer synthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
+    Creature creature = synthesizer.encode(this);
+
+    Block block1;
+    Block block2;
+    for (int i = 0; i < creature.getNumberOfBodyBlocks(); i++)
+    {
+      block1 = creature.getBlockByID(i);
+      for(int j = 0; j < creature.getNumberOfBodyBlocks(); j++)
+      {
+        if (i != j)
+        {
+          block2 = creature.getBlockByID(j);
+          if (getCollision(block1, block2).size() > 0)
+          {
+            creature.remove();
+            return false;
+          }
+        }
+      }
+    }
+    creature.remove();
+    return true;
+  }
+
+  private CollisionResults getCollision(Block block1, Block block2)
+  {
+    CollisionResults results = new CollisionResults();
+    block1.getGeometry().collideWith(block2.getGeometry().getWorldBound(), results);
+    return results;
+  }
+
 
   @Override
   public Genome clone()

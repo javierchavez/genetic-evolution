@@ -1,11 +1,16 @@
 package vcreature.genotype;
 
 
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.collision.CollisionResults;
 import com.jme3.math.Vector3f;
+import vcreature.GenomeSynthesizer;
 import vcreature.phenotype.Block;
+import vcreature.phenotype.Creature;
 import vcreature.phenotype.EnumNeuronInput;
 import vcreature.phenotype.EnumOperator;
+
+import com.jme3.scene.Node;
 
 import java.util.*;
 
@@ -15,11 +20,19 @@ import java.util.*;
  */
 public class GenomeGenerator
 {
+  private GenomeSynthesizer synthesizer;
+  private PhysicsSpace physicsSpace;
+  private Node rootNode;
+
   private static GenomeGeneratorParameters params = new GenomeGeneratorParameters();
   private Genome genome = new Genome();
 
-  public GenomeGenerator() {}
-
+  public GenomeGenerator(PhysicsSpace physicsSpace, Node rootNode)
+  {
+    this.physicsSpace = physicsSpace;
+    this.rootNode = rootNode;
+    synthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
+  }
 
   public void clearGenome()
   {
@@ -51,7 +64,7 @@ public class GenomeGenerator
       if (rand.nextFloat() <= params.CHILD_SPAWN_CHANCE && genome.neighbors(parent).size() <= params.MAX_CHILDREN)
       {
         gene = generateGene(parent);
-        if (true)
+        if (genome.isValid(physicsSpace, rootNode))
         {
           if (rand.nextFloat() <= params.RECURSE_CHANCE)
           {
@@ -286,39 +299,6 @@ public class GenomeGenerator
       }
     }
     return geneDepth.get(gene);
-  }
-
-//  private boolean validGenome()
-//  {
-//    Creature creature = GenomeSynthesizer.init(env).encode(genome);
-//
-//    Block block1;
-//    Block block2;
-//    for (int i = 0; i < creature.getNumberOfBodyBlocks(); i++)
-//    {
-//      block1 = creature.getBlockByID(i);
-//      for(int j = 0; j < creature.getNumberOfBodyBlocks(); j++)
-//      {
-//        if (i != j)
-//        {
-//          block2 = creature.getBlockByID(j);
-//          if (getCollision(block1, block2).size() > 0)
-//          {
-//            creature.remove();
-//            return false;
-//          }
-//        }
-//      }
-//    }
-//    creature.remove();
-//    return true;
-//  }
-
-  private CollisionResults getCollision(Block block1, Block block2)
-  {
-    CollisionResults results = new CollisionResults();
-    block1.getGeometry().collideWith(block2.getGeometry().getWorldBound(), results);
-    return results;
   }
 
   private void addNeurons(Gene gene, int numNeurons)
