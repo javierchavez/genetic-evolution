@@ -3,6 +3,7 @@ package vcreature;
 
 import vcreature.utils.Logger;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -66,6 +67,9 @@ public class Evolution extends Thread
     {
       logger.export(being.getGenotype());
     }
+
+    TextSynthesizer textSynthesizer = new TextSynthesizer();
+    textSynthesizer.encode(new File("temp.txt"));
 
     subs.get(subpopulation).interrupt();
   }

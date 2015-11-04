@@ -242,6 +242,6 @@ public class Gene extends AbstractGene<Gene> implements Savable
   @Override
   public void read(String s)
   {
-
+    super.read(s);
   }
 }
