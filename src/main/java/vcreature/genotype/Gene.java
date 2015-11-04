@@ -207,7 +207,11 @@ public class Gene extends AbstractGene<Gene> implements Savable
     _newGene.setTouchSensor(touchSensor.clone());
     _newGene.setAngleSensor(angleSensor.clone());
     _newGene.setHeightSensor(heightSensor.clone());
-    _newGene.setEdges(new ArrayList<>(this.getEdges()));
+
+    for (Integer edge : getEdges())
+    {
+      _newGene.addEdge(edge);
+    }
 
     return _newGene;
   }

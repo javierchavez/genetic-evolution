@@ -89,7 +89,8 @@ public class CreatureGeneratorSim extends SimpleApplication implements ActionLis
     flyCam.setDragToRotate(true);
 
     //env = new Environment(getStateManager().getState(BulletAppState.class), assetManager, rootNode);
-    creature = CreatureGenerator.init(env).generateCreature();
+    //creature = CreatureGenerator.init(env).generateCreature();
+    creature = new FlappyBird(physicsSpace, rootNode);
   }
 
   private void initLighting()

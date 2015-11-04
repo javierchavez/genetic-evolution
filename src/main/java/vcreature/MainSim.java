@@ -1,37 +1,33 @@
+
 package vcreature;
 
+import vcreature.phenotype.PhysicsConstants;
+import vcreature.phenotype.Block;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.KeyTrigger;
-import com.jme3.light.AmbientLight;
-import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
-import com.jme3.shadow.DirectionalLightShadowRenderer;
-import com.jme3.system.AppSettings;
-import com.jme3.system.JmeContext;
 import com.jme3.texture.Texture;
-import vcreature.Algorithms.GeneticAlgorithm;
-import vcreature.genotype.Genome;
-import vcreature.genotype.GenomeGenerator;
-import vcreature.phenotype.Block;
+import com.jme3.renderer.queue.RenderQueue.ShadowMode;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.light.DirectionalLight;
+import com.jme3.math.ColorRGBA;
+import com.jme3.shadow.DirectionalLightShadowRenderer;
+import com.jme3.light.AmbientLight;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.KeyTrigger;
+import com.jme3.system.AppSettings;
 import vcreature.phenotype.Creature;
-import vcreature.phenotype.PhysicsConstants;
-
-import java.util.Random;
 
 public class MainSim extends SimpleApplication implements ActionListener
 {
+  
   private BulletAppState bulletAppState;
   private PhysicsSpace physicsSpace;
   private float cameraAngle = (float)(Math.PI/2.0);
@@ -39,16 +35,9 @@ public class MainSim extends SimpleApplication implements ActionListener
   
   //Temporary vectors used on each frame. They here to avoid instanciating new vectors on each frame
   private Vector3f tmpVec3; //
-  //private FlappyBird myCreature;
+  private Creature myCreature;
   private boolean isCameraRotating = true;
-  private Population population;
-   private Creature creature;
-  private CreatureSynthesizer creatureSynthesizer;
-  private GenomeSynthesizer genomeSynthesizer;
-  private boolean add = true;
-  private GeneticAlgorithm breeding;
-  Evolution evolution;
-  GenomeGenerator generator;
+  
 
 
   @Override
@@ -65,6 +54,8 @@ public class MainSim extends SimpleApplication implements ActionListener
     physicsSpace.setGravity(PhysicsConstants.GRAVITY);
     physicsSpace.setAccuracy(PhysicsConstants.PHYSICS_UPDATE_RATE);
     physicsSpace.setMaxSubSteps(4);
+    
+   
 
 
     //Set up inmovable floor
@@ -90,49 +81,17 @@ public class MainSim extends SimpleApplication implements ActionListener
     floor_phy.setRestitution(PhysicsConstants.GROUND_BOUNCINESS);
     floor_phy.setDamping(PhysicsConstants.GROUND_LINEAR_DAMPINING, 
             PhysicsConstants.GROUND_ANGULAR_DAMPINING);
-
-
-
+    
+   
     Block.initStaticMaterials(assetManager);
+    myCreature = new FlappyBird(physicsSpace, rootNode);
+    //myCreature = new Tigger(physicsSpace, rootNode);
+    
+    
     initLighting();
     initKeys();
 
     flyCam.setDragToRotate(true);
-
-    creatureSynthesizer = new CreatureSynthesizer();
-    genomeSynthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
-
-
-    FlappyBird flappyBird = new FlappyBird(physicsSpace, rootNode);
-    Genome genome = creatureSynthesizer.encode(flappyBird);
-    flappyBird.remove();
-    //    creature = genomeSynthesizer.encode(genome);
-
-    //breeding = new GeneticAlgorithm(this);
-    population = new Population(breeding);
-//    population.initPop();
-    Being b = new Being();
-    b.setGenotype(genome);
-    population.add(b);
-
-
-    generator = new GenomeGenerator();
-    generator.generateGenome();
-//
-    for (int i = 0; i < 100; i++)
-    {
-      Being bb = new Being();
-      Genome g = generator.generateGenome();
-      bb.setGenotype(g);
-      population.add(bb);
-    }
-
-
-//     creature = bird;
-//    bird.remove();
-
-    evolution = new Evolution(population);
-
     
   }
 
@@ -162,10 +121,12 @@ public class MainSim extends SimpleApplication implements ActionListener
   private void initKeys() {
     inputManager.addMapping("Quit",  new KeyTrigger(KeyInput.KEY_Q));
     inputManager.addMapping("Toggle Camera Rotation",  new KeyTrigger(KeyInput.KEY_P));
+    inputManager.addMapping("Change Creature",  new KeyTrigger(KeyInput.KEY_C));
 
     // Add the names to the action listener.
     inputManager.addListener(this,"Quit");
     inputManager.addListener(this,"Toggle Camera Rotation");
+    inputManager.addListener(this,"Change Creature");
   }
   
   public void onAction(String name, boolean isPressed, float timePerFrame) 
@@ -173,91 +134,30 @@ public class MainSim extends SimpleApplication implements ActionListener
     if (isPressed && name.equals("Toggle Camera Rotation"))
     { isCameraRotating = !isCameraRotating;
     }
-    else if (name.equals("Quit"))
-    { //System.out.format("Creature Fitness (Maximium height of lowest point) = %.3f meters]\n", myCreature.getFitness());
+    else if (isPressed && name.equals("Change Creature"))
+    { System.out.format("Creature Fitness (Maximium height of lowest point) = %.3f meters]\n", myCreature.getFitness());
+      
+      myCreature.remove();
+      myCreature = new FlappyBird2(physicsSpace, rootNode);
+      
+      cameraAngle = (float)(Math.PI/2.0);
+      elapsedSimulationTime = 0.0f;
+    }
+    else if (isPressed && name.equals("Quit"))
+    { System.out.format("Creature Fitness (Maximium height of lowest point) = %.3f meters]\n", myCreature.getFitness());
       System.exit(0);
     }
   }
 
-
-  boolean inSim =false;
-  boolean newGenerationSpwan = false;
-  boolean flipFlop = true;
-  Being b = null;
   
   /* Use the main event loop to trigger repeating actions. */
   @Override
   public void simpleUpdate(float deltaSeconds)
   {
     elapsedSimulationTime += deltaSeconds;
-
-    //we need to spawn a thread to handlethis.
-
-
-    if (flipFlop && elapsedSimulationTime > 11)
-    {
-      flipFlop = false;
-      // creature = new FlappyBird(physicsSpace, rootNode);
-      // creature.remove();
-      Genome genome = null;
-
-      if (inSim)
-      {
-        b.setFitness(creature.getFitness());
-        if (!breeding.getQueue().isEmpty())
-        {
-          breeding.getQueue().poll();
-        }
-        // System.out.println(creature.getFitness());
-        creature.remove();
-//        if (evolution.generations() < 30 && newGenerationSpwan)
-//        {
-//          newGenerationSpwan = false;
-//        }
-      }
-
-
-      if (!breeding.getQueue().isEmpty())
-      {
-        b = (Being) breeding.getQueue().peek();
-        if (b != null)
-        {
-          System.out.println("Creature being evaluated.");
-          inSim = true;
-          genome = b.getGenotype();
-
-          creature = genomeSynthesizer.encode(genome);
-          elapsedSimulationTime = 0;
-        }
-      }
-      else
-      {
-        if (!newGenerationSpwan || breeding.currGen() >= 200)
-        {
-          System.out.println("New generation kicked off");
-          newGenerationSpwan = true;
-          new Thread(new Runnable()
-          {
-            @Override
-            public void run()
-            {
-              evolution.getSubs().get(genRandDim(evolution.getSubs().size())).nextGeneration();
-            }
-          }).start();
-        }
-
-      }
-      flipFlop = true;
-
-    }
-    if (creature != null)
-    {
-      creature.updateBrain(elapsedSimulationTime);
-    }
-
     //print("simpleUpdate() elapsedSimulationTime=", (float)elapsedSimulationTime);
     //print("simpleUpdate() joint1.getHingeAngle()=", joint1.getHingeAngle());
-    // myCreature.updateBrain(elapsedSimulationTime);
+    myCreature.updateBrain(elapsedSimulationTime);
 
     if (isCameraRotating)
     {
@@ -308,13 +208,6 @@ public class MainSim extends SimpleApplication implements ActionListener
     MainSim app = new MainSim();
     app.setShowSettings(false);
     app.setSettings(settings);
-
-    app.start(JmeContext.Type.OffscreenSurface);
-//    app.start();
-  }
-  Random random = new Random();
-  private int genRandDim(int max)
-  {
-    return random.nextInt(max - 1) + 0;
+    app.start();
   }
 }
