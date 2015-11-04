@@ -14,12 +14,10 @@ import java.util.*;
 
 public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
 {
-
-
   private Genome genome;
   private Creature creature;
-  PhysicsSpace physicsSpace;
-  Node rootNode;
+  private final PhysicsSpace physicsSpace;
+  private final Node rootNode;
 
   public GenomeSynthesizer(PhysicsSpace physicsSpace, Node rootNode)
   {
