@@ -18,7 +18,7 @@ public class GeneticAlgorithm
 {
 
 
-  private int totalGenerations = 200;
+  private int totalGenerations = 1;
   private int populationSize;
   private int pctMutations = 0;
   private int pctCrossover = 100;
@@ -58,29 +58,6 @@ public class GeneticAlgorithm
     float surfaceArea = 0.0f;
     Genome genotype = individual.getGenotype();
 
- /*   timer.schedule(new TimerTask()
-    {
-      @Override
-      public void run()
-      {
-
-      }
-    }, 10000);
-
-    try
-    {
-      simulation.getEnvironment().addToWorld(individual);
-      Thread.sleep(1000);
-    }
-    catch(InterruptedException e)
-    {
-      Thread.currentThread().interrupt();
-    }
-
-*/
-    //individual.setFitness(individual.getFitness());
-//    simulation.getEnvironment().addToWorld(individual);
-//    simulation.getEnvironment().removeFromWorld();
 
     LinkedList<Gene> genes = genotype.getGenes();
     for(Gene gene : genes)
@@ -263,13 +240,18 @@ public class GeneticAlgorithm
     return parentIndex;
   }
 
-  protected void crossover(Being parent1, Being parent2)
+  protected Being[] crossover(Being parent1ARG, Being parent2ARG)
   {
 
+
+    Being parent1 = parent1ARG.clone();
+    Being parent2 = parent2ARG.clone();
+
+    Being[] children = {parent1, parent2};
     if (parent1.getGenotype().getGenes().size() < 2 || parent2.getGenotype().getGenes().size() < 2)
     {
       System.out.println("CROSSOVER not performed; crossover not implemented for parent size 1");
-      return;
+      return children;
     }
 
 
@@ -330,6 +312,10 @@ public class GeneticAlgorithm
     System.out.println("PARENT2 AFTER:");
     printBeing(parent2);
 
+    children[0] = parent1.clone();
+    children[1] = parent2.clone();
+
+    return children;
   }
 
 
@@ -544,7 +530,9 @@ public class GeneticAlgorithm
       newParents.remove(parent2index);
       if(rnd.nextInt(100) < this.pctCrossover)
       {
-        crossover(parent1.clone(), parent2.clone());
+        Being[] children = crossover(parent1.clone(), parent2.clone());
+        parent1 = children[0].clone();
+        parent2 = children[1].clone();
       }
       if (rnd.nextInt(100) < this.pctMutations)
       {
