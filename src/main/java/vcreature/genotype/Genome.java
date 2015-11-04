@@ -1,17 +1,8 @@
 package vcreature.genotype;
 
-import com.jme3.bullet.PhysicsSpace;
-import com.jme3.collision.CollisionResults;
-import com.jme3.scene.Node;
-import vcreature.GenomeSynthesizer;
-import vcreature.phenotype.Block;
-import vcreature.phenotype.Creature;
 import vcreature.utils.Savable;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Genome is a collection of genes. Genetic representation of this morphology is a directed graph of
@@ -40,7 +31,7 @@ public class Genome implements Savable
     int lastLink = genes.size()-1;
     for (int i = start; i < end; i++)
     {
-      genes.add(parent.getGenes().get(i));
+      genes.add(parent.get(i));
     }
     // get the new
     genes.get(lastLink).addEdge(lastLink+1);
@@ -54,6 +45,10 @@ public class Genome implements Savable
   public void append(Gene gene)
   {
     genes.add(gene);
+    if (gene.getPosition()!= indexOf(gene))
+    {
+      throw new NoSuchElementException();
+    }
   }
 
   /**
@@ -68,7 +63,7 @@ public class Genome implements Savable
       remove(neighbor);
     }
 
-    int geneIdx = genes.indexOf(gene);
+    int geneIdx = gene.getPosition();
     for (Gene parent : genes)
     {
       parent.removeEdge(geneIdx);
@@ -106,9 +101,32 @@ public class Genome implements Savable
    *
    * @return List of Genes
    */
+//  public Iterable<Gene> getGenes()
+//  {
+//    return genes;
+//  }
+
   public LinkedList<Gene> getGenes()
   {
     return genes;
+  }
+
+
+  public int indexOf(Gene g)
+  {
+    return g.getPosition();
+  }
+
+
+  public Gene get(int index)
+  {
+
+    if (index != genes.get(index).getPosition())
+    {
+      throw new NoSuchElementException("Position is not consistent with index!");
+    }
+
+    return genes.get(index);
   }
 
   /**
@@ -128,7 +146,7 @@ public class Genome implements Savable
       return;
     }
 
-    AbstractGene<?> g1 = genes.get(geneIndex1);
+    Gene g1 = getGeneByPosition(geneIndex1);
     if (g1 == null)
     {
       return;
@@ -147,49 +165,24 @@ public class Genome implements Savable
   {
     ArrayList<Integer> edges = current.getEdges();
     ArrayList<Gene> neighbors = new ArrayList<>();
+//    edges.forEach(integer1 -> integer1);
 
     for (Integer integer : edges)
     {
       if (integer >= 0)
       {
+
         neighbors.add(genes.get(integer));
       }
     }
     return neighbors;
   }
 
-  public boolean isValid(PhysicsSpace physicsSpace, Node rootNode)
+  private Gene getGeneByPosition(int i)
   {
-    GenomeSynthesizer synthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
-    Creature creature = synthesizer.encode(this);
+    // System.out.println(i);
 
-    Block block1;
-    Block block2;
-    for (int i = 0; i < creature.getNumberOfBodyBlocks(); i++)
-    {
-      block1 = creature.getBlockByID(i);
-      for(int j = 0; j < creature.getNumberOfBodyBlocks(); j++)
-      {
-        if (i != j)
-        {
-          block2 = creature.getBlockByID(j);
-          if (getCollision(block1, block2).size() > 0)
-          {
-            creature.remove();
-            return false;
-          }
-        }
-      }
-    }
-    creature.remove();
-    return true;
-  }
-
-  private CollisionResults getCollision(Block block1, Block block2)
-  {
-    CollisionResults results = new CollisionResults();
-    block1.getGeometry().collideWith(block2.getGeometry().getWorldBound(), results);
-    return results;
+    return genes.stream().filter(gene -> gene.getPosition() == i).findFirst().get();
   }
 
 
@@ -232,5 +225,10 @@ public class Genome implements Savable
         genes.add(gene);
       }
     }
+  }
+
+  public void remove(int position)
+  {
+    remove(getGeneByPosition(position));
   }
 }

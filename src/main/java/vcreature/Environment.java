@@ -1,6 +1,7 @@
 package vcreature;
 
 
+import com.jme3.system.AppSettings;
 import vcreature.Algorithms.GeneticAlgorithm;
 import vcreature.genotype.Genome;
 import vcreature.genotype.GenomeGenerator;
@@ -30,9 +31,9 @@ public class Environment extends AbstractApplication
   private GenomeSynthesizer genomeSynthesizer;
 
   // Current creature, being, genome
-  private Creature creature;
+  private Creature creature = null;
   private Being being = null;
-  private Genome genome;
+  private Genome genome = null;
 
   // Used for crossing
   private GeneticAlgorithm breeding;
@@ -66,38 +67,62 @@ public class Environment extends AbstractApplication
     genomeSynthesizer = new GenomeSynthesizer(getPhysicsSpace(), rootNode);
 
 
-    FlappyBird flappyBird = new FlappyBird(getPhysicsSpace(), rootNode);
-    Genome genome = creatureSynthesizer.encode(flappyBird);
-    flappyBird.remove();
-
     breeding = new GeneticAlgorithm(this);
     population = new Population(breeding);
-    //    population.initPop();
-    Being b = new Being();
-    b.setGenotype(genome);
-    population.add(b);
 
     // initialize population
     generator = new GenomeGenerator(getPhysicsSpace(), rootNode);
 
     // Fill up the population
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 25; i++)
     {
-      //FlappyBird daBird = new FlappyBird(getPhysicsSpace(), rootNode);
-      //Genome genotype = creatureSynthesizer.encode(daBird);
 
-      Genome genotype = generator.generateGenome();
-      //daBird.remove();
+      FlappyBird _creature = new FlappyBird(getPhysicsSpace(), rootNode);
+      FlappyBird2 _creature2 = new FlappyBird2(getPhysicsSpace(), rootNode);
+      FlappyBird3 _creature3 = new FlappyBird3(getPhysicsSpace(), rootNode);
+      FlappyBird4 _creature4 = new FlappyBird4(getPhysicsSpace(), rootNode);
+      FlappyBird5 _creature5 = new FlappyBird5(getPhysicsSpace(), rootNode);
 
+      Genome _genome = creatureSynthesizer.encode(_creature);
+      _creature.remove();
       Being bb = new Being();
-
-      bb.setGenotype(genotype);
+      bb.setGenotype(_genome);
       population.add(bb);
+
+      Genome _genome2 = creatureSynthesizer.encode(_creature2);
+      _creature2.remove();
+      Being bb2 = new Being();
+      bb2.setGenotype(_genome2);
+      population.add(bb2);
+
+      Genome _genome3 = creatureSynthesizer.encode(_creature3);
+      _creature3.remove();
+      Being bb3 = new Being();
+      bb3.setGenotype(_genome3);
+      population.add(bb3);
+
+      Genome _genome4 = creatureSynthesizer.encode(_creature4);
+      _creature4.remove();
+      Being bb4 = new Being();
+      bb4.setGenotype(_genome4);
+      population.add(bb4);
+
+      Genome _genome5 = creatureSynthesizer.encode(_creature5);
+      _creature5.remove();
+      Being bb5 = new Being();
+      bb5.setGenotype(_genome5);
+      population.add(bb5);
+
+      if(i % 2 == 0)
+      {
+        Being _randBeing = new Being();
+        _randBeing.setGenotype(generator.generateGenome());
+        population.add(_randBeing);
+      }
     }
 
     // set the population to a evolution
     evolution = new Evolution(population);
-
 
   }
 
@@ -169,5 +194,30 @@ public class Environment extends AbstractApplication
   }
 
 
+  public static void main(String[] args)
+  {
+    AppSettings settings = new AppSettings(true);
+    settings.setResolution(1024, 768);
+    settings.setSamples(4); //activate antialising (softer edges, may be slower.)
+
+    //Set vertical syncing to true to time the frame buffer to coincide with the refresh frequency of the screen.
+    //This also throttles the calls to simpleUpdate. Without this throttling, I get 1000+ pfs on my Alienware laptop
+    //   Your application will have more work to do than to spend cycles rendering faster than the
+    //   capture rate of the RED Camera used to shoot Lord of the Rings.
+    settings.setVSync(true);
+    settings.setFrequency(60);//Frames per second
+    settings.setTitle("Flappy Bird Creature");
+
+    System.out.println("Starting App");
+
+    Environment app = new Environment();
+    app.setShowSettings(false);
+    app.setSettings(settings);
+
+
+    //app.start(JmeContext.Type.Headless);
+
+    app.start();
+  }
 
 }

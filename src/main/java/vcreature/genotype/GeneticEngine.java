@@ -9,7 +9,7 @@ public class GeneticEngine
   {
 
     Genome son = new Genome(); son.setRoot(mother.getRoot().clone());
-    son.getGenes().add(son.getRoot());
+    son.append(son.getRoot());
 
 
     int motherStart = mother.size();
@@ -51,8 +51,8 @@ public class GeneticEngine
 
     for (int i = 0; i < size; i++)
     {
-      Gene parentAbstractGeneA = mom.getGenes().get(i).clone();
-      Gene parentAbstractGeneB = dad.getGenes().get(i).clone();
+      Gene parentAbstractGeneA = mom.get(i).clone();
+      Gene parentAbstractGeneB = dad.get(i).clone();
       Gene childAbstractGeneA;
       Gene childAbstractGeneB;
 

@@ -7,7 +7,6 @@ import vcreature.genotype.Genome;
 import vcreature.genotype.NeuralInput;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Random;
 import java.util.Vector;
 
@@ -48,9 +47,9 @@ public class HillClimbing
    */
   private void hillClimbingEvaluation(Being individual)
   {
-    LinkedList<Gene> genes = individual.getGenotype().getGenes();
+    // LinkedList<Gene> genes = individual.getGenotype().getGenes();
 
-    for (Gene gene : genes)
+    for (Gene gene : individual.getGenotype().getGenes())
     {
       //Simple test to change attributes of gene
       int x = rnd.nextInt(6);

@@ -137,4 +137,10 @@ public class Population extends Vector<Being>
   {
     return this.beings.add(being);
   }
+
+  public synchronized void replace(int i, Being being)
+  {
+    this.beings.removeElementAt(i);
+    this.beings.add(i, being);
+  }
 }

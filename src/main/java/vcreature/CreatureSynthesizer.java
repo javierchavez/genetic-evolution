@@ -2,14 +2,13 @@ package vcreature;
 
 import com.jme3.math.Vector3f;
 import vcreature.genotype.*;
+import vcreature.genotype.NeuralInput.InputPosition;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
 import vcreature.phenotype.EnumNeuronInput;
 import vcreature.phenotype.Neuron;
-import vcreature.genotype.NeuralInput.InputPosition;
 
 import java.lang.reflect.Field;
-import java.util.*;
 
 
 public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
@@ -42,7 +41,7 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
     {
       // get the block
       Block b = creature.getBlockByID(i);
-      Gene g = genome.getGenes().get(i);
+      Gene g = genome.get(i);
 
       for (Neuron neuron : b.getNeuronTable())
       {
@@ -145,19 +144,19 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
     {
       int a = neuron.getBlockIdx(inputPosition);
       float val = neuron.getInputValue(inputPosition);
-      return genome.getGenes().get(a).getTouchSensor().setValue(val);
+      return genome.get(a).getTouchSensor().setValue(val);
     }
     if (neuron.getInputType(inputPosition) == EnumNeuronInput.HEIGHT)
     {
       int a = neuron.getBlockIdx(inputPosition);
       float val = neuron.getInputValue(inputPosition);
-      return genome.getGenes().get(a).getHeightSensor().setValue(val);
+      return genome.get(a).getHeightSensor().setValue(val);
     }
     if (neuron.getInputType(inputPosition) == EnumNeuronInput.JOINT)
     {
       int a = neuron.getBlockIdx(inputPosition);
       float val = neuron.getInputValue(inputPosition);
-      return genome.getGenes().get(a).getAngleSensor().setValue(val);
+      return genome.get(a).getAngleSensor().setValue(val);
     }
 
     return new ConstantInput().setValue(neuron.getInputValue(inputPosition));
@@ -165,62 +164,6 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
   }
 
 
-  /**
-   * BFS to turn a directed graph into array
-   */
-  public class BFS
-  {
-
-    public List<Gene> lenearOrder(Genome graph)
-    {
-      Queue<Gene> frontier = new LinkedList<>();
-      frontier.add(graph.getRoot());
-      HashMap<Gene, Gene> cameFrom = new HashMap<>();
-      cameFrom.put(graph.getRoot(), null);
-
-      while (!frontier.isEmpty())
-      {
-        Gene current = frontier.remove();
-        List<Gene> neighbors = graph.neighbors(current);
-
-
-        for (Gene next : neighbors)
-        {
-          if (!cameFrom.containsKey(next))
-          {
-            frontier.add(next);
-            cameFrom.put(next, current);
-          }
-        }
-      }
-
-      return reconstructPath(cameFrom,
-                             graph.getRoot(),
-                             graph.getGenes().getLast());
-    }
-
-    private List<Gene> reconstructPath(HashMap<Gene, Gene> came_from,
-                                       Gene start,
-                                       Gene end)
-    {
-      Gene current = end;
-      List<Gene> path = new ArrayList<>();
-      path.add(current);
-
-      while (current != start)
-      {
-        current = came_from.get(current);
-        if (current != null)
-        {
-          path.add(current);
-        }
-      }
-
-      Collections.reverse(path);
-
-      return path;
-    }
-  }
 
 
   @Override

@@ -15,7 +15,6 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
-import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
 import com.jme3.texture.Texture;
 import vcreature.phenotype.PhysicsConstants;
@@ -131,29 +130,5 @@ public abstract class AbstractApplication extends SimpleApplication implements A
     return physicsSpace;
   }
 
-  public static void main(String[] args)
-  {
-    AppSettings settings = new AppSettings(true);
-    settings.setResolution(1024, 768);
-    settings.setSamples(4); //activate antialising (softer edges, may be slower.)
-
-    //Set vertical syncing to true to time the frame buffer to coincide with the refresh frequency of the screen.
-    //This also throttles the calls to simpleUpdate. Without this throttling, I get 1000+ pfs on my Alienware laptop
-    //   Your application will have more work to do than to spend cycles rendering faster than the
-    //   capture rate of the RED Camera used to shoot Lord of the Rings.
-    settings.setVSync(true);
-    settings.setFrequency(60);//Frames per second
-    settings.setTitle("Flappy Bird Creature");
-
-    System.out.println("Starting App");
-
-    Environment app = new Environment();
-    app.setShowSettings(false);
-    app.setSettings(settings);
-
-    app.start(JmeContext.Type.Headless);
-
-    //app.start();
-  }
 
 }

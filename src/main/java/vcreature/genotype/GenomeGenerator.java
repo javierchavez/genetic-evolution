@@ -8,6 +8,7 @@ import vcreature.phenotype.EnumNeuronInput;
 import vcreature.phenotype.EnumOperator;
 
 import com.jme3.scene.Node;
+import vcreature.utils.GenomeHelper;
 
 import java.util.*;
 
@@ -61,7 +62,7 @@ public class GenomeGenerator
       if (rand.nextFloat() <= params.CHILD_SPAWN_CHANCE && genome.neighbors(parent).size() <= params.MAX_CHILDREN)
       {
         gene = generateGene(parent);
-        if (genome.isValid(physicsSpace, rootNode))
+        if (GenomeHelper.isValid(physicsSpace, rootNode, genome))
         {
           if (rand.nextFloat() <= params.RECURSE_CHANCE)
           {
@@ -253,7 +254,7 @@ public class GenomeGenerator
     gene.getEffector().setPivotAxis(pivotAxis);
     addNeurons(gene, rand.nextInt(params.MAX_NEURON_RULES));
     genome.append(gene);
-    genome.linkGenes(genome.getGenes().indexOf(parent), genome.getGenes().indexOf(gene));
+    genome.linkGenes(genome.indexOf(parent), genome.indexOf(gene));
     return gene;
   }
 

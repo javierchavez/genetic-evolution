@@ -3,8 +3,6 @@ package vcreature.genotype;
 import com.jme3.math.Vector3f;
 import vcreature.utils.Savable;
 
-import java.util.ArrayList;
-
 /**
  * Rigid Part our creature this will be a Block
  */
@@ -28,6 +26,7 @@ public class Gene extends AbstractGene<Gene> implements Savable
   private HeightSensor heightSensor;
 
   private Effector effector;
+
 
   /**
    * Create a gene with index position.
@@ -185,6 +184,12 @@ public class Gene extends AbstractGene<Gene> implements Savable
     rotationX = rotations[2];
   }
 
+  public int getPosition()
+  {
+    return position;
+  }
+
+
   /**
    * Get the rotation of the the block
    *
@@ -200,7 +205,7 @@ public class Gene extends AbstractGene<Gene> implements Savable
   @Override
   public Gene clone()
   {
-    Gene _newGene = new Gene();
+    Gene _newGene = new Gene(position);
     _newGene.setDimensions(lengthX, widthZ, heightY);
     _newGene.setRotations(new float[] {rotationY, rotationZ, rotationX});
     _newGene.setEffector(effector.clone());
@@ -242,6 +247,85 @@ public class Gene extends AbstractGene<Gene> implements Savable
 
   }
 
+  @Override
+  public boolean equals(Object o)
+  {
+    if (this == o)
+    {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass())
+    {
+      return false;
+    }
+
+    Gene gene = (Gene) o;
+
+    if (Float.compare(gene.lengthX, lengthX) != 0)
+    {
+      return false;
+    }
+    if (Float.compare(gene.widthZ, widthZ) != 0)
+    {
+      return false;
+    }
+    if (Float.compare(gene.heightY, heightY) != 0)
+    {
+      return false;
+    }
+    if (Float.compare(gene.rotationY, rotationY) != 0)
+    {
+      return false;
+    }
+    if (Float.compare(gene.rotationZ, rotationZ) != 0)
+    {
+      return false;
+    }
+    if (Float.compare(gene.rotationX, rotationX) != 0)
+    {
+      return false;
+    }
+    if (position != gene.position)
+    {
+      return false;
+    }
+    if (recursiveLimit != gene.recursiveLimit)
+    {
+      return false;
+    }
+    if (angleSensor != null ? !angleSensor.equals(gene.angleSensor) : gene.angleSensor != null)
+    {
+      return false;
+    }
+    if (touchSensor != null ? !touchSensor.equals(gene.touchSensor) : gene.touchSensor != null)
+    {
+      return false;
+    }
+    if (heightSensor != null ? !heightSensor.equals(gene.heightSensor) : gene.heightSensor != null)
+    {
+      return false;
+    }
+    return !(effector != null ? !effector.equals(gene.effector) : gene.effector != null);
+
+  }
+
+  @Override
+  public int hashCode()
+  {
+    int result = (lengthX != +0.0f ? Float.floatToIntBits(lengthX) : 0);
+    result = 31 * result + (widthZ != +0.0f ? Float.floatToIntBits(widthZ) : 0);
+    result = 31 * result + (heightY != +0.0f ? Float.floatToIntBits(heightY) : 0);
+    result = 31 * result + (rotationY != +0.0f ? Float.floatToIntBits(rotationY) : 0);
+    result = 31 * result + (rotationZ != +0.0f ? Float.floatToIntBits(rotationZ) : 0);
+    result = 31 * result + (rotationX != +0.0f ? Float.floatToIntBits(rotationX) : 0);
+    result = 31 * result + position;
+    result = 31 * result + recursiveLimit;
+    result = 31 * result + (angleSensor != null ? angleSensor.hashCode() : 0);
+    result = 31 * result + (touchSensor != null ? touchSensor.hashCode() : 0);
+    result = 31 * result + (heightSensor != null ? heightSensor.hashCode() : 0);
+    result = 31 * result + (effector != null ? effector.hashCode() : 0);
+    return result;
+  }
 
   @Override
   public void read(String s)
