@@ -25,12 +25,12 @@ public class TextSynthesizer extends Synthesizer<File, Genome>
 
         if (line.equalsIgnoreCase("START"))
         {
-          sb.append(line);
+          sb.append(line).append("\n");
           while (true)
           {
 
             line = br.readLine();
-            sb.append(line);
+            sb.append(line).append("\n");
 
             if (line.equalsIgnoreCase("END"))
             {

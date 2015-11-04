@@ -5,6 +5,7 @@ import vcreature.utils.Savable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Genome is a collection of genes. Genetic representation of this morphology is a directed graph of
@@ -182,6 +183,17 @@ public class Genome implements Savable
   @Override
   public void read(String s)
   {
-
+    String line;
+    Scanner scanner = new Scanner(s);
+    if (scanner.hasNextLine() && scanner.nextLine().equals("START"))
+    {
+      genes.clear();
+      while (scanner.hasNextLine() && !(line = scanner.nextLine()).equals("END"))
+      {
+        Gene gene = new Gene(genes.size());
+        gene.read(line);
+        genes.add(gene);
+      }
+    }
   }
 }
