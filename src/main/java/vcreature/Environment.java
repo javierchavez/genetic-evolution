@@ -15,6 +15,7 @@ package vcreature;
 
 
 import com.jme3.system.AppSettings;
+import com.jme3.system.JmeContext;
 import vcreature.Algorithms.GeneticAlgorithm;
 import vcreature.genotype.Genome;
 import vcreature.genotype.GenomeGenerator;
@@ -170,7 +171,7 @@ public class Environment extends AbstractApplication
 
     // On cross populations when one is complete.
     // avoid adding more than more to engine
-    if (elapsedSimulationTime > 5 && !newGenerationSpwan || breeding.currGen() == 200)
+    if (!newGenerationSpwan && breeding.currGen() == 0)
     {
       System.out.println("New generation kicked off");
       newGenerationSpwan = true;
@@ -207,6 +208,10 @@ public class Environment extends AbstractApplication
     return random.nextInt(max - 1) + 0;
   }
 
+  public void setGenerationSpawn(boolean generationSpawn)
+  {
+    this.newGenerationSpwan = generationSpawn;
+  }
 
   public static void main(String[] args)
   {
@@ -229,9 +234,10 @@ public class Environment extends AbstractApplication
     app.setSettings(settings);
 
 
-    //app.start(JmeContext.Type.Headless);
+    app.start(JmeContext.Type.Headless);
 
-    app.start();
+    //app.start();
   }
+
 
 }

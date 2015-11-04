@@ -17,7 +17,7 @@ public class GeneticAlgorithm
 {
 
 
-  private int totalGenerations = 2;
+  public static final int MAX_ITERATIONS = 2;
   private int pctMutations = 40;
   private int pctCrossover = 22;
 
@@ -608,7 +608,7 @@ public class GeneticAlgorithm
   public Population evolvePopulation(Subpopulation beings, Population population)
   {
     System.out.println("EVOLVE POPULATION, Generation: " + this.generationNumber);
-
+    generationNumber++;
     double currentGenBestFitness; //best fitness from current generation
     Being genBestBeing; ///most fit creature from current generation
 
@@ -676,7 +676,7 @@ public class GeneticAlgorithm
 
 
     }
-    while (generationNumber < this.totalGenerations);
+    while (generationNumber < MAX_ITERATIONS);
 
     for (int i = 0; i < Math.min(population.size(), generationNumber); i++)
     {
@@ -691,6 +691,7 @@ public class GeneticAlgorithm
     population.setBestFitness((float) this.bestFitness);
 
     generationNumber = 0;
+    simulation.setGenerationSpawn(false);
     return null;
   }
 
