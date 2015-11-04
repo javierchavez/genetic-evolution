@@ -1,8 +1,21 @@
 package vcreature.genotype;
 
+/**
+ * @author Javier Chavez
+ * @author Alex Baker
+ * @author Dominic Salas
+ * @author Carrie Martinez
+ * <p>
+ * Date November 4, 2015
+ * CS 351
+ * Genetic Evolution
+ */
+
+
 import vcreature.utils.Savable;
 
 import java.util.*;
+
 
 /**
  * Genome is a collection of genes. Genetic representation of this morphology is a directed graph of
@@ -22,9 +35,9 @@ public class Genome implements Savable
   /**
    * Merge one genome into this genome
    *
-   * @param parent
-   * @param start
-   * @param end
+   * @param parent the parent genome to merge with
+   * @param start start index in the parent genome
+   * @param end end index in the parent genome
    */
   public void merge(Genome parent, int start, int end)
   {
@@ -85,11 +98,10 @@ public class Genome implements Savable
     return rootVertex;
   }
 
-
   /**
    * Set the root of the Genome
    *
-   * @param root
+   * @param root the gene to set as the root gene
    */
   public void setRoot(Gene root)
   {
@@ -105,19 +117,28 @@ public class Genome implements Savable
 //  {
 //    return genes;
 //  }
-
   public LinkedList<Gene> getGenes()
   {
     return genes;
   }
 
-
+  /**
+   * Get the index of the gene in the genome
+   *
+   * @param g the gene to get the index for
+   * @return the index of gene g in the genome
+   */
   public int indexOf(Gene g)
   {
     return g.getPosition();
   }
 
-
+  /**
+   * Get a gene from the genome at the given index
+   *
+   * @param index index of the gene to get
+   * @return the gene at the index in the genome
+   */
   public Gene get(int index)
   {
 
@@ -139,6 +160,11 @@ public class Genome implements Savable
     return genes.size();
   }
 
+  /**
+   * Add a gene to the edge list of another
+   * @param geneIndex1 index of the gene whose edges list will be added to
+   * @param geneIndex2 index of the gene to be added to the edges list
+   */
   public void linkGenes(int geneIndex1, int geneIndex2)
   {
     if (geneIndex1 < 0)
@@ -158,8 +184,8 @@ public class Genome implements Savable
    * Get all the neighbors of given the current location. Does not include self
    * only its links in the graph
    *
-   * @param current location
-   * @return List of neighbors
+   * @param current the gene to get neighbors around
+   * @return List of neighbors (children)
    */
   public List<Gene> neighbors (Gene current)
   {
@@ -178,13 +204,22 @@ public class Genome implements Savable
     return neighbors;
   }
 
+  /**
+   * remove the gene at the given position in the genome
+   *
+   * @param position of the gene to remove
+   */
+  public void remove(int position)
+  {
+    remove(getGeneByPosition(position));
+  }
+
   private Gene getGeneByPosition(int i)
   {
     // System.out.println(i);
 
     return genes.stream().filter(gene -> gene.getPosition() == i).findFirst().get();
   }
-
 
   @Override
   public Genome clone()
@@ -225,10 +260,5 @@ public class Genome implements Savable
         genes.add(gene);
       }
     }
-  }
-
-  public void remove(int position)
-  {
-    remove(getGeneByPosition(position));
   }
 }

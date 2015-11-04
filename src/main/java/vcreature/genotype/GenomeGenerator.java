@@ -9,8 +9,6 @@ package vcreature.genotype;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
@@ -27,7 +25,9 @@ import java.util.*;
 
 
 /**
- * Generate a genome
+ * This class is used to procedurally generate a random genome for use
+ * in the genetic algorithm and hill climbing. This genome can be synthesized
+ * to a phenotype for testing fitness.
  */
 public class GenomeGenerator
 {
@@ -38,6 +38,12 @@ public class GenomeGenerator
   private static GenomeGeneratorParameters params = new GenomeGeneratorParameters();
   private Genome genome = new Genome();
 
+  /**
+   * Takes a physics space and root node to validate the genome in
+   *
+   * @param physicsSpace JME physics space
+   * @param rootNode  JME root node
+   */
   public GenomeGenerator(PhysicsSpace physicsSpace, Node rootNode)
   {
     this.physicsSpace = physicsSpace;
@@ -45,11 +51,19 @@ public class GenomeGenerator
     synthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
   }
 
+  /**
+   * Reset the current genome to an empty one
+   */
   public void clearGenome()
   {
     genome = new Genome();
   }
 
+  /**
+   * Called to procedurally generate a random genome
+   *
+   * @return a valid genome
+   */
   public Genome generateGenome()
   {
     clearGenome();

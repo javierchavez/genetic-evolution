@@ -9,17 +9,14 @@ package vcreature.genotype;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
 /**
- * Sensor for Height
+ * Sensor for Height. Height is measure from the center of the block to the ground
  */
 public class HeightSensor extends Sensor<HeightSensor, Float>
 {
-
   /**
    * Senors shall only be instantiated by Genes
    */

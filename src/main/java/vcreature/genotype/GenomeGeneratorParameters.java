@@ -9,17 +9,17 @@ package vcreature.genotype;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
 /**
- *
+ * This class is a static class to hold parameters used by the
+ * procedural generation of genomes. Changing these values will
+ * change the look and response of the genomes created
  */
 public class GenomeGeneratorParameters
 {
-  public static final float MIN_BLOCK_DIM = 1f; // minimum size in any x, y, or z direction
+  public static final float MIN_BLOCK_DIM = 1.1f; // minimum size in any x, y, or z direction
   public static final float MAX_BLOCK_DIM = 10f; // maximum size in any x, y, or z direction
 
   public static final int MAX_GENERATION_ATTEMPTS = 100; // maximum number of attempts to try and generate a child block
