@@ -1,5 +1,19 @@
 package vcreature.Algorithms;
 
+/**
+ * @author Javier Chavez
+ * @author Alex Baker
+ * @author Dominic Salas
+ * @author Carrie Martinez
+ * <p>
+ * Date November 4, 2015
+ * CS 351
+ * Genetic Evolution
+ * <p>
+ * Module description here
+ */
+
+
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
@@ -18,14 +32,13 @@ import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
 import com.jme3.texture.Texture;
+
 import vcreature.Environment;
 import vcreature.phenotype.PhysicsConstants;
 
 
 public abstract class HCAA extends SimpleApplication implements ActionListener
 {
-
-
   private BulletAppState bulletAppState;
   private PhysicsSpace physicsSpace;
   private boolean isCameraRotating = true;

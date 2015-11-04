@@ -1,5 +1,18 @@
 package vcreature.genotype;
 
+/**
+ * @author Javier Chavez
+ * @author Alex Baker
+ * @author Dominic Salas
+ * @author Carrie Martinez
+ * <p>
+ * Date November 4, 2015
+ * CS 351
+ * Genetic Evolution
+ * <p>
+ * Module description here
+ */
+
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
@@ -301,7 +314,7 @@ public class GenomeGenerator
 
   private void addNeurons(Gene gene, int numNeurons)
   {
-    for (int i = 0; i <= numNeurons; i++)
+    for (int i = 0; i < numNeurons; i++)
     {
       gene.getEffector().addNeuralNode(genRandNeuron(gene));
     }

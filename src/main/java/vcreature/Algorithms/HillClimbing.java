@@ -1,5 +1,19 @@
 package vcreature.Algorithms;
 
+/**
+ * @author Javier Chavez
+ * @author Alex Baker
+ * @author Dominic Salas
+ * @author Carrie Martinez
+ * <p>
+ * Date November 4, 2015
+ * CS 351
+ * Genetic Evolution
+ * <p>
+ * Module description here
+ */
+
+
 import vcreature.Being;
 import vcreature.Population;
 import vcreature.genotype.Gene;
@@ -9,6 +23,7 @@ import vcreature.genotype.NeuralInput;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Vector;
+
 
 /**
  * Created by dsalas on 10/25/15.

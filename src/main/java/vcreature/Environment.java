@@ -1,5 +1,18 @@
 package vcreature;
 
+/**
+ * @author Javier Chavez
+ * @author Alex Baker
+ * @author Dominic Salas
+ * @author Carrie Martinez
+ * <p>
+ * Date November 4, 2015
+ * CS 351
+ * Genetic Evolution
+ * <p>
+ * Module description here
+ */
+
 
 import com.jme3.system.AppSettings;
 import vcreature.Algorithms.GeneticAlgorithm;
@@ -9,6 +22,7 @@ import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
 
 import java.util.Random;
+
 
 /**
  *  Environment housing all the applications main functionality.
