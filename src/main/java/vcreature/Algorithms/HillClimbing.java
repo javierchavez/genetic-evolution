@@ -4,8 +4,12 @@ import vcreature.Being;
 import vcreature.Population;
 import vcreature.genotype.Gene;
 import vcreature.genotype.Genome;
+import vcreature.genotype.NeuralInput;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Random;
+import java.util.Vector;
 
 /**
  * Created by dsalas on 10/25/15.
@@ -19,9 +23,17 @@ public class HillClimbing
   private int geneCount = 10, previousGeneValue, currentGeneValue;
   private Random rnd = new Random();
 
+  private HashMap<NeuralInput.InputPosition, Integer> hillClimbMap = new HashMap<>();
+
   public HillClimbing (Population population, HCMain hcMain)
   {
     this.initialPopulation = population;
+    hillClimbMap.put(NeuralInput.InputPosition.A, 1);
+    hillClimbMap.put(NeuralInput.InputPosition.B, 1);
+    hillClimbMap.put(NeuralInput.InputPosition.C, 1);
+    hillClimbMap.put(NeuralInput.InputPosition.D, 1);
+    hillClimbMap.put(NeuralInput.InputPosition.E, 1);
+
   }
 
   public Population getInitialPopulation()
