@@ -20,7 +20,6 @@ import vcreature.Population;
 import vcreature.Subpopulation;
 import vcreature.genotype.Gene;
 import vcreature.genotype.Genome;
-import vcreature.genotype.NeuralInput;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -37,19 +36,12 @@ public class HillClimbing
   private int geneCount = 10, previousGeneValue, currentGeneValue;
   private Random rnd = new Random();
 
-  private HashMap<NeuralInput.InputPosition, Integer> hillClimbMap = new HashMap<>();
   private HashMap<HillClimbStrategy.Strategies, Integer> hillClimbMapStrats = new HashMap<>();
 
 
   public HillClimbing (Environment environment)
   {
     this.environment = environment;
-
-    hillClimbMap.put(NeuralInput.InputPosition.A, 1);
-    hillClimbMap.put(NeuralInput.InputPosition.B, 1);
-    hillClimbMap.put(NeuralInput.InputPosition.C, 1);
-    hillClimbMap.put(NeuralInput.InputPosition.D, 1);
-    hillClimbMap.put(NeuralInput.InputPosition.E, 1);
 
     hillClimbMapStrats.put(HillClimbStrategy.Strategies.EFFECTOR, 1);
     hillClimbMapStrats.put(HillClimbStrategy.Strategies.NEURON, 1);
@@ -99,7 +91,6 @@ public class HillClimbing
       {
         hillClimbMapStrats.put(currentStrategy, 1);
       }
-
     }
   }
 
@@ -108,6 +99,7 @@ public class HillClimbing
    * an evolved population.
    * @return and evolved population.
    */
+
   public Vector<Being> evolvePopulation (Subpopulation beings, Population population)
   {
     Vector<Being> current = new Vector<>();
