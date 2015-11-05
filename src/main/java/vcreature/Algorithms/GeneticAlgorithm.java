@@ -787,11 +787,24 @@ public class GeneticAlgorithm
           this.bestFitness = fitness;
           this.bestBeing = individual;
           beings.getPopulation().setBestFitness(fitness);
-          beings.getPopulation().setLifetimeOffspring(beings.getPopulation().getLifetimeOffspring() + 1);
-
         }
+       if(beings.getPopulation().getBestBeing() == null || fitness > beings.getPopulation().getBestBeing().getFitness())
+       {
+         beings.getPopulation().setBestBeing(individual);
+       }
+
+
+       beings.getPopulation().setLifetimeOffspring(beings.getPopulation().getLifetimeOffspring() + 1);
+       beings.getPopulation().setTotalLifetimeFitness(beings.getPopulation().getTotalLifetimeFitness() + fitness);
+       beings.getPopulation().setAverageFitness(beings.getPopulation().getTotalLifetimeFitness() / beings.getPopulation().getLifetimeOffspring());
       }
 
+      System.out.println("Beings best population " + beings.getPopulation().getBestFitness());
+      System.out.println("Beings total offspring " + beings.getPopulation().getLifetimeOffspring());
+      System.out.println("Beings total fitness " + beings.getPopulation().getTotalLifetimeFitness());
+      System.out.println("Beings average " + beings.getPopulation().getAverageFitness());
+      System.out.println("Beings best being ");
+      printBeing(beings.getPopulation().getBestBeing());
       this.currentGenAverageFitness = summedFitness / nextGeneration.size();
       printFitnessStats(nextGeneration);
 
