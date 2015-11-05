@@ -30,6 +30,7 @@ public class HillClimbing
 
   private float lowest = 0;
   private float highest = 7;
+  private int fails = 0;
 
   private double currentOptimizedFitness, currentFitnessValue;
 
@@ -126,6 +127,7 @@ public class HillClimbing
         if (currentFitnessValue <= lowest)
         {
           factor = .30f;
+          fails++;
         }
         hillClimbMapStrats.put(currentStrategy, hillClimbMapStrats.get(currentStrategy) - factor);
         HillClimbing.sortValue(hillClimbMapStrats);

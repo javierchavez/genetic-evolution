@@ -29,7 +29,7 @@ public class Subpopulation extends Thread
   private volatile boolean paused = true;
   private boolean running = true;
   private boolean isEvolving = false;
-  private int totalFitness = 2;
+  private float totalFitness = 2;
   private int lastFitness=0;
 
   /**
@@ -60,7 +60,7 @@ public class Subpopulation extends Thread
       if (!isEvolving)
       {
         isEvolving = true;
-        totalFitness = totalPop.getMutating().getFitness();
+        totalFitness = totalPop.getTotalLifetimeFitness();
         if (lastFitness/totalFitness <= .30)
         {
           totalPop.getMutating().evolvePopulation(this, totalPop);

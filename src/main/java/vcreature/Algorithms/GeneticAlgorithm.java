@@ -52,22 +52,11 @@ public class GeneticAlgorithm
   private Being bestBeing;
   private float currentGenAverageFitness;
   private float firstGenAvgFitness;
-
   private Environment simulation;
-
-  public float getBestFitness()
-  {
-    return bestFitness;
-  }
 
   public float getFirstGenAvgFitness()
   {
     return firstGenAvgFitness =0f;
-  }
-
-  public float getCurrentGenAverageFitness()
-  {
-    return currentGenAverageFitness;
   }
 
   /**

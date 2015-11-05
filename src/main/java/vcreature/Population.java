@@ -30,10 +30,10 @@ public class Population extends Vector<Being> implements Savable
 {
   private final Vector<Being> beings;
 
-  private volatile int generations;
-  private volatile float averageFitness;
-  private volatile float bestFitness;
-  private volatile float totalLifetimeFitness =0;
+  private volatile int generations = 0;
+  private volatile float averageFitness = 1;
+  private volatile float bestFitness = 1;
+  private volatile float totalLifetimeFitness = 1;
   private volatile Being bestBeing = null;
 
   private GeneticAlgorithm breeding;
