@@ -33,6 +33,8 @@ public class Population extends Vector<Being> implements Savable
   private volatile int generations;
   private volatile float averageFitness;
   private volatile float bestFitness;
+  private volatile float totalLifetimeFitness =0;
+  private volatile Being bestBeing = null;
 
   private GeneticAlgorithm breeding;
   private HillClimbing mutating;
@@ -46,6 +48,25 @@ public class Population extends Vector<Being> implements Savable
   // private boolean isEvolving = false;
 
 
+  public Being getBestBeing()
+  {
+    return bestBeing;
+  }
+
+  public void setBestBeing(Being bestBeing)
+  {
+    this.bestBeing = bestBeing;
+  }
+
+  public float getTotalLifetimeFitness()
+  {
+    return totalLifetimeFitness;
+  }
+
+  public void setTotalLifetimeFitness(float totalLifetimeFitness)
+  {
+    this.totalLifetimeFitness = totalLifetimeFitness;
+  }
 
   public float getAverageFitness()
   {
