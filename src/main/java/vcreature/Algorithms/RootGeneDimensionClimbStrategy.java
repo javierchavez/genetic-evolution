@@ -1,5 +1,16 @@
 package vcreature.Algorithms;
 
+/**
+ * @author Javier Chavez
+ * @author Alex Baker
+ * @author Dominic Salas
+ * @author Carrie Martinez
+ * <p>
+ * Date November 4, 2015
+ * CS 351
+ * Genetic Evolution
+ */
+
 
 import com.jme3.math.Vector3f;
 import vcreature.genotype.Gene;
@@ -8,6 +19,12 @@ import vcreature.phenotype.Block;
 
 import java.util.Random;
 
+
+/**
+ * This class is a mutation to change the volume of the root node of a computer
+ *
+ * @param <V> type of gene to mutate
+ */
 public class RootGeneDimensionClimbStrategy<V> implements HillClimbStrategy<Genome, V>
 {
   Vector3f vector3f = new Vector3f();
@@ -23,7 +40,7 @@ public class RootGeneDimensionClimbStrategy<V> implements HillClimbStrategy<Geno
     vector3f.y *= scaleFactor;
     vector3f.z *= scaleFactor;
 
-    if (vector3f.x < 0.5f || vector3f.y < 0.5f || vector3f.z < 0.5f)
+    if (Block.min(vector3f) < 0.5f)
     {
       return null;
     }
