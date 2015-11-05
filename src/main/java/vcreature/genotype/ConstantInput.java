@@ -39,6 +39,7 @@ public class ConstantInput implements NeuralInput<Float>, EffectorInput, Savable
   @Override
   public void write(StringBuilder s)
   {
+    s.append("CONSTANT").append(":");
     s.append(constant).append(",");
   }
 
