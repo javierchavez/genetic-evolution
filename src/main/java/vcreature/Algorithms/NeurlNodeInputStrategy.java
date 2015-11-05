@@ -12,10 +12,7 @@ public class NeurlNodeInputStrategy<V> implements HillClimbStrategy<NeuralNode, 
     // change the inputs of the node
 
 
-    if (part.getInputs().size() > 0)
-    {
-      part.getInputs().get(NeuralInput.InputPosition.A);
-    }
+    part.getInputs().get(NeuralInput.InputPosition.A);
     return null;
   }
 }
