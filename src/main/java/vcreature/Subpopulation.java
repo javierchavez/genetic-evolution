@@ -47,6 +47,7 @@ public class Subpopulation extends Thread
     TOTAL_SUB_POPULATIONS++;
   }
 
+
   /**
    * Start the next generation in the sub population
    */
