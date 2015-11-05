@@ -9,8 +9,6 @@ package vcreature.utils;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
@@ -19,7 +17,8 @@ import java.io.*;
 
 /**
  * Class that helps with continual logging.
- *
+ * Writes objects out to a file so they can be read back
+ * in a a later time
  */
 public class Logger
 {
@@ -45,7 +44,7 @@ public class Logger
   }
 
   /**
-   * Defaults to saving data to logger.txt at project root
+   * Defaults to saving data to temp.txt at project root
    *
    */
   public Logger()

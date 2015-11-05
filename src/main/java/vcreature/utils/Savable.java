@@ -9,15 +9,14 @@ package vcreature.utils;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
-
+/**
+ * Used to describe an object which can be saved and written to a file by the logger
+ */
 public interface Savable
 {
-
   /**
    * Writes the object to a StringBuilder.
    *
