@@ -14,7 +14,10 @@ package vcreature.genotype;
 
 import vcreature.utils.Savable;
 
+import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -126,9 +129,22 @@ public abstract class AbstractGene<T extends AbstractGene<?>> implements Savable
   }
 
   @Override
-  public void read(String s)
+  public void read(StringBuilder s)
   {
+    String str = s.toString();
+    String[] split = str.split("[|]");
+    String[] split2 = split[1].split("[-]");
+    for (int i = 0; i < split2.length; i++)
+    {
+      if (split2.length != 1)
+      {
+        int num = Integer.parseInt(split2[i]);
+        addEdge(num);
+      }
+    }
 
+    String output = str.replaceAll("\\|.*\\|,", "");
+    s.replace(0, output.length(), output);
   }
 
   @Override

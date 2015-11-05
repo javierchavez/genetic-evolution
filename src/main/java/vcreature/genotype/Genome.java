@@ -246,17 +246,18 @@ public class Genome implements Savable
   }
 
   @Override
-  public void read(String s)
+  public void read(StringBuilder s)
   {
     String line;
-    Scanner scanner = new Scanner(s);
+    String str = s.toString();
+    Scanner scanner = new Scanner(str);
     if (scanner.hasNextLine() && scanner.nextLine().equals("START"))
     {
       genes.clear();
       while (scanner.hasNextLine() && !(line = scanner.nextLine()).equals("END"))
       {
         Gene gene = new Gene(genes.size());
-        gene.read(line);
+        gene.read(new StringBuilder(line));
         genes.add(gene);
       }
     }

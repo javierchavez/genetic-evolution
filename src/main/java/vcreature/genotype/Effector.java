@@ -421,7 +421,7 @@ public class Effector implements Savable
   }
 
   @Override
-  public void read(String s)
+  public void read(StringBuilder s)
   {
 
   }

@@ -43,7 +43,7 @@ public class ConstantInput implements NeuralInput<Float>, EffectorInput, Savable
   }
 
   @Override
-  public void read(String s)
+  public void read(StringBuilder s)
   {
 
   }

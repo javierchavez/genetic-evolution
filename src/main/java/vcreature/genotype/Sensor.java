@@ -117,7 +117,7 @@ public abstract class Sensor<T extends Sensor<?, ?>, V> implements NeuralInput<V
   }
 
   @Override
-  public void read(String s)
+  public void read(StringBuilder s)
   {
 
   }

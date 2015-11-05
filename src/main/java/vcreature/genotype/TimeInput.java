@@ -42,7 +42,7 @@ public class TimeInput implements NeuralInput<Float>, Savable
   }
 
   @Override
-  public void read(String s)
+  public void read(StringBuilder s)
   {
 
   }
