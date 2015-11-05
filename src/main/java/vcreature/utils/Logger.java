@@ -108,5 +108,9 @@ public class Logger
     {
       e.printStackTrace();
     }
+    catch (NullPointerException e)
+    {
+      e.printStackTrace();
+    }
   }
 }

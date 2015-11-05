@@ -38,12 +38,15 @@ public class TimeInput implements NeuralInput<Float>, Savable
   @Override
   public void write(StringBuilder s)
   {
+    s.append("TIME").append(":");
     s.append(time).append(",");
   }
 
   @Override
   public void read(StringBuilder s)
   {
-
+    String value = s.substring(0, s.indexOf(","));
+    setValue(Float.parseFloat(value));
+    s.replaceFirst(value+",", "");
   }
 }

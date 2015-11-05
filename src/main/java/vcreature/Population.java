@@ -14,7 +14,9 @@ package vcreature;
 
 import vcreature.Algorithms.GeneticAlgorithm;
 import vcreature.Algorithms.HillClimbing;
+import vcreature.utils.Savable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Vector;
 
@@ -24,13 +26,15 @@ import java.util.Vector;
  * some number of beings are chosen and sent to the breeder to be
  * evolved
  */
-public class Population extends Vector<Being>
+public class Population extends Vector<Being> implements Savable
 {
   private final Vector<Being> beings;
 
   private volatile int generations;
   private volatile float averageFitness;
   private volatile float bestFitness;
+  private volatile float totalLifetimeFitness =0;
+  private volatile Being bestBeing = null;
 
   private GeneticAlgorithm breeding;
   private HillClimbing mutating;
@@ -42,6 +46,27 @@ public class Population extends Vector<Being>
   private volatile long lifetimeRejectedCreatures;
   private volatile long lifetimeFailedHillClimbs;
   // private boolean isEvolving = false;
+
+
+  public Being getBestBeing()
+  {
+    return bestBeing;
+  }
+
+  public void setBestBeing(Being bestBeing)
+  {
+    this.bestBeing = bestBeing;
+  }
+
+  public float getTotalLifetimeFitness()
+  {
+    return totalLifetimeFitness;
+  }
+
+  public void setTotalLifetimeFitness(float totalLifetimeFitness)
+  {
+    this.totalLifetimeFitness = totalLifetimeFitness;
+  }
 
   public float getAverageFitness()
   {
@@ -283,5 +308,20 @@ public class Population extends Vector<Being>
   public synchronized boolean add(Being being)
   {
     return this.beings.add(being);
+  }
+
+  @Override
+  public void write(StringBuilder s)
+  {
+    s.append(LocalDateTime.now()).append(",");
+    s.append(averageFitness).append(",");
+    s.append(bestFitness).append(",");
+    s.append(this.size());
+  }
+
+  @Override
+  public void read(String s)
+  {
+
   }
 }

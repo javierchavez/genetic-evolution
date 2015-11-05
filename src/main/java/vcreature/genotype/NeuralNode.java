@@ -86,7 +86,7 @@ public class NeuralNode implements EffectorInput, Savable
    */
   public void setOperator(EnumOperator operator, NeuralOperatorPosition operatorPosition)
   {
-    operators.put(operatorPosition,operator);
+    operators.put(operatorPosition, operator);
   }
 
   /**
@@ -132,6 +132,42 @@ public class NeuralNode implements EffectorInput, Savable
   @Override
   public void read(StringBuilder s)
   {
+    String type;
+    NeuralInput input;
+    for (InputPosition position : InputPosition.values())
+    {
+      type = s.substring(0, s.indexOf(":"));
+      input = getInput(type);
+      inputs.put(position, input);
+      s.replaceFirst(type+":", "");
+      input.read(s);
+    }
 
+    String operator;
+    EnumOperator op;
+    for (NeuralOperatorPosition position : NeuralOperatorPosition.values())
+    {
+      operator = s.substring(0, s.indexOf(","));
+      op = EnumOperator.valueOf(operator);
+      operators.put(position, op);
+      s.replaceFirst(operator+",", "");
+    }
+  }
+
+  private NeuralInput getInput(String s)
+  {
+    switch (s)
+    {
+      case "TIME":
+        return new TimeInput();
+      case "ANGLE":
+        return new AngleSensor(null);
+      case "HEIGHT":
+        return new HeightSensor(null);
+      case "TOUCH":
+        return new TouchSensor(null);
+      default:
+        return new ConstantInput();
+    }
   }
 }

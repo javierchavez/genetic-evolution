@@ -4,7 +4,7 @@ package vcreature;
  * @author Javier Chavez
  * @author Alex Baker
  * @author Dominic Salas
- * @author Carrie Martinez
+ * @author Cari Martinez
  * <p>
  * Date November 4, 2015
  * CS 351
@@ -12,15 +12,18 @@ package vcreature;
  */
 
 
+import com.jme3.font.BitmapText;
+import com.jme3.math.ColorRGBA;
 import com.jme3.system.AppSettings;
-import com.jme3.system.JmeContext;
 import vcreature.Algorithms.GeneticAlgorithm;
 import vcreature.Algorithms.HillClimbing;
 import vcreature.genotype.Genome;
 import vcreature.genotype.GenomeGenerator;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
+import vcreature.utils.Logger;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 
@@ -30,6 +33,8 @@ import java.util.Random;
 public class Environment extends AbstractApplication
 {
   private float elapsedSimulationTime = 0.0f;
+  private float totalSimTime = 0.0f;
+
 
   // Main population
   private Population population;
@@ -64,6 +69,13 @@ public class Environment extends AbstractApplication
   // Used for getting random subpopulation for crossing
   private Random random = new Random();
   private boolean beingAdded;
+
+  private double logStartTime = 0.0;
+  private Logger popLogger = new Logger("population-stats-"+LocalDateTime.now().toString().replace(":", "")+".txt");
+  private Logger evoLogger = new Logger("population-"+LocalDateTime.now().toString().replace(":", "")+".txt");
+
+  BitmapText hudText;
+
 
   @Override
   public void simpleInitApp()
@@ -133,6 +145,15 @@ public class Environment extends AbstractApplication
 
     // set the population to a evolution
     evolution = new Evolution(population);
+    logStartTime = System.currentTimeMillis();
+
+    hudText = new BitmapText(guiFont, false);
+    hudText.setSize(guiFont.getCharSet().getRenderedSize());      // font size
+    hudText.setColor(ColorRGBA.Green);// font color
+    hudText.setText("Current best fitness " + breeding.getBestFitness() + "Fitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "Fitness change per minute " + breeding.getCurrentGenAverageFitness());             // the text
+    hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
+    guiNode.attachChild(hudText);
+
   }
 
   /* Use the main event loop to trigger repeating actions. */
@@ -158,6 +179,17 @@ public class Environment extends AbstractApplication
     {
       being.setFitness(creature.getFitness());
       being.setUnderEvaluation(false);
+      float tempbestFitness = breeding.getBestFitness();
+      float fitnessChangePerMinute = 0;
+      totalSimTime += deltaSeconds;
+      if(totalSimTime == 60f)
+      {
+        fitnessChangePerMinute= breeding.getBestFitness() - tempbestFitness;
+        totalSimTime = 0;
+        tempbestFitness =  breeding.getBestFitness();
+      }
+      System.out.println("Current best fitness " + breeding.getBestFitness() + "\nFitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "\nFitness change per minute " + fitnessChangePerMinute);             // the text);
+      hudText.setText("Current best fitness " + breeding.getBestFitness() + "Fitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "Fitness change per minute " + fitnessChangePerMinute);             // the text
       creature.remove();
       creature = null;
     }
@@ -177,6 +209,13 @@ public class Environment extends AbstractApplication
     if (creature != null)
     {
       creature.updateBrain(elapsedSimulationTime);
+    }
+
+    if ((System.currentTimeMillis() - logStartTime) > Attributes.LOG_INTERVAL)
+    {
+      evoLogger.export(evolution);
+      popLogger.export(population);
+      logStartTime = System.currentTimeMillis();
     }
   }
 
@@ -231,7 +270,7 @@ public class Environment extends AbstractApplication
     app.setSettings(settings);
 
 
-    //app.start(JmeContext.Type.Headless);
+//    app.start(JmeContext.Type.Headless);
 
     app.start();
   }

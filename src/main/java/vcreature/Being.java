@@ -147,6 +147,9 @@ public class Being /*Comparable<Being>*/
     Being newBeing = new Being();
     newBeing.setGenotype(genotype.clone());
     newBeing.setFitness(fitness);
+    newBeing.setAge(age);
+    newBeing.setChildren(children);
+    newBeing.setTimesHillClimbed(timesHillClimbed);
     return newBeing;
   }
 }

@@ -46,7 +46,7 @@ public class TextSynthesizer extends Synthesizer<File, Genome>
 
             if (line.equalsIgnoreCase("END"))
             {
-              genome.read(sb.toString());
+              genome.read(sb);
 
               sb.delete(0, sb.toString().length());
               break;

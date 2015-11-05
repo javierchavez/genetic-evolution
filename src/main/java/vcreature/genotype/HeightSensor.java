@@ -24,4 +24,19 @@ public class HeightSensor extends Sensor<HeightSensor, Float>
   {
     super(source);
   }
+
+  @Override
+  public void write(StringBuilder s)
+  {
+    s.append("HEIGHT").append(":");
+    s.append(getValue()).append(",");
+  }
+
+  @Override
+  public void read(String s)
+  {
+    String value = s.substring(0, s.indexOf(","));
+    setValue(Float.parseFloat(value));
+    s.replaceFirst(value+",", "");
+  }
 }

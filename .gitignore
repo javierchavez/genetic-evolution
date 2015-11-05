@@ -2,7 +2,7 @@ gradle
 build/
 dist/
 Manifest.txt
-temp.txt
+*.txt
 
 # Ignore Gradle GUI config
 gradle-app.setting
