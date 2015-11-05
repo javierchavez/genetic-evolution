@@ -22,14 +22,45 @@ import vcreature.genotype.Genome;
 public class Being /*Comparable<Being>*/
 {
   public static int TOTAL = 0;
+
   // private String name;
-  // private int age;
+  private int age;
   private Genome genotype;
   private int timesHillClimbed;
-  private int timesBred;
   private int children;
   private float fitness = 0;
   private boolean underEvaluation = false;
+
+  public int getAge()
+  {
+    return age;
+  }
+
+  public void setAge(int age)
+  {
+    this.age = age;
+  }
+
+  public int getTimesHillClimbed()
+  {
+    return timesHillClimbed;
+  }
+
+  public void setTimesHillClimbed(int timesHillClimbed)
+  {
+    this.timesHillClimbed = timesHillClimbed;
+  }
+
+  public int getChildren()
+  {
+    return children;
+  }
+
+  public void setChildren(int children)
+  {
+    this.children = children;
+  }
+
 
   /**
    * Create a new being and update the total number of beings
