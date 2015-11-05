@@ -1,5 +1,17 @@
 package vcreature;
 
+/**
+ * @author Javier Chavez
+ * @author Alex Baker
+ * @author Dominic Salas
+ * @author Carrie Martinez
+ * <p>
+ * Date November 4, 2015
+ * CS 351
+ * Genetic Evolution
+ */
+
+
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -9,6 +21,9 @@ import vcreature.phenotype.EnumNeuronInput;
 import vcreature.phenotype.Neuron;
 
 
+/**
+ * A variation on the flappy bird creature. Used for testing different algorithms and strategies
+ */
 public class FlappyBird5 extends Creature
 {
   public FlappyBird5(PhysicsSpace physicsSpace, Node rootNode)

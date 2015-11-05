@@ -11,8 +11,12 @@ import vcreature.genotype.Genome;
 import java.util.*;
 
 /**
+ * This class evolves a population of beings using a genetic algorithm (GA). The algorithms main functions are:
+ * fitness calculation; selection; crossover; and mutation
  * @author Cari
+ *
  */
+
 public class GeneticAlgorithm
 {
 
@@ -29,9 +33,13 @@ public class GeneticAlgorithm
   private Environment simulation;
 
 
+  /**
+   *
+   * @param simulation reference to physics environment
+   */
   public GeneticAlgorithm(Environment simulation)
   {
-    this.simulation = simulation;  //reference to physics environment
+    this.simulation = simulation;
     this.generationNumber = 0;
     this.bestFitness = 0;
     this.bestBeing = null;
@@ -217,7 +225,7 @@ public class GeneticAlgorithm
     return newParents;
   }
 
-  //
+  //sets joint position on parent after crossover
   private void setParentJoint(Gene parent, Gene child)
   {
 
@@ -248,11 +256,14 @@ public class GeneticAlgorithm
 
   }
 
+  //for testing only
   private void printDimensions(Gene g)
   {
     System.out.println(" X " + g.getLengthX() + " Y " + g.getHeightY() + " Z " + g.getWidthZ());
   }
 
+
+  //for testing only
   private void printEffector(Effector e)
   {
     System.out.println(" ParentX " + e.getParentX() + " ParentY " + e.getParentY() + " ParentZ " + e.getParentZ());
@@ -260,6 +271,7 @@ public class GeneticAlgorithm
     System.out.println(" PivotX " + e.getPivotAxisX() + " PivotY " + e.getPivotAxisY() + " PivotZ " + e.getPivotAxisZ());
   }
 
+  //returns the index of the parent of a gene in a genotype
   private int getParentIndex(Genome genotype, int geneIndex)
   {
 
@@ -354,7 +366,7 @@ public class GeneticAlgorithm
 
 
   ////////ORIGINAL CROSSOVER////
-
+  //returns 2 crossed over beings
   private Being[] crossover(Being parent1ARG, Being parent2ARG)
   {
 
@@ -434,7 +446,7 @@ public class GeneticAlgorithm
     return children;
   }
 
-
+  //helper function for crossover
   private void crossParent(Genome genotype1, Genome genotype2, int crossoverPoint1, int crossoverPoint2, int parentIndex1, Gene gene2)
   {
 
@@ -563,7 +575,7 @@ public class GeneticAlgorithm
 
   }
 
-
+  //helper function for crossover
   private ArrayList<Integer> getDescendants(Genome genotype, int geneIndex, ArrayList<Integer> descendants)
   {
 
@@ -654,7 +666,7 @@ public class GeneticAlgorithm
     return children;
   }
 
-
+  //use mutations to improve
   private void mutation(Being individual)
   {
     Genome genotype = individual.getGenotype();
@@ -688,11 +700,10 @@ public class GeneticAlgorithm
   }
 
   //Runs through all phases of GA
-
   private Vector<Being> createNextGeneration(Vector<Being> population)
   {
     Vector<Being> nextGeneration = new Vector();
-    Vector<Being> newParents = selection(population); //use selection3 method for tournament size 3 instead of 2
+    Vector<Being> newParents = selection3(population); //use selection3 method for tournament size 3 instead of 2
     Random rnd = new Random();
     Being parent1;
     Being parent2;
@@ -717,7 +728,7 @@ public class GeneticAlgorithm
 
       if (rnd.nextInt(100) < this.pctCrossover)
       {
-        Being[] children = crossover(parent1, parent2);  //use crossover2 method for simpler, but fast-growing crossover
+        Being[] children = crossover2(parent1, parent2);  //use crossover2 method for simpler, but fast-growing crossover
         parent1 = children[0];
         parent2 = children[1];
       }
@@ -742,13 +753,19 @@ public class GeneticAlgorithm
     return nextGeneration;
   }
 
+  //getter
   public int currGen()
   {
     return generationNumber;
   }
 
 
-
+  /**
+   *
+   * @param beings  Portion of population of Beings GA is currently evolving
+   * @param population  Full population of Beings available to be evolved
+   * @return  evolved population of Beings
+   */
   public Population evolvePopulation(Subpopulation beings, Population population)
   {
     System.out.println("EVOLVE POPULATION, Generation: " + this.generationNumber);

@@ -9,11 +9,12 @@ package vcreature;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
+/**
+ * A class for holding different attributes for the application
+ */
 public final class Attributes
 {
   public static final int MAX_BLOCKS = 50;

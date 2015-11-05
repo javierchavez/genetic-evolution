@@ -9,8 +9,6 @@ package vcreature;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
@@ -22,7 +20,9 @@ import vcreature.phenotype.Creature;
 
 
 /**
- * Generates a creature based on a random genome
+ * This class will generate a random phenotype.
+ * It uses the genome generator to first generate a genome
+ * and then synthesize it to a creature (phenotype)
  */
 public class CreatureGenerator
 {
@@ -33,6 +33,12 @@ public class CreatureGenerator
   private GenomeGenerator generator;
   private Creature creature;
 
+  /**
+   * Create a new generator instance with the given physics space and environment
+   *
+   * @param physicsSpace physics space to create the creature in
+   * @param rootNode root node of the physics space
+   */
   public CreatureGenerator(PhysicsSpace physicsSpace, Node rootNode)
   {
     this.physicsSpace = physicsSpace;
@@ -41,6 +47,11 @@ public class CreatureGenerator
     generator = new GenomeGenerator(physicsSpace, rootNode);
   }
 
+  /**
+   * Procedurally generate a random creature
+   *
+   * @return generated creature
+   */
   public Creature generateCreature()
   {
     creature = synthesizer.encode(generator.generateGenome());

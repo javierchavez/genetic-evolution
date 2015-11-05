@@ -9,8 +9,6 @@ package vcreature;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
@@ -28,11 +26,9 @@ import java.util.Random;
 
 /**
  *  Environment housing all the applications main functionality.
- *
  */
 public class Environment extends AbstractApplication
 {
-
   private float elapsedSimulationTime = 0.0f;
 
   // Main population
@@ -40,7 +36,6 @@ public class Environment extends AbstractApplication
 
   // Wrapper for population and controlling populations
   private Evolution evolution;
-
 
   // Turning creatures into DNA and Blocks
   private CreatureSynthesizer creatureSynthesizer;
@@ -61,7 +56,6 @@ public class Environment extends AbstractApplication
   // Generation currently spawning
   boolean newGenerationSpwan = false;
 
-
   static boolean creaturePresent = false;
 
   // Amount of time creatures are left in environment
@@ -71,14 +65,12 @@ public class Environment extends AbstractApplication
   private Random random = new Random();
   private boolean beingAdded;
 
-
   @Override
   public void simpleInitApp()
   {
     super.simpleInitApp();
 
     Block.initStaticMaterials(assetManager);
-
 
     creatureSynthesizer = new CreatureSynthesizer();
     genomeSynthesizer = new GenomeSynthesizer(getPhysicsSpace(), rootNode);
@@ -141,9 +133,7 @@ public class Environment extends AbstractApplication
 
     // set the population to a evolution
     evolution = new Evolution(population);
-
   }
-
 
   /* Use the main event loop to trigger repeating actions. */
   @Override
@@ -188,7 +178,6 @@ public class Environment extends AbstractApplication
     {
       creature.updateBrain(elapsedSimulationTime);
     }
-
   }
 
   /**
@@ -206,14 +195,19 @@ public class Environment extends AbstractApplication
     genome = being.getGenotype();
   }
 
-  private int genRandDim(int max)
-  {
-    return random.nextInt(max - 1) + 0;
-  }
-
+  /**
+   * Set whether to spawn a new generation
+   *
+   * @param generationSpawn true | false
+   */
   public void setGenerationSpawn(boolean generationSpawn)
   {
     this.newGenerationSpwan = generationSpawn;
+  }
+
+  private int genRandDim(int max)
+  {
+    return random.nextInt(max - 1) + 0;
   }
 
   public static void main(String[] args)

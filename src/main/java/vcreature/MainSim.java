@@ -9,8 +9,6 @@ package vcreature;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
@@ -39,6 +37,9 @@ import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
 
 
+/**
+ * A simulation class for testing different flappy bird creatures
+ */
 public class MainSim extends SimpleApplication implements ActionListener
 {
   private BulletAppState bulletAppState;
@@ -128,6 +129,7 @@ public class MainSim extends SimpleApplication implements ActionListener
     inputManager.addMapping("FlappyBird2",  new KeyTrigger(KeyInput.KEY_2));
     inputManager.addMapping("FlappyBird3",  new KeyTrigger(KeyInput.KEY_3));
     inputManager.addMapping("FlappyBird4",  new KeyTrigger(KeyInput.KEY_4));
+    inputManager.addMapping("FlappyBird5",  new KeyTrigger(KeyInput.KEY_4));
 
     // Add the names to the action listener.
     inputManager.addListener(this,"Quit");
@@ -136,6 +138,7 @@ public class MainSim extends SimpleApplication implements ActionListener
     inputManager.addListener(this,"FlappyBird2");
     inputManager.addListener(this,"FlappyBird3");
     inputManager.addListener(this,"FlappyBird4");
+    inputManager.addListener(this,"FlappyBird5");
   }
   
   public void onAction(String name, boolean isPressed, float timePerFrame) 
@@ -172,6 +175,14 @@ public class MainSim extends SimpleApplication implements ActionListener
     {
       myCreature.remove();
       myCreature = new FlappyBird4(physicsSpace, rootNode);
+
+      cameraAngle = (float)(Math.PI/2.0);
+      elapsedSimulationTime = 0.0f;
+    }
+    else if (isPressed && name.equals("FlappyBird5"))
+    {
+      myCreature.remove();
+      myCreature = new FlappyBird5(physicsSpace, rootNode);
 
       cameraAngle = (float)(Math.PI/2.0);
       elapsedSimulationTime = 0.0f;

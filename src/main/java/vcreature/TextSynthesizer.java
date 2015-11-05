@@ -9,8 +9,6 @@ package vcreature;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
@@ -19,6 +17,9 @@ import vcreature.genotype.Genome;
 import java.io.*;
 
 
+/**
+ * This class will read in objects from a text file that was created by the logger.
+ */
 public class TextSynthesizer extends Synthesizer<File, Genome>
 {
   @Override
@@ -29,20 +30,17 @@ public class TextSynthesizer extends Synthesizer<File, Genome>
 
     try
     {
-
       br = new BufferedReader(new FileReader(typeToConvert));
       StringBuilder sb = new StringBuilder();
       String line = br.readLine();
 
       while (line != null)
       {
-
         if (line.equalsIgnoreCase("START"))
         {
           sb.append(line).append("\n");
           while (true)
           {
-
             line = br.readLine();
             sb.append(line).append("\n");
 
@@ -68,7 +66,6 @@ public class TextSynthesizer extends Synthesizer<File, Genome>
     }
     finally
     {
-
       try
       {
         br.close();

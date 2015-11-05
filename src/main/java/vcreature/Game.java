@@ -9,8 +9,6 @@ package vcreature;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
@@ -21,14 +19,17 @@ import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
 
 
+/**
+ * Class description here
+ */
 public class Game extends MainSim implements ActionListener
 {
-
   private static Environment environment;
   private float elapTime = 0f;
   Population population;
 
-  public Environment getEnvironment() {
+  public Environment getEnvironment()
+  {
     return environment;
   }
 
@@ -57,17 +58,15 @@ public class Game extends MainSim implements ActionListener
 
     //evolution.start();
     initKeys();
-
-
   }
-  private void initKeys() {
 
+  private void initKeys()
+  {
     inputManager.addMapping("Update Creature",  new KeyTrigger(KeyInput.KEY_U));
 
     // Add the names to the action listener.
     inputManager.addListener(this,"Update Creature");
   }
-
 
   @Override
   public void onAction(String name, boolean isPressed, float timePerFrame)
@@ -81,11 +80,8 @@ public class Game extends MainSim implements ActionListener
 //      Being being = evolution.getBeing(beingIndx);
 //      environment.addToWorld(being);
 //
-
-
 //      Being being = evolution.getBeing(beingIndx);
 //      environment.addToWorld(being);
-
     }
   }
 
@@ -109,7 +105,6 @@ public class Game extends MainSim implements ActionListener
     app.setShowSettings(false);
     app.setSettings(settings);
     app.start(JmeContext.Type.Headless);
-
   }
 
   @Override
