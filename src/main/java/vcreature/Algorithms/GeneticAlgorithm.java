@@ -819,6 +819,10 @@ public class GeneticAlgorithm
     return null;
   }
 
+  public float getBestFitness()
+  {
+    return bestFitness;
+  }
 }
 
 
