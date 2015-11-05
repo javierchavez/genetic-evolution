@@ -129,6 +129,8 @@ public abstract class AbstractGene<T extends AbstractGene<?>> implements Savable
   public void read(String s)
   {
 
+
+
   }
 
   @Override

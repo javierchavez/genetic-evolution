@@ -29,7 +29,6 @@ import com.jme3.scene.shape.Box;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.JmeContext;
 import com.jme3.texture.Texture;
-
 import vcreature.phenotype.PhysicsConstants;
 
 
@@ -114,11 +113,6 @@ public abstract class AbstractApplication extends SimpleApplication implements A
     viewPort.addProcessor(dlsr);
   }
 
-  @Override
-  public void onAction(String name, boolean isPressed, float tpf)
-  {
-
-  }
 
   @Override
   public void simpleUpdate(float tpf)

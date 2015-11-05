@@ -10,6 +10,13 @@ repositories {
     }
 }
 
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 dependencies {
     compile 'com.jme3:jme3-core:3.0.+'
     compile 'com.jme3:jme3-effects:3.0.+'
@@ -35,4 +42,10 @@ sourceSets {
 
 mainClassName = "vcreature.Environment"
 
+task(runSimple, dependsOn: 'classes', type: JavaExec) {
+    main = 'vcreature.Enviroment'
+    args 'headless'
+}
+
+defaultTasks 'runSimple'
 

@@ -13,8 +13,11 @@ package vcreature;
 
 
 import com.jme3.font.BitmapText;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.ColorRGBA;
 import com.jme3.system.AppSettings;
+import com.jme3.system.JmeContext;
 import vcreature.Algorithms.GeneticAlgorithm;
 import vcreature.Algorithms.HillClimbing;
 import vcreature.genotype.Genome;
@@ -154,6 +157,41 @@ public class Environment extends AbstractApplication
 
   }
 
+
+
+  private void initKeys()
+  {
+    inputManager.addMapping("Quit",  new KeyTrigger(KeyInput.KEY_Q));
+    inputManager.addMapping("Best",  new KeyTrigger(KeyInput.KEY_B));
+
+    // Add the names to the action listener.
+    inputManager.addListener(this, "Best");
+    inputManager.addListener(this,"Quit");
+    inputManager.addListener(this,"Toggle Camera Rotation");
+  }
+
+  @Override
+  public void onAction(String name, boolean isPressed, float timePerFrame)
+  {
+    if (isPressed && name.equals("Next"))
+    {
+
+    }
+    else if (isPressed && name.equals("Best"))
+    {
+      if (creature != null)
+      {
+
+      }
+      elapsedSimulationTime = 0.0f;
+    }
+    else if (isPressed && name.equals("Quit"))
+    {
+      System.out.format("Creature Fitness (Maximium height of lowest point) = %.3f meters]\n", creature.getFitness());
+      System.exit(0);
+    }
+  }
+
   /* Use the main event loop to trigger repeating actions. */
   @Override
   public void simpleUpdate(float deltaSeconds)
@@ -257,10 +295,22 @@ public class Environment extends AbstractApplication
     app.setShowSettings(false);
     app.setSettings(settings);
 
+    if (args.length > 0)
+    {
 
-//    app.start(JmeContext.Type.Headless);
-
-    app.start();
+      if (args[0].equalsIgnoreCase("headless"))
+      {
+        app.start(JmeContext.Type.Headless);
+      }
+      else
+      {
+        app.start();
+      }
+    }
+    else
+    {
+      app.start();
+    }
   }
 
 

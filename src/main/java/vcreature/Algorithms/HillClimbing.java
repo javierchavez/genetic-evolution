@@ -19,32 +19,35 @@ import vcreature.Environment;
 import vcreature.Population;
 import vcreature.Subpopulation;
 import vcreature.genotype.Gene;
-import vcreature.genotype.Genome;
 
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Vector;
+import java.util.*;
 
 
 public class HillClimbing
 {
   private final Environment environment;
-  private Genome genome;
   private double amount;
 
+  private float lowest = 0;
+  private float highest = 7;
+
   private double currentOptimizedFitness, currentFitnessValue;
-  private int geneCount = 10, previousGeneValue, currentGeneValue;
+
   private Random rnd = new Random();
 
-  private HashMap<HillClimbStrategy.Strategies, Integer> hillClimbMapStrats = new HashMap<>();
+  private HashMap<HillClimbStrategy.Strategies, Float> hillClimbMapStrats = new HashMap<>();
+  private int fitness = 0;
+  private int lifetimeRuns = 0;
 
 
   public HillClimbing (Environment environment)
   {
     this.environment = environment;
 
-    hillClimbMapStrats.put(HillClimbStrategy.Strategies.EFFECTOR, 1);
-    hillClimbMapStrats.put(HillClimbStrategy.Strategies.NEURON, 1);
+    hillClimbMapStrats.put(HillClimbStrategy.Strategies.EFFECTOR, 1f);
+    hillClimbMapStrats.put(HillClimbStrategy.Strategies.NEURAL_NET, 1f);
+    hillClimbMapStrats.put(HillClimbStrategy.Strategies.ROOT_GENE, 1f);
+    hillClimbMapStrats.put(HillClimbStrategy.Strategies.LIMB_GENE, 1f);
 
   }
 
@@ -53,29 +56,58 @@ public class HillClimbing
    * improvements to the fitness by making changes to the genes.
    * @param individual
    */
-  private void hillClimbingEvaluation(Being individual)
+  private boolean hillClimbingEvaluation(Being individual)
   {
-    HillClimbStrategy.Strategies currentStrategy = null;
-    for (Gene gene : individual.getGenotype().getGenes())
+    HillClimbStrategy.Strategies currentStrategy = HillClimbStrategy.Strategies.ROOT_GENE;
+    float currentFitneesBeing = individual.getFitness();
+    int tries = 0;
+    for (int i = 0; i < individual.getGenotype().size(); i++)
     {
-      HillClimbStrategy strategy;
+      lifetimeRuns++;
+      lowest = Math.min(individual.getFitness(), lowest);
+      highest = Math.max(individual.getFitness(), highest);
 
-      int x = rnd.nextInt(2);
-      switch (x)
+      Gene gene= individual.getGenotype().get(i);
+      tries++;
+      for (Map.Entry<HillClimbStrategy.Strategies, Float> strategiesFloatEntry : hillClimbMapStrats.entrySet())
       {
-        case 0:
-          System.out.println("hill climbing on " + currentStrategy);
-          currentStrategy = HillClimbStrategy.Strategies.EFFECTOR;
-          strategy = new EffectorClimbStrategy<>();
-          strategy.climb(gene.getEffector());
+        currentStrategy = null;
+        if (strategiesFloatEntry.getValue()/lifetimeRuns > .25f)
+        {
+          currentStrategy = strategiesFloatEntry.getKey();
           break;
-        case 1:
+        }
+      }
+      if (currentStrategy == null)
+      {
+        int x = rnd.nextInt(HillClimbStrategy.Strategies.values().length);
+        currentStrategy = HillClimbStrategy.Strategies.values()[x];
+      }
+      switch (currentStrategy)
+      {
+        case EFFECTOR:
           System.out.println("hill climbing on " + currentStrategy);
-          currentStrategy = HillClimbStrategy.Strategies.NEURON;
-          strategy = new NeurlNetClimbStrategey<>();
-          strategy.climb(gene.getEffector().getNeuralNet());
+          new EffectorClimbStrategy<>().climb(gene.getEffector());
+          break;
+        case NEURAL_NET:
+          System.out.println("hill climbing on " + currentStrategy);
+          new NeurlNetClimbStrategey<>().climb(gene.getEffector().getNeuralNet());
+          break;
+        case ROOT_GENE:
+          System.out.println("hill climbing on " + currentStrategy);
+          new RootGeneDimensionClimbStrategy<>().climb(individual.getGenotype());
+          break;
+        case LIMB_GENE:
+          System.out.println("hill climbing on " + currentStrategy);
+          new LimbGeneDimensionClimbStrategy<>().climb(individual.getGenotype());
+          break;
+        default:
+          currentStrategy = HillClimbStrategy.Strategies.LIMB_GENE;
+          System.out.println("hill climbing on " + currentStrategy);
+          new LimbGeneDimensionClimbStrategy<>().climb(individual.getGenotype());
           break;
       }
+
       currentFitnessValue = individual.getFitness();
       environment.beginEvaluation(individual);
       while (true)
@@ -85,13 +117,43 @@ public class HillClimbing
           break;
         }
       }
+
       currentOptimizedFitness = individual.getFitness();
-      System.out.println("Before" + currentFitnessValue + " After " + currentOptimizedFitness);
-      if(currentFitnessValue < currentOptimizedFitness)
+
+      if (currentFitnessValue >= currentOptimizedFitness)
       {
-        hillClimbMapStrats.put(currentStrategy, 1);
+        float factor = .10f;
+        if (currentFitnessValue <= lowest)
+        {
+          factor = .30f;
+        }
+        hillClimbMapStrats.put(currentStrategy, hillClimbMapStrats.get(currentStrategy) - factor);
+        HillClimbing.sortValue(hillClimbMapStrats);
+
       }
+      else
+      {
+        float factor = .10f;
+        if (currentOptimizedFitness >= highest)
+        {
+          factor = .55f;
+        }
+        fitness += currentOptimizedFitness;
+        hillClimbMapStrats.put(currentStrategy, hillClimbMapStrats.get(currentStrategy) + factor);
+        HillClimbing.sortValue(hillClimbMapStrats);
+        if (tries > 4)
+        {
+          System.out.println("Local max");
+          tries=0;
+          return false;
+        }
+        --i;
+      }
+
     }
+    tries=0;
+    System.out.println("Individual done");
+    return false;
   }
 
   /**
@@ -104,15 +166,34 @@ public class HillClimbing
   {
     Vector<Being> current = new Vector<>();
     current.addAll(beings.getPopulation().getBeings());
-    for (Being being : current)
+    for (int i = 0; i < current.size(); i++)
     {
-      hillClimbingEvaluation(being);
+
+      hillClimbingEvaluation(current.get(i));
+
     }
+
+    System.out.println("Hill climbing complete on current individuals");
 
     return new Vector<Being>();
 
   }
 
 
+  public int getFitness()
+  {
+    return fitness;
+  }
 
+
+  public static void sortValue(HashMap<?, Float> t){
+
+    //Transfer as List and sort it
+    ArrayList<Map.Entry<?, Float>> l = new ArrayList(t.entrySet());
+    Collections.sort(l, new Comparator<Map.Entry<?, Float>>(){
+
+      public int compare(Map.Entry<?, Float> o1, Map.Entry<?, Float> o2) {
+        return o1.getValue().compareTo(o2.getValue());
+      }});
+  }
 }

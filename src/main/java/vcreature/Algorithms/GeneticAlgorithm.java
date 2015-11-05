@@ -28,6 +28,22 @@ public class GeneticAlgorithm
   public static final int MAX_ITERATIONS = 50;
   private int pctMutations = 90;
   private int pctCrossover = 90;
+
+  public float getBestFitness()
+  {
+    return bestFitness;
+  }
+
+  public float getCurrentGenBestFitness()
+  {
+    return currentGenBestFitness;
+  }
+
+  public float getCurrentGenAverageFitness()
+  {
+    return currentGenAverageFitness;
+  }
+
   private float currentGenBestFitness;
   private Being currentGenBestBeing;
   private int populationSize;

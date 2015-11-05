@@ -4,7 +4,7 @@ package vcreature.Algorithms;
 public interface HillClimbStrategy<T, V>
 {
   enum Strategies {
-    LIMB, NEURON, EFFECTOR
+    EFFECTOR, NEURAL_NET, ROOT_GENE, NEURAL_NODE, LIMB_GENE
   }
 
   V climb(T part);

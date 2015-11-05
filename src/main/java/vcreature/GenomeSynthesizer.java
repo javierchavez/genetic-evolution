@@ -35,6 +35,8 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
   private final PhysicsSpace physicsSpace;
   private final Node rootNode;
 
+
+
   /**
    * Create a new synthesizer with the physics space to synthesize the creature too
    *

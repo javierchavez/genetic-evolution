@@ -25,6 +25,12 @@ public class Evolution extends Thread implements Savable
 {
   private ArrayList<Subpopulation> subs;
   private Population population;
+  private int totalSubpopulations;
+  private int totalSubpopulationAvg;
+  private int totalSubpopulation;
+  private float totalPopulation = 0;
+  private float totalPopulationCurrent = 0;
+  private float totalPopulationOld;
 
   /**
    * Create a evolution given a population
@@ -75,14 +81,6 @@ public class Evolution extends Thread implements Savable
   public void crossSubpopulation(int subpopulation)
   {
 
-//    for (Being being : subs.get(subpopulation).getPopulation().getBeings())
-//    {
-//      logger.export(being.getGenotype());
-//    }
-//
-//    TextSynthesizer textSynthesizer = new TextSynthesizer();
-//    textSynthesizer.encode(new File("temp.txt"));
-
     subs.get(subpopulation).interrupt();
   }
 
@@ -94,6 +92,32 @@ public class Evolution extends Thread implements Savable
   public int generations()
   {
     return population.getGenerations();
+  }
+
+  public float fitnessChange()
+  {
+
+    totalPopulationCurrent = 0;
+    for (Subpopulation sub : subs)
+    {
+      totalPopulationCurrent += sub.getPopulation().getBestFitness();
+    }
+
+    float newOld = totalPopulationCurrent - totalPopulationOld;
+
+    return newOld;
+  }
+
+
+  public int totalBeings ()
+  {
+    int total = 0;
+    for (Subpopulation sub : subs)
+    {
+      total += sub.getSize();
+    }
+
+    return total;
   }
 
   /**
