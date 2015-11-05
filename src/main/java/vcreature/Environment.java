@@ -188,7 +188,8 @@ public class Environment extends AbstractApplication
         totalSimTime = 0;
         tempAvgFitness =  breeding.getCurrentGenAverageFitness();
       }
-      hudText.setText("Current best fitness " + breeding.getBestFitness() + "Fitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "Fitness change per minute " + fitnessChangePerMinute);             // the text
+      System.out.println("Current best fitness " + breeding.getBestFitness() + "\nFitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "\nFitness change per minute " + fitnessChangePerMinute);             // the text);
+      hudText.setText("Current best fitness " + breeding.getBestFitness() + "\nFitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "\nFitness change per minute " + fitnessChangePerMinute);             // the text
       creature.remove();
       creature = null;
     }

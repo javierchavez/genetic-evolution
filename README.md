@@ -40,7 +40,6 @@ The following are if you are compiling with via command line without a IDE.
 Make sure these are installed in your system (brew is great for this).
 *    Gradle
 *    Java 1.8
-
 ###Running
 Running via the command line
 ```bash
@@ -62,3 +61,6 @@ gradle build
 
 
 Adding stuff
+
+NOTE: change parameters pctMutations = 90; and pctCrossover = 90; in the GA to modify the performance
+Alternative methods crossover2 and selection3 may be substituted in the createNextGeneration method in the Genetic Algorithm class to explore different heuristics
