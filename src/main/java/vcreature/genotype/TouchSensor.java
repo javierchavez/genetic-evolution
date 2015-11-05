@@ -25,4 +25,12 @@ public class TouchSensor extends Sensor<TouchSensor, Float>
   {
     super(source);
   }
+
+  @Override
+  public void read(String s)
+  {
+    String value = s.substring(0, s.indexOf(","));
+    setValue(Float.parseFloat(value));
+    s.replaceFirst(value+",", "");
+  }
 }
