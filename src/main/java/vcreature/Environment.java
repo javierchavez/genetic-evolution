@@ -71,8 +71,8 @@ public class Environment extends AbstractApplication
   private boolean beingAdded;
 
   private double logStartTime = 0.0;
-  private Logger popLogger = new Logger("population-stats-"+LocalDateTime.now()+".txt");
-  private Logger evoLogger = new Logger("population-"+LocalDateTime.now()+".txt");
+  private Logger popLogger = new Logger("population-stats-"+LocalDateTime.now().toString().replace(":", "")+".txt");
+  private Logger evoLogger = new Logger("population-"+LocalDateTime.now().toString().replace(":", "")+".txt");
 
   BitmapText hudText;
 
