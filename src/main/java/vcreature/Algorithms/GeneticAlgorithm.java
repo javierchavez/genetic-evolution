@@ -22,8 +22,8 @@ public class GeneticAlgorithm
 
 
   public static final int MAX_ITERATIONS = 50;
-  private int pctMutations = 100;
-  private int pctCrossover = 0;
+  private int pctMutations = 0;
+  private int pctCrossover = 100;
 
   private int populationSize;
   private int generationNumber;
@@ -509,7 +509,6 @@ public class GeneticAlgorithm
               }
             }
 
-
             oldEdges.add(edge);
             newEdges.add(edge - count);
 
@@ -674,26 +673,48 @@ public class GeneticAlgorithm
     Random rnd = new Random();
     Gene mutatedGene = genes.get(rnd.nextInt(genes.size()));
 
-    int x = rnd.nextInt(3);
-    switch (x)
+    int m = rnd.nextInt(6);
+    float x = mutatedGene.getLengthX();
+    float y = mutatedGene.getHeightY();
+    float z = mutatedGene.getWidthZ();
+
+    float min = 1000000f;
+    if(x < min)
+    {
+      min = x;
+    }
+    if(y < min)
+    {
+      min = y;
+    }
+    if(z < min)
+    {
+      min = z;
+    }
+
+
+    switch (m)
     {
       case 0:
-        if (0.5f + mutatedGene.getHeightY() <= 10.0f)
-        {
-          mutatedGene.setHeightY(0.5f + mutatedGene.getHeightY());
-        }
+      {
+
+      }
+
         break;
       case 1:
-        if (0.5f + mutatedGene.getLengthX() <= 10.0f)
-        {
-          mutatedGene.setLengthX(0.5f + mutatedGene.getLengthX());
-        }
+
         break;
       case 2:
-        if (0.5f + mutatedGene.getWidthZ() <= 10.0f)
-        {
-          mutatedGene.setWidthZ(0.5f + mutatedGene.getWidthZ());
-        }
+
+      case 3:
+
+        break;
+      case 4:
+
+        break;
+      case 5:
+
+
         break;
     }
 
@@ -703,7 +724,7 @@ public class GeneticAlgorithm
   private Vector<Being> createNextGeneration(Vector<Being> population)
   {
     Vector<Being> nextGeneration = new Vector();
-    Vector<Being> newParents = selection3(population); //use selection3 method for tournament size 3 instead of 2
+    Vector<Being> newParents = selection(population); //use selection3 method for tournament size 3 instead of 2
     Random rnd = new Random();
     Being parent1;
     Being parent2;
@@ -728,7 +749,7 @@ public class GeneticAlgorithm
 
       if (rnd.nextInt(100) < this.pctCrossover)
       {
-        Being[] children = crossover2(parent1, parent2);  //use crossover2 method for simpler, but fast-growing crossover
+        Being[] children = crossover(parent1, parent2);  //use crossover2 method for simpler, but fast-growing crossover
         parent1 = children[0];
         parent2 = children[1];
       }
@@ -796,12 +817,12 @@ public class GeneticAlgorithm
       nextGeneration = createNextGeneration(currentGeneration);
       System.out.println("Generation: " + this.generationNumber);
       this.generationNumber++;
-      for (int i = 0; i < 3; i++)
-      {
-        Being individual = nextGeneration.get(i);
+ //     for (int i = 0; i < 10; i++)
+ //     {
+//        Being individual = nextGeneration.get(i);
 
-//      for (Being individual : nextGeneration)
-//      {
+     for (Being individual : nextGeneration)
+     {
 
         simulation.beginEvaluation(individual);
         while (true)

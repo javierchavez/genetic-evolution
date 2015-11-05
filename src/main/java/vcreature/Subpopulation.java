@@ -57,8 +57,8 @@ public class Subpopulation extends Thread
       if (!isEvolving)
       {
         isEvolving = true;
-         //totalPop.getBreeding().evolvePopulation(this, totalPop);
-        totalPop.getMutating().evolvePopulation(this, totalPop);
+        totalPop.getBreeding().evolvePopulation(this, totalPop);
+        //totalPop.getMutating().evolvePopulation(this, totalPop);
 
         isEvolving = false;
       }

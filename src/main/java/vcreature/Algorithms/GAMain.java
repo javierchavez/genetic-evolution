@@ -10,7 +10,7 @@ package vcreature.Algorithms;
  * CS 351
  * Genetic Evolution
  * <p>
- * Module description here
+ * FOR TESTING GA ONLY!!!!!
  */
 
 
@@ -28,10 +28,10 @@ public class GAMain extends MainSim implements ActionListener
 
   private static Environment environment;
   private Evolution evolution;
-  int beingIndx = 0;
+  private int beingIndx = 0;
   private Population finalPopulation;
 
-  public Environment getEnvironment() {
+  private Environment getEnvironment() {
     return environment;
   }
 
