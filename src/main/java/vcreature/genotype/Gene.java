@@ -1,14 +1,27 @@
 package vcreature.genotype;
 
+/**
+ * @author Javier Chavez
+ * @author Alex Baker
+ * @author Dominic Salas
+ * @author Carrie Martinez
+ * <p>
+ * Date November 4, 2015
+ * CS 351
+ * Genetic Evolution
+ */
+
+
 import com.jme3.math.Vector3f;
 import vcreature.utils.Savable;
 
+
 /**
- * Rigid Part our creature this will be a Block
+ * A gene is the representation of a block in the genotype. This class
+ * is used to store data and attributes about a block used in the phenotype
  */
 public class Gene extends AbstractGene<Gene> implements Savable
 {
-
   private float lengthX;
   private float widthZ;
   private float heightY;
@@ -26,7 +39,6 @@ public class Gene extends AbstractGene<Gene> implements Savable
   private HeightSensor heightSensor;
 
   private Effector effector;
-
 
   /**
    * Create a gene with index position.
@@ -46,101 +58,156 @@ public class Gene extends AbstractGene<Gene> implements Savable
     touchSensor = new TouchSensor(this);
     heightSensor = new HeightSensor(this);
     effector = new Effector();
-
   }
-
 
   /**
    * Sensor for hinge joint
    *
-   * @return sensor
+   * @return get the angle sensor for this gene
    */
   public AngleSensor getAngleSensor()
   {
     return angleSensor;
   }
 
+  /**
+   * Set the angle sensor for the gene
+   *
+   * @param angleSensor the angle sensor for this gene to use
+   */
   public void setAngleSensor(AngleSensor angleSensor)
   {
     this.angleSensor = angleSensor;
   }
 
   /**
-   * Collision sensor
+   * Collision sensor for this gene
    *
-   * @return sensor determining collision
+   * @return the touchSensor for this gene
    */
   public TouchSensor getTouchSensor()
   {
     return touchSensor;
   }
 
+  /**
+   * Set the touch sensor for this gene to use
+   *
+   * @param touchSensor new touch sensor for this gene to use
+   */
   public void setTouchSensor(TouchSensor touchSensor)
   {
     this.touchSensor = touchSensor;
   }
 
-
   /**
    * Sensor for monitoring height
    *
-   * @return sensor for height
+   * @return sensor for height for this gene
    */
   public HeightSensor getHeightSensor()
   {
     return heightSensor;
   }
 
+  /**
+   * Set the height sensor this gene uses
+   *
+   * @param heightSensor new heightSnesor to set for this gene to use
+   */
   public void setHeightSensor(HeightSensor heightSensor)
   {
     this.heightSensor = heightSensor;
   }
 
   /**
-   * Effector is a joint
+   * Get the effector or joint for this gene
    *
-   * @return effector or joint
+   * @return effector or joint for this gene
    */
   public Effector getEffector()
   {
     return effector;
   }
 
+  /**
+   * set a new effector for this gene to use
+   *
+   * @param effector new effector to apply to the gene
+   */
   public void setEffector(Effector effector)
   {
     this.effector = effector;
   }
 
+  /**
+   * The size along the x axis of this gene (block)
+   *
+   * @return size along the x axis
+   */
   public float getLengthX()
   {
     return lengthX;
   }
 
+  /**
+   * Set the size of the gene along the x axis
+   *
+   * @param lengthX length to apply to the x axis of the gene
+   */
   public void setLengthX(float lengthX)
   {
     this.lengthX = lengthX;
   }
 
+  /**
+   * The size along the z axis of this gene (block)
+   *
+   * @return size along the z axis
+   */
   public float getWidthZ()
   {
     return widthZ;
   }
 
+  /**
+   * Set the size of the gene along the z axis
+   *
+   * @param widthZ width to apply to the z axis of the gene
+   */
   public void setWidthZ(float widthZ)
   {
     this.widthZ = widthZ;
   }
 
+  /**
+   * The size along the y axis of this gene (block)
+   *
+   * @return size along the y axis
+   */
   public float getHeightY()
   {
     return heightY;
   }
 
+  /**
+   * Set the size of the gene along the y axis
+   *
+   * @param heightY height to apply to the y axis of the gene
+   */
   public void setHeightY(float heightY)
   {
     this.heightY = heightY;
   }
 
+  /**
+   * Set the dimensions of the gene
+   * NOTE: this is the true dimension as these values are not halved
+   *
+   * @param x size along x axis
+   * @param z size along z axis
+   * @param y size along y axis
+   */
   public void setDimensions(float x, float z, float y)
   {
     this.lengthX = x;
@@ -149,9 +216,11 @@ public class Gene extends AbstractGene<Gene> implements Savable
   }
 
   /**
-   * Set the dimensions of the gene
+   * Set the dimensions of the gene. This is the size
+   * relative to the center of the block, so the
+   * values are doubled
    *
-   * @param size input
+   * @param size vector with size along the x,y,z axis
    */
   public void setDimensions(Vector3f size)
   {
@@ -161,9 +230,10 @@ public class Gene extends AbstractGene<Gene> implements Savable
   }
 
   /**
-   * Get the dimensions of the gene
+   * Get the dimensions of the gene relative to the center of the block.
+   * This means the dimenions are half of their true size.
    *
-   * @param size output
+   * @param size vector to assign the x,y,z sizes to
    */
   public void getDimensions(Vector3f size)
   {
@@ -175,7 +245,7 @@ public class Gene extends AbstractGene<Gene> implements Savable
   /**
    * Get the rotation of the the block
    *
-   * @param rotations list of rotations [y,z,x]
+   * @param rotations array of rotations [y,z,x]
    */
   public void setRotations(float[] rotations)
   {
@@ -184,11 +254,15 @@ public class Gene extends AbstractGene<Gene> implements Savable
     rotationX = rotations[2];
   }
 
+  /**
+   * Get the position of the gene in the genome
+   *
+   * @return position (index) of the gene in the genome
+   */
   public int getPosition()
   {
     return position;
   }
-
 
   /**
    * Get the rotation of the the block
@@ -222,12 +296,6 @@ public class Gene extends AbstractGene<Gene> implements Savable
   }
 
   @Override
-  public String toString()
-  {
-    return "|B()|";
-  }
-
-  @Override
   public void write(StringBuilder s)
   {
     super.write(s);
@@ -244,7 +312,12 @@ public class Gene extends AbstractGene<Gene> implements Savable
     touchSensor.write(s);
     heightSensor.write(s);
     effector.write(s);
+  }
 
+  @Override
+  public void read(String s)
+  {
+    super.read(s);
   }
 
   @Override
@@ -328,8 +401,8 @@ public class Gene extends AbstractGene<Gene> implements Savable
   }
 
   @Override
-  public void read(String s)
+  public String toString()
   {
-    super.read(s);
+    return "|B()|";
   }
 }

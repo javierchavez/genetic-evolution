@@ -9,11 +9,14 @@ package vcreature.genotype;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
+/**
+ * Enum represents the differet types of genes there can be.
+ * In this case the only type of gene there is is a gene which
+ * represent a block from the phenotype
+ */
 public enum GeneType
 {
   BLOCK

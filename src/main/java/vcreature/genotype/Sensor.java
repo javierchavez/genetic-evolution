@@ -9,8 +9,6 @@ package vcreature.genotype;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
@@ -34,21 +32,42 @@ public abstract class Sensor<T extends Sensor<?, ?>, V> implements NeuralInput<V
   private Gene source;
 
 
+  /**
+   * Create a new Sensor connected to the source gene
+   *
+   * @param source the gene which the sensor is connect to
+   */
   public Sensor(Gene source)
   {
     this.source = source;
   }
 
+  /**
+   * Get the gene this sensor is connected to
+   *
+   * @return a gene which is connected to the sensor
+   */
   public Gene getSource()
   {
     return source;
   }
 
+  /**
+   * Get the value of the sensor
+   *
+   * @return the current value of the sensor
+   */
   public V getValue()
   {
     return sensorValue;
   }
 
+  /**
+   * Set the value of the sensor
+   *
+   * @param value set the value V dictates what type of value
+   * @return
+   */
   public NeuralInput<V> setValue(V value)
   {
     sensorValue = value;

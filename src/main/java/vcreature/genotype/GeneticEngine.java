@@ -9,22 +9,28 @@ package vcreature.genotype;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
 import java.util.Random;
 
 
+/**
+ * Class description here
+ */
 public class GeneticEngine
 {
+  /**
+   * Method description here
+   *
+   * @param mother
+   * @param father
+   * @return
+   */
   public static Genome performCrossOver(Genome mother, Genome father)
   {
-
     Genome son = new Genome(); son.setRoot(mother.getRoot().clone());
     son.append(son.getRoot());
-
 
     int motherStart = mother.size();
     int motherEnd = mother.size();
@@ -46,10 +52,15 @@ public class GeneticEngine
     return son;
   }
 
-
+  /**
+   * Method descriptions here
+   *
+   * @param mom
+   * @param dad
+   * @return
+   */
   public static Genome[] singlePoint(Genome mom, Genome dad)
   {
-
     Random rand = new Random();
 
     int size = mom.size();
@@ -58,10 +69,8 @@ public class GeneticEngine
     Genome g1 = new Genome();
     Genome g2 = new Genome();
 
-
     int interval = size / 5;
     int transition = rand.nextInt(size - (2 * interval)) + interval;
-
 
     for (int i = 0; i < size; i++)
     {
@@ -69,7 +78,6 @@ public class GeneticEngine
       Gene parentAbstractGeneB = dad.get(i).clone();
       Gene childAbstractGeneA;
       Gene childAbstractGeneB;
-
 
       try
       {
@@ -96,6 +104,4 @@ public class GeneticEngine
     Genome[] children = {g1, g2};
     return children;
   }
-
-
 }

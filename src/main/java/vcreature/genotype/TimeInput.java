@@ -9,14 +9,15 @@ package vcreature.genotype;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
 import vcreature.utils.Savable;
 
 
+/**
+ * This class represent the EnumNeuronInput TIME in the genotype
+ */
 public class TimeInput implements NeuralInput<Float>, Savable
 {
   private float time;

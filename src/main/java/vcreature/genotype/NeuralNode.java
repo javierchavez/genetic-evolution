@@ -9,8 +9,6 @@ package vcreature.genotype;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
@@ -23,42 +21,80 @@ import java.util.HashMap;
 
 
 /**
- *  This is a Neuron
+ * This class is the representation of a Neuron in the genotype
  */
 public class NeuralNode implements EffectorInput, Savable
 {
   private HashMap<InputPosition, NeuralInput> inputs;
   private HashMap<NeuralOperatorPosition, EnumOperator> operators;
 
+  /**
+   * Create a new instance of the neural node
+   */
   public NeuralNode()
   {
     inputs = new HashMap<>(Neuron.TOTAL_INPUTS);
     operators = new HashMap<>(EnumOperator.SIZE);
   }
 
+  /**
+   * Get the map of inputs and their position in the neuron
+   *
+   * @return map of neurons and inputs
+   */
   public HashMap<InputPosition, NeuralInput> getInputs()
   {
     return this.inputs;
   }
 
+  /**
+   * Sets the input to the specified value for the given position
+   *
+   * @param input the position in the neuron the value should be saved to
+   * @param value the value this position in the neuron should take
+   */
   public void setInput (InputPosition input, NeuralInput value)
   {
     inputs.put(input, value);
   }
 
+  /**
+   * Get the operators for the neuron
+   *
+   * @return a map of operators and their positions
+   */
   public HashMap<NeuralOperatorPosition, EnumOperator> getOperators()
   {
     return operators;
   }
 
+  /**
+   * Set the operator map to an existing one
+   *
+   * @param operators an existing map of operators to apply to this neuron
+   */
   public void setOperators(HashMap<NeuralOperatorPosition, EnumOperator> operators)
   {
     this.operators = operators;
   }
 
+  /**
+   * Set the operator for the neuron at the given operator position
+   *
+   * @param operator operator to apply to the neuron
+   * @param operatorPosition the position in the operator list to set the operator
+   */
   public void setOperator(EnumOperator operator, NeuralOperatorPosition operatorPosition)
   {
     operators.put(operatorPosition,operator);
+  }
+
+  /**
+   * This enum represents the different positions an operator can be in a neuron
+   */
+  public enum NeuralOperatorPosition
+  {
+    FIRST,SECOND,THIRD,FOURTH
   }
 
   @Override
@@ -97,10 +133,5 @@ public class NeuralNode implements EffectorInput, Savable
   public void read(String s)
   {
 
-  }
-
-  public enum NeuralOperatorPosition
-  {
-    FIRST,SECOND,THIRD,FOURTH
   }
 }
