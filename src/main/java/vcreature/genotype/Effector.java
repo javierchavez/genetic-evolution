@@ -9,8 +9,6 @@ package vcreature.genotype;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
@@ -21,7 +19,7 @@ import java.util.ArrayList;
 
 
 /**
- * Effector is analogous to a joint
+ * This class represents a hinge joint in the genotype
  */
 public class Effector implements Savable
 {
@@ -54,106 +52,217 @@ public class Effector implements Savable
     neuralNet = new ArrayList<>();
   }
 
+  /**
+   * Get the x location of the joint on the parent
+   *
+   * @return the x coordinate to the parent block
+   */
   public float getParentX()
   {
     return parentX;
   }
 
+  /**
+   * Sets the x coordinate for the joint on the parent block
+   *
+   * @param parentX x coordinate of the joint on the parent block.
+   *                this should be in local coordinates of the parent block
+   */
   public void setParentX(float parentX)
   {
     this.parentX = parentX;
   }
 
+  /**
+   * Get the y location of the joint on the parent
+   *
+   * @return the y coordinate to the parent block
+   */
   public float getParentY()
   {
     return parentY;
   }
 
+  /**
+   * Sets the y coordinate for the joint on the parent block
+   *
+   * @param parentY y coordinate of the joint on the parent block.
+   *                this should be in local coordinates of the parent block
+   */
   public void setParentY(float parentY)
   {
     this.parentY = parentY;
   }
 
+  /**
+   * Get the z location of the joint on the parent
+   *
+   * @return the z coordinate to the parent block
+   */
   public float getParentZ()
   {
     return parentZ;
   }
 
+  /**
+   * Sets the z coordinate for the joint on the parent block
+   *
+   * @param parentZ z coordinate of the joint on the parent block.
+   *                this should be in local coordinates of the parent block
+   */
   public void setParentZ(float parentZ)
   {
     this.parentZ = parentZ;
   }
 
+  /**
+   * Get the x location of the joint on the child
+   *
+   * @return the x coordinate to the child block
+   */
   public float getChildX()
   {
     return childX;
   }
 
+  /**
+   * Sets the x coordinate for the joint on the child block
+   *
+   * @param childX x coordinate of the joint on the child block.
+   *                this should be in local coordinates of the child block
+   */
   public void setChildX(float childX)
   {
     this.childX = childX;
   }
 
+  /**
+   * Get the y location of the joint on the child
+   *
+   * @return the y coordinate to the child block
+   */
   public float getChildY()
   {
     return childY;
   }
 
+  /**
+   * Sets the y coordinate for the joint on the child block
+   *
+   * @param childY y coordinate of the joint on the child block.
+   *                this should be in local coordinates of the child block
+   */
   public void setChildY(float childY)
   {
     this.childY = childY;
   }
 
+  /**
+   * Get the z location of the joint on the child
+   *
+   * @return the z coordinate to the child block
+   */
   public float getChildZ()
   {
     return childZ;
   }
 
+  /**
+   * Sets the z coordinate for the joint on the child block
+   *
+   * @param childZ z coordinate of the joint on the child block.
+   *                this should be in local coordinates of the child block
+   */
   public void setChildZ(float childZ)
   {
     this.childZ = childZ;
   }
 
+  /**
+   * Get the x axis of rotation of the joint
+   *
+   * @return the x axis which the joint is aligned to
+   */
   public float getPivotAxisX()
   {
     return pivotAxisX;
   }
 
+  /**
+   * Sets the x axis which the joint is aligned to
+   *
+   * @param pivotAxisX x axis for the joint to align to.
+   */
   public void setPivotAxisX(float pivotAxisX)
   {
     this.pivotAxisX = pivotAxisX;
   }
 
+  /**
+   * Get the y axis the joint is aligned to
+   *
+   * @return the y axis which the joint is aligned to
+   */
   public float getPivotAxisY()
   {
     return pivotAxisY;
   }
 
+  /**
+   * Sets the y axis which the joint is aligned to
+   *
+   * @param pivotAxisY y axis for the joint to align to.
+   */
   public void setPivotAxisY(float pivotAxisY)
   {
     this.pivotAxisY = pivotAxisY;
   }
 
+  /**
+   * Get the z axis the joint is aligned to
+   *
+   * @return the z axis which the joint is aligned to
+   */
   public float getPivotAxisZ()
   {
     return pivotAxisZ;
   }
 
+  /**
+   * Sets the z axis which the joint can pivot around
+   *
+   * @param pivotAxisZ z axis for the joint to pivot around.
+   */
   public void setPivotAxisZ(float pivotAxisZ)
   {
     this.pivotAxisZ = pivotAxisZ;
   }
 
+  /**
+   * Get the max force that can be applied to the joint
+   *
+   * @return max force
+   */
   public float getMaxForce()
   {
     return maxForce;
   }
 
+  /**
+   * Sets the max force which can be applied to the joint
+   *
+   * @param maxForce maximum force the joint can output
+   */
   public void setMaxForce(float maxForce)
   {
     this.maxForce = maxForce;
   }
 
+  /**
+   * Get the list of neurons for the effector
+   *
+   * @return a list of neurons currently in the effector
+   */
   public ArrayList<NeuralNode> getNeuralNet()
   {
     return neuralNet;
@@ -170,7 +279,7 @@ public class Effector implements Savable
   }
 
   /**
-   * Set all the Nurons controlling this joint/Effector
+   * Set all the Neurons controlling this joint/Effector
    *
    * @param neuralNet list of neurons
    */
@@ -192,7 +301,7 @@ public class Effector implements Savable
   /**
    * Set the index to which this gene in attached to by a joint
    *
-   * @param jointParentIndex
+   * @param jointParentIndex idex of the joint the child is attached to
    */
   public void setJointParentIndex(int jointParentIndex)
   {
@@ -202,7 +311,7 @@ public class Effector implements Savable
   /**
    * Set the axis to which the joint in aligned
    *
-   * @param vector3f containing data
+   * @param vector3f containing x,y,z coordinates of the axis
    */
   public void setPivotAxis(Vector3f vector3f)
   {
@@ -214,7 +323,7 @@ public class Effector implements Savable
   /**
    * Set the child joint attach location
    *
-   * @param vector3f containing parent data
+   * @param vector3f a vector is x,y,z coordinates for the attach location
    */
   public void setChild(Vector3f vector3f)
   {
@@ -226,7 +335,7 @@ public class Effector implements Savable
   /**
    * Set the parent joint attach location
    *
-   * @param vector3f containing parent data
+   * @param vector3f a vector with x,y,z coordinates for the attach location
    */
   public void setParent(Vector3f vector3f)
   {
@@ -238,7 +347,7 @@ public class Effector implements Savable
   /**
    * Get the pivot of which the joint is aligned
    *
-   * @param vector3f output
+   * @param vector3f a vector which will be assigned values of the pivot axis
    */
   public void getPivotAxis(Vector3f vector3f)
   {
@@ -250,7 +359,7 @@ public class Effector implements Savable
   /**
    * Get location on the child of connection
    *
-   * @param vector3f output
+   * @param vector3f a vector which will be assigned values for the child joint location
    */
   public void getChild(Vector3f vector3f)
   {
@@ -262,7 +371,7 @@ public class Effector implements Savable
   /**
    * Get location on the parent of connection
    *
-   * @param vector3f output
+   * @param vector3f a vector which will be assigned values for the parent joint location
    */
   public void getParent(Vector3f vector3f)
   {

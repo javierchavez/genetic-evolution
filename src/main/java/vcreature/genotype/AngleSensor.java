@@ -9,11 +9,12 @@ package vcreature.genotype;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
+/**
+ * This class represents the EnumNeuronInput JOINT in the genotype
+ */
 public class AngleSensor extends Sensor<AngleSensor, Float>
 {
   /**

@@ -9,8 +9,6 @@ package vcreature.genotype;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
@@ -20,14 +18,13 @@ import vcreature.utils.Savable;
 /**
  * A nice way to store inputs for neurons
  *
- * @param <V>
+ * @param <V> The type of the value the neural node uses
  */
 public interface NeuralInput<V> extends Savable
 {
   /**
-   * A Neuron can have 5 inputs each input has a specifc diferentiating name
+   * A Neuron can have 5 inputs each input has a specific differentiating name
    * A,B,C,D,E.
-   *
    */
   enum InputPosition
   {
@@ -35,7 +32,8 @@ public interface NeuralInput<V> extends Savable
     private static InputPosition[] allValues = values();
 
     /**
-     * Create a Inputs based on int value
+     * Create an Input based on int value
+     *
      * @param n index of input 0-4
      * @return enum
      */
@@ -43,7 +41,6 @@ public interface NeuralInput<V> extends Savable
     {
       return allValues[n];
     }
-
   }
 
   /**
