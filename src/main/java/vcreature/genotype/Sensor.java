@@ -108,11 +108,4 @@ public abstract class Sensor<T extends Sensor<?, ?>, V> implements NeuralInput<V
     }
     return null;
   }
-
-  @Override
-  public void write(StringBuilder s)
-  {
-    s.append(sensorValue).append(",");
-    //s.append(sensorValue).append(",");
-  }
 }
