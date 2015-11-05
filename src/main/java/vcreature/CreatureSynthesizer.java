@@ -9,8 +9,6 @@ package vcreature;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
@@ -26,9 +24,11 @@ import vcreature.phenotype.Neuron;
 import java.lang.reflect.Field;
 
 
+/**
+ * Class for synthesizing a creature (phenotype) to a genome (genotype)
+ */
 public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
 {
-
   private Genome genome;
   Creature  c;
 
@@ -63,8 +63,6 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
         g.getEffector().addNeuralNode(synthesizeNeuron(neuron, b));
       }
     }
-
-
     return genome;
   }
 
@@ -72,7 +70,6 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
   {
     return null;
   }
-
 
   private Gene synthesizeBlock(Block b)
   {
@@ -104,19 +101,9 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
         e.printStackTrace();
         gene.getEffector().setPivotAxis(Vector3f.UNIT_Y);
       }
-
-      /*
-       * Need to figure out how to get axisA from the joint
-       * when a block is added it needs an axisA... the last argument i.e. Vector3f.UNIT_Z
-       *
-       * Block leg2  = addBlock(eulerAngles, leg2Size,torso, pivotC,  pivotD, Vector3f.UNIT_Z);
-       */
-      //System.out.println(b.getGeometry())
-
     }
     return gene;
   }
-
 
   private NeuralNode synthesizeNeuron(Neuron neuron, Block b)
   {
@@ -129,7 +116,6 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
       node.setInput(InputPosition.fromOrdinal(i), input);
 
     }
-
     return node;
   }
 
@@ -175,16 +161,11 @@ public class CreatureSynthesizer extends Synthesizer<Creature, Genome>
     }
 
     return new ConstantInput().setValue(neuron.getInputValue(inputPosition));
-
   }
-
-
-
 
   @Override
   public String toString()
   {
     return null;
   }
-
 }

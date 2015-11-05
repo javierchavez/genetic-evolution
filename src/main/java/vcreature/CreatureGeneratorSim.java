@@ -9,8 +9,6 @@ package vcreature;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
@@ -40,7 +38,7 @@ import vcreature.phenotype.PhysicsConstants;
 
 
 /**
- *
+ * A simulation class for testing the procedural generation of creature in a physics space.
  */
 public class CreatureGeneratorSim extends SimpleApplication implements ActionListener
 {
@@ -54,7 +52,6 @@ public class CreatureGeneratorSim extends SimpleApplication implements ActionLis
   private Creature creature;
   private boolean isCameraRotating = true;
   private CreatureGenerator generator;
-
 
   @Override
   public void simpleInitApp()

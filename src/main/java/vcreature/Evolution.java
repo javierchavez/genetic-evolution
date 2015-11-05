@@ -9,15 +9,11 @@ package vcreature;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
-import vcreature.Algorithms.HillClimbing;
 import vcreature.utils.Logger;
 
-import java.io.File;
 import java.util.ArrayList;
 
 
@@ -35,12 +31,10 @@ public class Evolution extends Thread
   /**
    * Create a evolution given a population
    *
-   * @param mutating
    * @param population population that will be split into SubPopulations
    */
   public Evolution(Population population)
   {
-
     this.population = population;
 
     subs = new ArrayList<>();
@@ -63,9 +57,13 @@ public class Evolution extends Thread
     {
       subpopulation.start();
     }
-
   }
 
+  /**
+   * Get the sub-populations from the evolution
+   *
+   * @return a list of sub-populations
+   */
   public ArrayList<Subpopulation> getSubs()
   {
     return subs;
@@ -89,12 +87,21 @@ public class Evolution extends Thread
     subs.get(subpopulation).interrupt();
   }
 
-
+  /**
+   * Get the number of generations in the population
+   *
+   * @return number of generations for the current population
+   */
   public int generations()
   {
     return population.getGenerations();
   }
 
+  /**
+   * Get the current population
+   *
+   * @return the current population in the evolution
+   */
   public Population getPopulation()
   {
     return population;
@@ -104,6 +111,4 @@ public class Evolution extends Thread
   //  {
   //    return population.get(i);
   //  }
-
-
 }
