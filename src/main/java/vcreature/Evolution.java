@@ -14,6 +14,7 @@ package vcreature;
 
 import vcreature.utils.Savable;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -81,6 +82,14 @@ public class Evolution extends Thread implements Savable
   public void crossSubpopulation(int subpopulation)
   {
 
+//    for (Being being : subs.get(subpopulation).getPopulation().getBeings())
+//    {
+//      logger.export(being.getGenotype());
+//    }
+//
+    TextSynthesizer textSynthesizer = new TextSynthesizer();
+    textSynthesizer.encode(new File("temp.txt"));
+
     subs.get(subpopulation).interrupt();
   }
 
@@ -145,7 +154,7 @@ public class Evolution extends Thread implements Savable
   }
 
   @Override
-  public void read(String s)
+  public void read(StringBuilder s)
   {
 
   }

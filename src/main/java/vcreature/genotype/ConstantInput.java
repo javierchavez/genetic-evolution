@@ -44,10 +44,10 @@ public class ConstantInput implements NeuralInput<Float>, EffectorInput, Savable
   }
 
   @Override
-  public void read(String s)
+  public void read(StringBuilder s)
   {
     String value = s.substring(0, s.indexOf(","));
     setValue(Float.parseFloat(value));
-    s.replaceFirst(value+",", "");
+    s.delete(0, value.length()+2);
   }
 }

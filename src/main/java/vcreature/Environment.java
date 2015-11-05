@@ -4,7 +4,7 @@ package vcreature;
  * @author Javier Chavez
  * @author Alex Baker
  * @author Dominic Salas
- * @author Carrie Martinez
+ * @author Cari Martinez
  * <p>
  * Date November 4, 2015
  * CS 351
@@ -36,6 +36,8 @@ import java.util.Random;
 public class Environment extends AbstractApplication
 {
   private float elapsedSimulationTime = 0.0f;
+  private float totalSimTime = 0.0f;
+
 
   // Main population
   private Population population;
@@ -72,8 +74,8 @@ public class Environment extends AbstractApplication
   private boolean beingAdded;
 
   private double logStartTime = 0.0;
-  private Logger popLogger = new Logger("population-stats-"+LocalDateTime.now()+".txt");
-  private Logger evoLogger = new Logger("population-"+LocalDateTime.now()+".txt");
+  private Logger popLogger = new Logger("population-stats-"+LocalDateTime.now().toString().replace(":", "")+".txt");
+  private Logger evoLogger = new Logger("population-"+LocalDateTime.now().toString().replace(":", "")+".txt");
 
   BitmapText hudText;
 
@@ -150,9 +152,10 @@ public class Environment extends AbstractApplication
 
     hudText = new BitmapText(guiFont, false);
     hudText.setSize(guiFont.getCharSet().getRenderedSize());      // font size
-    hudText.setColor(ColorRGBA.Blue);                             // font color
-    hudText.setText("You can write any string here");             // the text
-    hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
+    hudText.setColor(ColorRGBA.Green);// font color
+    hudText.setText("Current best fitness " + breeding.getBestFitness() + "\nFitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "\nFitness change per minute " + breeding.getCurrentGenAverageFitness());             // the text
+    //hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
+    hudText.setLocalTranslation(20, hudText.getLineHeight() * 36, 0); // position
     guiNode.attachChild(hudText);
 
   }
@@ -215,7 +218,17 @@ public class Environment extends AbstractApplication
     {
       being.setFitness(creature.getFitness());
       being.setUnderEvaluation(false);
-      hudText.setText("Best fitness:  " + breeding.getBestFitness());
+      float tempbestFitness = breeding.getBestFitness();
+      float fitnessChangePerMinute = 0;
+      totalSimTime += deltaSeconds;
+      if(totalSimTime == 60f)
+      {
+        fitnessChangePerMinute= breeding.getBestFitness() - tempbestFitness;
+        totalSimTime = 0;
+        tempbestFitness =  breeding.getBestFitness();
+      }
+      System.out.println("Current best fitness " + breeding.getBestFitness() + "\nFitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "\nFitness change per minute " + fitnessChangePerMinute);             // the text);
+      hudText.setText("Current best fitness " + breeding.getBestFitness() + "\nFitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "\nFitness change per minute " + fitnessChangePerMinute);             // the text
       creature.remove();
       creature = null;
     }

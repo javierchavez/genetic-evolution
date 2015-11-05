@@ -30,5 +30,5 @@ public interface Savable
    *
    * @param s string containing valid genome string
    */
-  void read(String s);
+  void read(StringBuilder s);
 }

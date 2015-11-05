@@ -130,7 +130,7 @@ public class NeuralNode implements EffectorInput, Savable
   }
 
   @Override
-  public void read(String s)
+  public void read(StringBuilder s)
   {
     String type;
     NeuralInput input;
@@ -139,7 +139,7 @@ public class NeuralNode implements EffectorInput, Savable
       type = s.substring(0, s.indexOf(":"));
       input = getInput(type);
       inputs.put(position, input);
-      s.replaceFirst(type+":", "");
+      s.delete(0, type.length()+2);
       input.read(s);
     }
 
@@ -150,7 +150,7 @@ public class NeuralNode implements EffectorInput, Savable
       operator = s.substring(0, s.indexOf(","));
       op = EnumOperator.valueOf(operator);
       operators.put(position, op);
-      s.replaceFirst(operator+",", "");
+      s.delete(0, operator.length()+2);
     }
   }
 

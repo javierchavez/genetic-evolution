@@ -40,6 +40,12 @@ sourceSets {
     }
 }
 
+run {
+    if(project.hasProperty('args')){
+        args project.args.split(' ')
+    }
+}
+
 mainClassName = "vcreature.Environment"
 
 task(runSimple, dependsOn: 'classes', type: JavaExec) {

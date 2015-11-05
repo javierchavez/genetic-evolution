@@ -315,9 +315,19 @@ public class Gene extends AbstractGene<Gene> implements Savable
   }
 
   @Override
-  public void read(String s)
+  public void read(StringBuilder s)
   {
     super.read(s);
+    String str = s.toString();
+    String[] split = str.split("[,]");
+    for (int i = 0; i < split.length; i++)
+    {
+      if (Character.isDigit(split[i].charAt(0)))
+      {
+        int num = (int)Float.parseFloat(split[i]);
+        addEdge(num);
+      }
+    }
   }
 
   @Override
