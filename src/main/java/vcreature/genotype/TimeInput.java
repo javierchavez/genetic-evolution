@@ -47,6 +47,6 @@ public class TimeInput implements NeuralInput<Float>, Savable
   {
     String value = s.substring(0, s.indexOf(","));
     setValue(Float.parseFloat(value));
-    s.replaceFirst(value+",", "");
+    s.delete(0, value.length()+2);
   }
 }
