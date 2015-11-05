@@ -15,7 +15,9 @@ package vcreature.Algorithms;
 
 
 import vcreature.Being;
+import vcreature.Environment;
 import vcreature.Population;
+import vcreature.Subpopulation;
 import vcreature.genotype.Gene;
 import vcreature.genotype.Genome;
 import vcreature.genotype.NeuralInput;
@@ -25,34 +27,33 @@ import java.util.Random;
 import java.util.Vector;
 
 
-/**
- * Created by dsalas on 10/25/15.
- */
 public class HillClimbing
 {
+  private final Environment environment;
   private Genome genome;
   private double amount;
-  private Population initialPopulation;
+
   private double currentOptimizedFitness, currentFitnessValue;
   private int geneCount = 10, previousGeneValue, currentGeneValue;
   private Random rnd = new Random();
 
   private HashMap<NeuralInput.InputPosition, Integer> hillClimbMap = new HashMap<>();
+  private HashMap<HillClimbStrategy.Strategies, Integer> hillClimbMapStrats = new HashMap<>();
 
-  public HillClimbing (Population population, HCMain hcMain)
+
+  public HillClimbing (Environment environment)
   {
-    this.initialPopulation = population;
+    this.environment = environment;
+
     hillClimbMap.put(NeuralInput.InputPosition.A, 1);
     hillClimbMap.put(NeuralInput.InputPosition.B, 1);
     hillClimbMap.put(NeuralInput.InputPosition.C, 1);
     hillClimbMap.put(NeuralInput.InputPosition.D, 1);
     hillClimbMap.put(NeuralInput.InputPosition.E, 1);
 
-  }
+    hillClimbMapStrats.put(HillClimbStrategy.Strategies.EFFECTOR, 1);
+    hillClimbMapStrats.put(HillClimbStrategy.Strategies.NEURON, 1);
 
-  public Population getInitialPopulation()
-  {
-    return initialPopulation;
   }
 
   /**
@@ -62,57 +63,43 @@ public class HillClimbing
    */
   private void hillClimbingEvaluation(Being individual)
   {
-    // LinkedList<Gene> genes = individual.getGenotype().getGenes();
-
+    HillClimbStrategy.Strategies currentStrategy = null;
     for (Gene gene : individual.getGenotype().getGenes())
     {
-      //Simple test to change attributes of gene
-      int x = rnd.nextInt(6);
+      HillClimbStrategy strategy;
+
+      int x = rnd.nextInt(2);
       switch (x)
       {
-        //Increase height
         case 0:
-          if (gene.getHeightY() + 0.5f <= 10.0f)
-          {
-            gene.setHeightY(gene.getHeightY() + 0.5f);
-          }
+          System.out.println("hill climbing on " + currentStrategy);
+          currentStrategy = HillClimbStrategy.Strategies.EFFECTOR;
+          strategy = new EffectorClimbStrategy<>();
+          strategy.climb(gene.getEffector());
           break;
-        //Decrease height
         case 1:
-          if (gene.getHeightY() - 0.5f >= 0.0f)
-          {
-            gene.setHeightY(gene.getHeightY() - 0.5f);
-          }
-          break;
-        //Increase length
-        case 2:
-          if (gene.getLengthX() + 0.5f <= 10.0f)
-          {
-            gene.setLengthX(gene.getLengthX() + 1);
-          }
-          break;
-        //Decrease length
-        case 3:
-          if (gene.getLengthX() - 0.5f >= 0.0f)
-          {
-            gene.setLengthX(gene.getLengthX() - 0.5f);
-          }
-          break;
-        //Increase width
-        case 4:
-          if (gene.getWidthZ() + 0.5f <= 10.0f)
-          {
-            gene.setWidthZ(gene.getWidthZ() + 1);
-          }
-          break;
-        //Decrease width
-        case 5:
-          if (gene.getWidthZ() - 0.5f >= 0.0f)
-          {
-            gene.setWidthZ(gene.getWidthZ() - 0.5f);
-          }
+          System.out.println("hill climbing on " + currentStrategy);
+          currentStrategy = HillClimbStrategy.Strategies.NEURON;
+          strategy = new NeurlNetClimbStrategey<>();
+          strategy.climb(gene.getEffector().getNeuralNet());
           break;
       }
+      currentFitnessValue = individual.getFitness();
+      environment.beginEvaluation(individual);
+      while (true)
+      {
+        if (!individual.isUnderEvaluation())
+        {
+          break;
+        }
+      }
+      currentOptimizedFitness = individual.getFitness();
+      System.out.println("Before" + currentFitnessValue + " After " + currentOptimizedFitness);
+      if(currentFitnessValue < currentOptimizedFitness)
+      {
+        hillClimbMapStrats.put(currentStrategy, 1);
+      }
+
     }
   }
 
@@ -121,18 +108,19 @@ public class HillClimbing
    * an evolved population.
    * @return and evolved population.
    */
-  public Vector<Being> evolvePopulation ()
+  public Vector<Being> evolvePopulation (Subpopulation beings, Population population)
   {
-    Vector<Being> currentGeneration= this.initialPopulation.getBeings();
-
-    for (Being being : currentGeneration)
+    Vector<Being> current = new Vector<>();
+    current.addAll(beings.getPopulation().getBeings());
+    for (Being being : current)
     {
       hillClimbingEvaluation(being);
     }
 
-    return currentGeneration;
+    return new Vector<Being>();
+
   }
 
-  
+
 
 }

@@ -39,7 +39,7 @@ public class Subpopulation extends Thread
   {
     this.setName(name);
     this.totalPop = population;
-    this.population = new Population(new Vector<>(population.subList(lowerBound, upperBound)), population.getBreeding());
+    this.population = new Population(new Vector<>(population.subList(lowerBound, upperBound)), population.getBreeding(), population.getMutating());
 
 
     TOTAL_SUB_POPULATIONS++;
@@ -52,7 +52,10 @@ public class Subpopulation extends Thread
       if (!isEvolving)
       {
         isEvolving = true;
-        totalPop.getBreeding().evolvePopulation(this, totalPop);
+        // totalPop.getBreeding().evolvePopulation(this, totalPop);
+        totalPop.getMutating().evolvePopulation(this, totalPop);
+
+        isEvolving = false;
       }
 
       population.update();
