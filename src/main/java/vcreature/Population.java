@@ -35,13 +35,93 @@ public class Population extends Vector<Being>
   private GeneticAlgorithm breeding;
   private HillClimbing mutating;
 
-  // private volatile long lifetimeOffspring;
-  // private volatile long lifetimeHillClimbs;
-  // private volatile long currentRejectedCreatures;
-  // private volatile long currentFailedHillClimbs;
-  // private volatile long lifetimeRejectedCreatures;
-  // private volatile long lifetimeFailedHillClimbs;
+  private volatile long lifetimeOffspring;
+  private volatile long lifetimeHillClimbs;
+  private volatile long currentRejectedCreatures;
+  private volatile long currentFailedHillClimbs;
+  private volatile long lifetimeRejectedCreatures;
+  private volatile long lifetimeFailedHillClimbs;
   // private boolean isEvolving = false;
+
+  public float getAverageFitness()
+  {
+    return averageFitness;
+  }
+
+  public float getBestFitness()
+  {
+    return bestFitness;
+  }
+
+  public void setBreeding(GeneticAlgorithm breeding)
+  {
+    this.breeding = breeding;
+  }
+
+  public void setMutating(HillClimbing mutating)
+  {
+    this.mutating = mutating;
+  }
+
+  public long getLifetimeOffspring()
+  {
+    return lifetimeOffspring;
+  }
+
+  public void setLifetimeOffspring(long lifetimeOffspring)
+  {
+    this.lifetimeOffspring = lifetimeOffspring;
+  }
+
+  public long getLifetimeHillClimbs()
+  {
+    return lifetimeHillClimbs;
+  }
+
+  public void setLifetimeHillClimbs(long lifetimeHillClimbs)
+  {
+    this.lifetimeHillClimbs = lifetimeHillClimbs;
+  }
+
+  public long getCurrentRejectedCreatures()
+  {
+    return currentRejectedCreatures;
+  }
+
+  public void setCurrentRejectedCreatures(long currentRejectedCreatures)
+  {
+    this.currentRejectedCreatures = currentRejectedCreatures;
+  }
+
+  public long getCurrentFailedHillClimbs()
+  {
+    return currentFailedHillClimbs;
+  }
+
+  public void setCurrentFailedHillClimbs(long currentFailedHillClimbs)
+  {
+    this.currentFailedHillClimbs = currentFailedHillClimbs;
+  }
+
+  public long getLifetimeRejectedCreatures()
+  {
+    return lifetimeRejectedCreatures;
+  }
+
+  public void setLifetimeRejectedCreatures(long lifetimeRejectedCreatures)
+  {
+    this.lifetimeRejectedCreatures = lifetimeRejectedCreatures;
+  }
+
+  public long getLifetimeFailedHillClimbs()
+  {
+    return lifetimeFailedHillClimbs;
+  }
+
+  public void setLifetimeFailedHillClimbs(long lifetimeFailedHillClimbs)
+  {
+    this.lifetimeFailedHillClimbs = lifetimeFailedHillClimbs;
+  }
 
   /**
    * Creates a population from the given vector of beings. Also takes algorithms
