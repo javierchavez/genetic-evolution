@@ -72,7 +72,7 @@ public class Environment extends AbstractApplication
   private Logger popLogger = new Logger("population-stats-"+LocalDateTime.now()+".txt");
   private Logger evoLogger = new Logger("population-"+LocalDateTime.now()+".txt");
 
-  BitmapText hudText = new BitmapText(guiFont, false);
+  BitmapText hudText;
 
 
   @Override
@@ -145,7 +145,7 @@ public class Environment extends AbstractApplication
     evolution = new Evolution(population);
     logStartTime = System.currentTimeMillis();
 
-
+    hudText = new BitmapText(guiFont, false);
     hudText.setSize(guiFont.getCharSet().getRenderedSize());      // font size
     hudText.setColor(ColorRGBA.Blue);                             // font color
     hudText.setText("You can write any string here");             // the text
