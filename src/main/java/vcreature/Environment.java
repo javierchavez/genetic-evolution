@@ -150,8 +150,9 @@ public class Environment extends AbstractApplication
     hudText = new BitmapText(guiFont, false);
     hudText.setSize(guiFont.getCharSet().getRenderedSize());      // font size
     hudText.setColor(ColorRGBA.Green);// font color
-    hudText.setText("Current best fitness " + breeding.getBestFitness() + "Fitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "Fitness change per minute " + breeding.getCurrentGenAverageFitness());             // the text
-    hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
+    hudText.setText("Current best fitness " + breeding.getBestFitness() + "\nFitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "\nFitness change per minute " + breeding.getCurrentGenAverageFitness());             // the text
+    //hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
+    hudText.setLocalTranslation(20, hudText.getLineHeight() * 36, 0); // position
     guiNode.attachChild(hudText);
 
   }
@@ -189,7 +190,7 @@ public class Environment extends AbstractApplication
         tempbestFitness =  breeding.getBestFitness();
       }
       System.out.println("Current best fitness " + breeding.getBestFitness() + "\nFitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "\nFitness change per minute " + fitnessChangePerMinute);             // the text);
-      hudText.setText("Current best fitness " + breeding.getBestFitness() + "Fitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "Fitness change per minute " + fitnessChangePerMinute);             // the text
+      hudText.setText("Current best fitness " + breeding.getBestFitness() + "\nFitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "\nFitness change per minute " + fitnessChangePerMinute);             // the text
       creature.remove();
       creature = null;
     }
