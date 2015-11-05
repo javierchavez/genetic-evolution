@@ -26,11 +26,13 @@ import java.util.*;
 public class HillClimbing
 {
   private final Environment environment;
+  private Population population;
   private double amount;
 
   private float lowest = 0;
   private float highest = 7;
   private int fails = 0;
+  private int currentTotal = 0;
 
   private double currentOptimizedFitness, currentFitnessValue;
 
@@ -39,6 +41,13 @@ public class HillClimbing
   private HashMap<HillClimbStrategy.Strategies, Float> hillClimbMapStrats = new HashMap<>();
   private int fitness = 0;
   private int lifetimeRuns = 0;
+  private Being bestBeing;
+  private ArrayList<Being> kill = new ArrayList<>();
+  private Subpopulation subPopulation;
+  private float bestFitness;
+  private float sumFitness=0f;
+  private float lifeTime = 0f;
+  private float genAvgFitness;
 
 
   public HillClimbing (Environment environment)
@@ -57,6 +66,7 @@ public class HillClimbing
    * improvements to the fitness by making changes to the genes.
    * @param individual
    */
+
   private boolean hillClimbingEvaluation(Being individual)
   {
     HillClimbStrategy.Strategies currentStrategy = HillClimbStrategy.Strategies.ROOT_GENE;
@@ -64,6 +74,8 @@ public class HillClimbing
     int tries = 0;
     for (int i = 0; i < individual.getGenotype().size(); i++)
     {
+      currentTotal++;
+
       lifetimeRuns++;
       lowest = Math.min(individual.getFitness(), lowest);
       highest = Math.max(individual.getFitness(), highest);
@@ -120,6 +132,18 @@ public class HillClimbing
       }
 
       currentOptimizedFitness = individual.getFitness();
+      sumFitness += currentOptimizedFitness;
+      lifeTime +=currentOptimizedFitness;
+      if (currentFitnessValue < 1 && currentOptimizedFitness < 1)
+      {
+        kill.add(individual);
+        if (tries > 4)
+        {
+          System.out.println("Killing individual");
+          tries=0;
+          return false;
+        }
+      }
 
       if (currentFitnessValue >= currentOptimizedFitness)
       {
@@ -139,6 +163,10 @@ public class HillClimbing
         if (currentOptimizedFitness >= highest)
         {
           factor = .55f;
+          bestBeing = individual;
+          population.setBestFitness((float) currentOptimizedFitness);
+          population.setBestBeing(individual);
+
         }
         fitness += currentOptimizedFitness;
         hillClimbMapStrats.put(currentStrategy, hillClimbMapStrats.get(currentStrategy) + factor);
@@ -166,17 +194,32 @@ public class HillClimbing
 
   public Vector<Being> evolvePopulation (Subpopulation beings, Population population)
   {
+    subPopulation = beings;
+    this.population = population;
     Vector<Being> current = new Vector<>();
     current.addAll(beings.getPopulation().getBeings());
-    for (int i = 0; i < current.size(); i++)
+    for (int i = 0; i < 4; i++)
     {
 
       hillClimbingEvaluation(current.get(i));
 
     }
 
+    beings.getPopulation().getBeings().clear();
+    beings.getPopulation().getBeings().addAll(current);
+    beings.getPopulation().getBeings().removeIf(kill::contains);
+
+
     System.out.println("Hill climbing complete on current individuals");
 
+    beings.getPopulation().setCurrentFailedHillClimbs(fails);
+    beings.getPopulation().setCurrentRejectedCreatures(kill.size());
+    beings.getPopulation().setTotalLifetimeFitness(beings.getPopulation().getTotalLifetimeFitness() + fitness);
+    beings.getPopulation().setPastAverageFitness(beings.getPopulation().getAverageFitness());
+    beings.getPopulation().setAverageFitness(beings.getPopulation().getTotalLifetimeFitness() / beings.getPopulation().getLifetimeOffspring());
+
+    currentTotal=0;
+    sumFitness = 0;
     return new Vector<Being>();
 
   }
@@ -197,5 +240,15 @@ public class HillClimbing
       public int compare(Map.Entry<?, Float> o1, Map.Entry<?, Float> o2) {
         return o1.getValue().compareTo(o2.getValue());
       }});
+  }
+
+  public float getBestFitness()
+  {
+    return bestFitness;
+  }
+
+  public float getGenAvgFitness()
+  {
+    return sumFitness/currentTotal;
   }
 }

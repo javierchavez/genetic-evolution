@@ -15,6 +15,7 @@ package vcreature;
 import vcreature.utils.Savable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 /**
@@ -29,8 +30,11 @@ public class Evolution extends Thread implements Savable
   private int totalSubpopulationAvg;
   private int totalSubpopulation;
   private float totalPopulation = 0;
-  private float totalPopulationCurrent = 0;
-  private float totalPopulationOld;
+  private int totalPopulationCurrent = 0;
+  private int totalPopulationOld = 0;
+  private ArrayList<Integer> activeSubs = new ArrayList<>();
+  private String bestFitness;
+  private float lastBestFitAverage = 0f;
 
   /**
    * Create a evolution given a population
@@ -42,6 +46,8 @@ public class Evolution extends Thread implements Savable
     this.population = population;
 
     subs = new ArrayList<>();
+    totalPopulationOld = totalPopulationCurrent = population.size();
+
     int chunkSize = 10;
     int numOfChunks = (int) Math.ceil((double) population.size() / chunkSize);
 
@@ -80,6 +86,7 @@ public class Evolution extends Thread implements Savable
    */
   public void crossSubpopulation(int subpopulation)
   {
+    activeSubs.add(subpopulation);
     subs.get(subpopulation).interrupt();
   }
 
@@ -93,20 +100,21 @@ public class Evolution extends Thread implements Savable
     return population.getGenerations();
   }
 
+
   public float fitnessChange()
   {
-
-    totalPopulationCurrent = 0;
-    for (Subpopulation sub : subs)
-    {
-      totalPopulationCurrent += sub.getPopulation().getBestFitness();
-    }
-
-    float newOld = totalPopulationCurrent - totalPopulationOld;
-
-    return newOld;
+    float a = (population.getBreeding().getBestFitness() - population.getBreeding().getFirstGenAvgFitness()) + (population.getMutating().getBestFitness() - population.getMutating().getGenAvgFitness());
+    return a/2;
   }
 
+  public float getActiveEvolvingFitness()
+  {
+    if (activeSubs.size() > 0)
+    {
+      return subs.get(activeSubs.get(0)).getPopulation().getAverageFitness();
+    }
+    return 0f;
+  }
 
   public int totalBeings ()
   {
@@ -117,6 +125,12 @@ public class Evolution extends Thread implements Savable
     }
 
     return total;
+  }
+
+  public Being getBest()
+  {
+    Collections.sort(population);
+    return population.get(0);
   }
 
   /**
@@ -147,5 +161,17 @@ public class Evolution extends Thread implements Savable
   public void read(StringBuilder s)
   {
 
+  }
+
+  public float getBestFitness()
+  {
+    float bestFit = 0f;
+//    for (Subpopulation sub : subs)
+//    {
+//      bestFit = Math.max(sub.getPopulation().getBestFitness(), bestFit);
+//    }
+
+
+    return getPopulation().getBestFitness();
   }
 }

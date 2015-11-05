@@ -37,7 +37,7 @@ public class Environment extends AbstractApplication
 {
   private float elapsedSimulationTime = 0.0f;
   private float totalSimTime = 0.0f;
-
+  private float fitnessChangePerMinute = 0;
 
   // Main population
   private Population population;
@@ -77,7 +77,9 @@ public class Environment extends AbstractApplication
   private Logger popLogger = new Logger("population-stats-"+LocalDateTime.now().toString().replace(":", "")+".txt");
   private Logger evoLogger = new Logger("population-"+LocalDateTime.now().toString().replace(":", "")+".txt");
 
+  float tempbestFitness = 0f;
   BitmapText hudText;
+  private boolean pauseEvaluation = false;
 
 
   @Override
@@ -158,6 +160,8 @@ public class Environment extends AbstractApplication
     hudText.setLocalTranslation(20, hudText.getLineHeight() * 36, 0); // position
     guiNode.attachChild(hudText);
 
+    tempbestFitness = evolution.getBestFitness();
+    initKeys();
   }
 
 
@@ -182,10 +186,26 @@ public class Environment extends AbstractApplication
     }
     else if (isPressed && name.equals("Best"))
     {
-      if (creature != null)
+
+      if (!pauseEvaluation)
       {
+        pauseEvaluation=true;
+        if (creature!=null)
+        {
+          creature.remove();
+          creature = null;
+        }
+        creature = genomeSynthesizer.encode(evolution.getBest().getGenotype());
 
       }
+      else if (pauseEvaluation)
+      {
+
+        pauseEvaluation = false;
+        creature.remove();
+        creature = null;
+      }
+
       elapsedSimulationTime = 0.0f;
     }
     else if (isPressed && name.equals("Quit"))
@@ -203,52 +223,61 @@ public class Environment extends AbstractApplication
 
     elapsedSimulationTime += deltaSeconds;
 
-    // A being is in queue ready for evaluation
-    if (beingAdded)
-    {
-      genome = being.getGenotype();
+    hudText.setText("Current best fitness " + evolution.getBestFitness() + "\nFitness change from start " + evolution.fitnessChange() + "\nFitness change per minute " + fitnessChangePerMinute);             // the text
 
-      creature = genomeSynthesizer.encode(genome);
-      beingAdded = false;
-      elapsedSimulationTime = 0;
-    }
-
-    // check if the evaluation is complete
-    if (creature != null && elapsedSimulationTime >= EVALUATION_TIME)
+    if (!pauseEvaluation)
     {
-      being.setFitness(creature.getFitness());
-      being.setUnderEvaluation(false);
-      float tempbestFitness = breeding.getBestFitness();
-      float fitnessChangePerMinute = 0;
-      totalSimTime += deltaSeconds;
-      if(totalSimTime == 60f)
+
+      // A being is in queue ready for evaluation
+      if (beingAdded)
       {
-        fitnessChangePerMinute= breeding.getBestFitness() - tempbestFitness;
-        totalSimTime = 0;
-        tempbestFitness =  breeding.getBestFitness();
+        genome = being.getGenotype();
+
+        creature = genomeSynthesizer.encode(genome);
+        beingAdded = false;
+        elapsedSimulationTime = 0;
       }
-      System.out.println("Current best fitness " + breeding.getBestFitness() + "\nFitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "\nFitness change per minute " + fitnessChangePerMinute);             // the text);
-      hudText.setText("Current best fitness " + breeding.getBestFitness() + "\nFitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "\nFitness change per minute " + fitnessChangePerMinute);             // the text
-      creature.remove();
-      creature = null;
-    }
 
-    // On cross populations when one is complete.
-    // avoid adding more than more to engine
-    if (!newGenerationSpwan && breeding.currGen() == 0)
-    {
-      System.out.println("New generation kicked off");
-      newGenerationSpwan = true;
-      new Thread(() -> {
-        evolution.crossSubpopulation(genRandDim(evolution.getSubs().size()));
-      }).start();
-    }
 
+      // check if the evaluation is complete
+      if (creature != null && elapsedSimulationTime >= EVALUATION_TIME)
+      {
+        being.setFitness(creature.getFitness());
+        being.setUnderEvaluation(false);
+
+
+        // System.out.println("Current best fitness " + evolution.getBestFitness() + "\nFitness change from start " + evolution.fitnessChange() + "\nFitness change per minute " + fitnessChangePerMinute);             // the text);
+
+        creature.remove();
+        creature = null;
+      }
+
+      // On cross populations when one is complete.
+      // avoid adding more than more to engine
+      if (!newGenerationSpwan && breeding.currGen() == 0)
+      {
+        System.out.println("New generation kicked off");
+        newGenerationSpwan = true;
+        new Thread(() -> {
+          evolution.crossSubpopulation(genRandDim(evolution.getSubs().size()));
+        }).start();
+      }
+    }
     // update the brain
     if (creature != null)
     {
       creature.updateBrain(elapsedSimulationTime);
     }
+
+    totalSimTime += deltaSeconds;
+    if(totalSimTime >= 60f)
+    {
+      float newBest = evolution.getBestFitness();
+      fitnessChangePerMinute= tempbestFitness - newBest;
+      tempbestFitness =  newBest;
+      totalSimTime = 0;
+    }
+
 
     if ((System.currentTimeMillis() - logStartTime) > Attributes.LOG_INTERVAL)
     {

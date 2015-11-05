@@ -31,6 +31,7 @@ public class Subpopulation extends Thread
   private boolean isEvolving = false;
   private float totalFitness = 2;
   private int lastFitness=0;
+  private float pastAverageFitness;
 
   /**
    * Create a sub-population from a larger population
@@ -47,6 +48,8 @@ public class Subpopulation extends Thread
     this.population = new Population(new Vector<>(population.subList(lowerBound, upperBound)), population.getBreeding(), population.getMutating());
 
     TOTAL_SUB_POPULATIONS++;
+    this.population.setLifetimeOffspring(this.population.size());
+
   }
 
 
@@ -60,8 +63,8 @@ public class Subpopulation extends Thread
       if (!isEvolving)
       {
         isEvolving = true;
-        totalFitness = totalPop.getTotalLifetimeFitness();
-        if (lastFitness/totalFitness <= .30)
+
+        if ((population.getPastAverageFitness() - population.getAverageFitness())/population.getPastAverageFitness() <= .30)
         {
           totalPop.getMutating().evolvePopulation(this, totalPop);
         }

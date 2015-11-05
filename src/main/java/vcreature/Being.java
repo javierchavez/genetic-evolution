@@ -19,7 +19,7 @@ import vcreature.genotype.Genome;
  * Mainly to house the Genome and data about the Being.
  * This class describes an object which gets evolved in GA
  */
-public class Being /*Comparable<Being>*/
+public class Being implements Comparable<Being>
 {
   public static int TOTAL = 0;
 
@@ -151,5 +151,71 @@ public class Being /*Comparable<Being>*/
     newBeing.setChildren(children);
     newBeing.setTimesHillClimbed(timesHillClimbed);
     return newBeing;
+  }
+
+  @Override
+  public boolean equals(Object o)
+  {
+    if (this == o)
+    {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass())
+    {
+      return false;
+    }
+
+    Being being = (Being) o;
+
+    if (age != being.age)
+    {
+      return false;
+    }
+    if (timesHillClimbed != being.timesHillClimbed)
+    {
+      return false;
+    }
+    if (children != being.children)
+    {
+      return false;
+    }
+    if (Float.compare(being.fitness, fitness) != 0)
+    {
+      return false;
+    }
+    if (underEvaluation != being.underEvaluation)
+    {
+      return false;
+    }
+    return !(genotype != null ? !genotype.equals(being.genotype) : being.genotype != null);
+
+  }
+
+  @Override
+  public int hashCode()
+  {
+    int result = age;
+    result = 31 * result + (genotype != null ? genotype.hashCode() : 0);
+    result = 31 * result + timesHillClimbed;
+    result = 31 * result + children;
+    result = 31 * result + (fitness != +0.0f ? Float.floatToIntBits(fitness) : 0);
+    result = 31 * result + (underEvaluation ? 1 : 0);
+    return result;
+  }
+
+  @Override
+  public int compareTo(Being o)
+  {
+    if (fitness < o.getFitness())
+    {
+      return -1;
+    }
+    else if (fitness > o.getFitness())
+    {
+      return 1;
+    }
+
+
+    return 0;
   }
 }

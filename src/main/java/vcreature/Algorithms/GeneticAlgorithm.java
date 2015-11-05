@@ -802,6 +802,7 @@ public class GeneticAlgorithm
 
        beings.getPopulation().setLifetimeOffspring(beings.getPopulation().getLifetimeOffspring() + 1);
        beings.getPopulation().setTotalLifetimeFitness(beings.getPopulation().getTotalLifetimeFitness() + fitness);
+       beings.getPopulation().setPastAverageFitness(beings.getPopulation().getAverageFitness());
        beings.getPopulation().setAverageFitness(beings.getPopulation().getTotalLifetimeFitness() / beings.getPopulation().getLifetimeOffspring());
       }
 

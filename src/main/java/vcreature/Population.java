@@ -45,6 +45,7 @@ public class Population extends Vector<Being> implements Savable
   private volatile long currentFailedHillClimbs;
   private volatile long lifetimeRejectedCreatures;
   private volatile long lifetimeFailedHillClimbs;
+  private float pastAverageFitness;
   // private boolean isEvolving = false;
 
 
@@ -323,5 +324,16 @@ public class Population extends Vector<Being> implements Savable
   public void read(StringBuilder s)
   {
 
+  }
+
+  public float getPastAverageFitness()
+  {
+    return pastAverageFitness;
+  }
+
+
+  public void setPastAverageFitness(float pastAverageFitness)
+  {
+    this.pastAverageFitness = pastAverageFitness;
   }
 }
