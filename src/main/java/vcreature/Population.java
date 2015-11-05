@@ -15,10 +15,9 @@ package vcreature;
 
 
 import vcreature.Algorithms.GeneticAlgorithm;
+import vcreature.Algorithms.HillClimbing;
 
-import java.util.ArrayDeque;
 import java.util.List;
-import java.util.Queue;
 import java.util.Vector;
 
 
@@ -35,6 +34,10 @@ public class Population extends Vector<Being>
   private volatile int generations;
   private volatile float averageFitness;
   private volatile float bestFitness;
+
+  private GeneticAlgorithm breeding;
+  private HillClimbing mutating;
+
   // private volatile long lifetimeOffspring;
   // private volatile long lifetimeHillClimbs;
   // private volatile long currentRejectedCreatures;
@@ -43,34 +46,17 @@ public class Population extends Vector<Being>
   // private volatile long lifetimeFailedHillClimbs;
   // private boolean isEvolving = false;
 
-  public GeneticAlgorithm getBreeding()
-  {
-    return breeding;
-  }
 
-  private GeneticAlgorithm breeding;
-
-  public Queue getQueue()
-  {
-    return queue;
-  }
-
-  private Queue queue = new ArrayDeque<>();
-
-//  public void setIsEvolving(boolean isEvolving)
-//  {
-//    this.isEvolving = isEvolving;
-//  }
-
-  public Population(Vector<Being> beings, GeneticAlgorithm breeding)
+  public Population(Vector<Being> beings, GeneticAlgorithm breeding, HillClimbing mutating)
   {
     this.beings = beings;
     this.breeding = breeding;
+    this.mutating = mutating;
   }
 
-  public Population(GeneticAlgorithm breeding)
+  public Population(GeneticAlgorithm breeding, HillClimbing mutating)
   {
-    this(new Vector<>(2001), breeding);
+    this(new Vector<>(2001), breeding, mutating);
   }
 
   public Vector<Being> getBeings()
@@ -115,6 +101,16 @@ public class Population extends Vector<Being>
       breeding.evolvePopulation(beings, this);
     }
     */
+  }
+
+  public GeneticAlgorithm getBreeding()
+  {
+    return breeding;
+  }
+
+  public HillClimbing getMutating()
+  {
+    return mutating;
   }
 
   @Override

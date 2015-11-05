@@ -14,6 +14,7 @@ package vcreature;
  */
 
 
+import vcreature.Algorithms.HillClimbing;
 import vcreature.utils.Logger;
 
 import java.io.File;
@@ -34,6 +35,7 @@ public class Evolution extends Thread
   /**
    * Create a evolution given a population
    *
+   * @param mutating
    * @param population population that will be split into SubPopulations
    */
   public Evolution(Population population)
@@ -76,13 +78,13 @@ public class Evolution extends Thread
    */
   public void crossSubpopulation(int subpopulation)
   {
-    for (Being being : subs.get(subpopulation).getPopulation().getBeings())
-    {
-      logger.export(being.getGenotype());
-    }
-
-    TextSynthesizer textSynthesizer = new TextSynthesizer();
-    textSynthesizer.encode(new File("temp.txt"));
+//    for (Being being : subs.get(subpopulation).getPopulation().getBeings())
+//    {
+//      logger.export(being.getGenotype());
+//    }
+//
+//    TextSynthesizer textSynthesizer = new TextSynthesizer();
+//    textSynthesizer.encode(new File("temp.txt"));
 
     subs.get(subpopulation).interrupt();
   }

@@ -17,6 +17,7 @@ package vcreature;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
 import vcreature.Algorithms.GeneticAlgorithm;
+import vcreature.Algorithms.HillClimbing;
 import vcreature.genotype.Genome;
 import vcreature.genotype.GenomeGenerator;
 import vcreature.phenotype.Block;
@@ -52,6 +53,7 @@ public class Environment extends AbstractApplication
 
   // Used for crossing
   private GeneticAlgorithm breeding;
+  private HillClimbing mutating;
 
   // Generate random genomes
   private GenomeGenerator generator;
@@ -83,7 +85,8 @@ public class Environment extends AbstractApplication
 
 
     breeding = new GeneticAlgorithm(this);
-    population = new Population(breeding);
+    mutating = new HillClimbing(this);
+    population = new Population(breeding, mutating);
 
     // initialize population
     generator = new GenomeGenerator(getPhysicsSpace(), rootNode);
