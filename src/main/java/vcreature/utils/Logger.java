@@ -24,6 +24,7 @@ public class Logger
 {
   private StringBuilder stringBuilder = new StringBuilder();
   private BufferedWriter writer = null;
+  private String fileName;
 
   /**
    * Start the logger with a supplied filename.
@@ -32,6 +33,8 @@ public class Logger
    */
   public Logger(String fileName)
   {
+    this.fileName = fileName;
+
     File file = new File(fileName);
     try
     {
@@ -51,6 +54,36 @@ public class Logger
   {
     this("temp.txt");
   }
+
+
+  public void setFileName(String filename)
+  {
+    this.fileName = filename;
+    File file = new File(fileName);
+
+    try
+    {
+      writer.close();
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }
+
+
+    try
+    {
+      writer = new BufferedWriter(new FileWriter(file, true));
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }
+
+
+  }
+
+
 
   /**
    * Export or Save a object to file.
