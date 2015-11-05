@@ -12,7 +12,7 @@ package vcreature;
  */
 
 
-import vcreature.utils.Logger;
+import vcreature.utils.Savable;
 
 import java.util.ArrayList;
 
@@ -21,12 +21,10 @@ import java.util.ArrayList;
  * This is the wrapper for actually splitting the large population up
  * into smaller ones so that threads can handle scaling.
  */
-public class Evolution extends Thread
+public class Evolution extends Thread implements Savable
 {
-
   private ArrayList<Subpopulation> subs;
   private Population population;
-  private Logger logger = new Logger();
 
   /**
    * Create a evolution given a population
@@ -76,6 +74,7 @@ public class Evolution extends Thread
    */
   public void crossSubpopulation(int subpopulation)
   {
+
 //    for (Being being : subs.get(subpopulation).getPopulation().getBeings())
 //    {
 //      logger.export(being.getGenotype());
@@ -111,4 +110,19 @@ public class Evolution extends Thread
   //  {
   //    return population.get(i);
   //  }
+
+  @Override
+  public void write(StringBuilder s)
+  {
+    for (Being being : population.getBeings())
+    {
+      being.getGenotype().write(s);
+    }
+  }
+
+  @Override
+  public void read(String s)
+  {
+
+  }
 }
