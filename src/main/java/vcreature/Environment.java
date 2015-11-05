@@ -12,8 +12,9 @@ package vcreature;
  */
 
 
+import com.jme3.font.BitmapText;
+import com.jme3.math.ColorRGBA;
 import com.jme3.system.AppSettings;
-import com.jme3.system.JmeContext;
 import vcreature.Algorithms.GeneticAlgorithm;
 import vcreature.Algorithms.HillClimbing;
 import vcreature.genotype.Genome;
@@ -69,6 +70,9 @@ public class Environment extends AbstractApplication
   private double logStartTime = 0.0;
   private Logger popLogger = new Logger("population-stats.txt");
   private Logger evoLogger = new Logger("population.txt");
+
+  BitmapText hudText = new BitmapText(guiFont, false);
+
 
   @Override
   public void simpleInitApp()
@@ -139,6 +143,14 @@ public class Environment extends AbstractApplication
     // set the population to a evolution
     evolution = new Evolution(population);
     logStartTime = System.currentTimeMillis();
+
+
+    hudText.setSize(guiFont.getCharSet().getRenderedSize());      // font size
+    hudText.setColor(ColorRGBA.Blue);                             // font color
+    hudText.setText("You can write any string here");             // the text
+    hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
+    guiNode.attachChild(hudText);
+
   }
 
   /* Use the main event loop to trigger repeating actions. */
@@ -164,6 +176,7 @@ public class Environment extends AbstractApplication
     {
       being.setFitness(creature.getFitness());
       being.setUnderEvaluation(false);
+      hudText.setText("Best fitness:  " + breeding.getBestFitness());
       creature.remove();
       creature = null;
     }
@@ -244,9 +257,9 @@ public class Environment extends AbstractApplication
     app.setSettings(settings);
 
 
-    app.start(JmeContext.Type.Headless);
+//    app.start(JmeContext.Type.Headless);
 
-    //app.start();
+    app.start();
   }
 
 
