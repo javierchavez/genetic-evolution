@@ -33,27 +33,32 @@ public class NeurlNetClimbStrategey<V> implements HillClimbStrategy<ArrayList<Ne
           }
 
         }
+        break;
         case 2:
         {
           strategy.climb(part.get(index1));
         }
+        break;
         case 3:
         {
           strategy.climb(part.get(index1));
           strategy.climb(part.get(index2));
         }
+        break;
         case 4:
         {
           strategy.climb(part.get(index1));
           strategy.climb(part.get(index2));
           strategy.climb(part.get(index3));
         }
-        case 5:
+        break;
+        case 0:
 
         {
           Collections.shuffle(part);
 
         }
+        break;
       }
 
     }
