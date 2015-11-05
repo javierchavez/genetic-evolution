@@ -10,12 +10,6 @@ repositories {
     }
 }
 
-//create a single Jar with all dependencies
-task fatJar(type: Jar) {
-    baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-}
 
 dependencies {
     compile 'com.jme3:jme3-core:3.0.+'
@@ -40,18 +34,12 @@ sourceSets {
     }
 }
 
-run {
-    if(project.hasProperty('args')){
-        args project.args.split(' ')
-    }
-}
 
 mainClassName = "vcreature.Environment"
 
-task(runSimple, dependsOn: 'classes', type: JavaExec) {
-    main = 'vcreature.Enviroment'
-    args 'headless'
+task server(type: JavaExec) {
+    main = "vcreature.Environment"
+    classpath = sourceSets.main.runtimeClasspath
+    args = ["headless"]
 }
-
-defaultTasks 'runSimple'
 
