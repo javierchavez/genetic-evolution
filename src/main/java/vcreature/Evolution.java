@@ -38,7 +38,7 @@ public class Evolution extends Thread
     this.population = population;
 
     subs = new ArrayList<>();
-    int chunkSize = 10;
+    int chunkSize = 40;
     int numOfChunks = (int) Math.ceil((double) population.size() / chunkSize);
 
     // Given a list split into equal parts of 10.
