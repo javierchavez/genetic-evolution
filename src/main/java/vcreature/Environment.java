@@ -4,7 +4,7 @@ package vcreature;
  * @author Javier Chavez
  * @author Alex Baker
  * @author Dominic Salas
- * @author Carrie Martinez
+ * @author Cari Martinez
  * <p>
  * Date November 4, 2015
  * CS 351
@@ -33,6 +33,8 @@ import java.util.Random;
 public class Environment extends AbstractApplication
 {
   private float elapsedSimulationTime = 0.0f;
+  private float totalSimTime = 0.0f;
+
 
   // Main population
   private Population population;
@@ -147,8 +149,8 @@ public class Environment extends AbstractApplication
 
     hudText = new BitmapText(guiFont, false);
     hudText.setSize(guiFont.getCharSet().getRenderedSize());      // font size
-    hudText.setColor(ColorRGBA.Blue);                             // font color
-    hudText.setText("You can write any string here");             // the text
+    hudText.setColor(ColorRGBA.Green);// font color
+    hudText.setText("Current best fitness " + breeding.getBestFitness() + "Fitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "Fitness change per minute " + breeding.getCurrentGenAverageFitness());             // the text
     hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
     guiNode.attachChild(hudText);
 
@@ -177,7 +179,16 @@ public class Environment extends AbstractApplication
     {
       being.setFitness(creature.getFitness());
       being.setUnderEvaluation(false);
-      hudText.setText("Best fitness:  " + breeding.getBestFitness());
+      float tempAvgFitness = breeding.getCurrentGenAverageFitness();
+      float fitnessChangePerMinute = 0;
+      totalSimTime += deltaSeconds;
+      if(totalSimTime == 60f)
+      {
+        fitnessChangePerMinute= breeding.getCurrentGenAverageFitness() - tempAvgFitness;
+        totalSimTime = 0;
+        tempAvgFitness =  breeding.getCurrentGenAverageFitness();
+      }
+      hudText.setText("Current best fitness " + breeding.getBestFitness() + "Fitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "Fitness change per minute " + fitnessChangePerMinute);             // the text
       creature.remove();
       creature = null;
     }

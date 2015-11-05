@@ -35,9 +35,24 @@ public class GeneticAlgorithm
   private float bestFitness;
   private Being bestBeing;
   private float currentGenAverageFitness;
+  private float firstGenAvgFitness;
 
   private Environment simulation;
 
+  public float getBestFitness()
+  {
+    return bestFitness;
+  }
+
+  public float getFirstGenAvgFitness()
+  {
+    return firstGenAvgFitness =0f;
+  }
+
+  public float getCurrentGenAverageFitness()
+  {
+    return currentGenAverageFitness;
+  }
 
   /**
    *
@@ -50,6 +65,8 @@ public class GeneticAlgorithm
     this.bestFitness = 0;
     this.bestBeing = null;
   }
+
+
 
 
   private void printFitnessStats(Vector<Being> beings)
@@ -584,7 +601,6 @@ public class GeneticAlgorithm
   //use mutations to improve
   private void mutation(Being individual)
   {
-    System.out.println("MUTATION");
     Vector3f vector3f = new Vector3f();
     Random rand = new Random();
     float scaleFactor = rand.nextBoolean() ? 1.05f : 0.95f;
@@ -791,6 +807,10 @@ public class GeneticAlgorithm
       System.out.println("Beings best being ");
       //printBeing(beings.getPopulation().getBestBeing());
       this.currentGenAverageFitness = summedFitness / nextGeneration.size();
+      if(generationNumber == 1)
+      {
+        this.firstGenAvgFitness = this.currentGenAverageFitness;
+      }
       printFitnessStats(nextGeneration);
 
       currentGeneration.clear();
@@ -818,6 +838,7 @@ public class GeneticAlgorithm
     simulation.setGenerationSpawn(false);
     return null;
   }
+
 
 }
 
