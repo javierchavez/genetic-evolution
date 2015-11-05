@@ -20,6 +20,7 @@ import vcreature.genotype.Genome;
 import vcreature.genotype.GenomeGenerator;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
+import vcreature.utils.Logger;
 
 import java.util.Random;
 
@@ -64,6 +65,10 @@ public class Environment extends AbstractApplication
   // Used for getting random subpopulation for crossing
   private Random random = new Random();
   private boolean beingAdded;
+
+  private double logStartTime = 0.0;
+  private Logger popLogger = new Logger("population-stats.txt");
+  private Logger evoLogger = new Logger("population.txt");
 
   @Override
   public void simpleInitApp()
@@ -133,6 +138,7 @@ public class Environment extends AbstractApplication
 
     // set the population to a evolution
     evolution = new Evolution(population);
+    logStartTime = System.currentTimeMillis();
   }
 
   /* Use the main event loop to trigger repeating actions. */
@@ -177,6 +183,13 @@ public class Environment extends AbstractApplication
     if (creature != null)
     {
       creature.updateBrain(elapsedSimulationTime);
+    }
+
+    if ((System.currentTimeMillis() - logStartTime) > Attributes.LOG_INTERVAL)
+    {
+      evoLogger.export(evolution);
+      popLogger.export(population);
+      logStartTime = System.currentTimeMillis();
     }
   }
 
