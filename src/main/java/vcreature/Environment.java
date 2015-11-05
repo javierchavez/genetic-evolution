@@ -23,6 +23,7 @@ import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
 import vcreature.utils.Logger;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 
@@ -68,8 +69,8 @@ public class Environment extends AbstractApplication
   private boolean beingAdded;
 
   private double logStartTime = 0.0;
-  private Logger popLogger = new Logger("population-stats.txt");
-  private Logger evoLogger = new Logger("population.txt");
+  private Logger popLogger = new Logger("population-stats-"+LocalDateTime.now()+".txt");
+  private Logger evoLogger = new Logger("population-"+LocalDateTime.now()+".txt");
 
   BitmapText hudText = new BitmapText(guiFont, false);
 
