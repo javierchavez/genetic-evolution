@@ -11,24 +11,30 @@ import vcreature.genotype.Genome;
 import java.util.*;
 
 /**
+ * This class is used to evolve a population of Beings in a physics envionment using a Genetic Algorithm (GA); The major phases
+ * of the GA are calculation of fitness, selection, crossover, and mutation
  * @author Cari
  */
 public class GeneticAlgorithm
 {
 
 
-  public static final int MAX_ITERATIONS = 2;
-  private int pctMutations = 40;
-  private int pctCrossover = 22;
+  public static final int MAX_ITERATIONS =50;
+  private int pctMutations = 0;
+  private int pctCrossover = 100;
 
   private int populationSize;
   private int generationNumber;
   private double bestFitness;
   private Being bestBeing;
 
-  private Environment simulation;
+  private Environment simulation;  //reference to physics environment
 
 
+  /**
+   *
+   * @param simulation  refernce to physics environment
+   */
   public GeneticAlgorithm(Environment simulation)
   {
     this.simulation = simulation;
@@ -600,10 +606,19 @@ public class GeneticAlgorithm
     return nextGeneration;
   }
 
+  //Getter
   public int currGen()
   {
     return generationNumber;
   }
+
+  /**This method runs the Genetic Algorithm (GA) on  a population of Beings"
+   * Each phase of the algorithm is handled in the createNextGeneration class
+   *
+   * @param beings Portion of population that may be evolved by GA
+   * @param population  Whole current population that may be evolved by GA
+   * @return  Evolved population of creatures
+   */
 
   public Population evolvePopulation(Subpopulation beings, Population population)
   {
