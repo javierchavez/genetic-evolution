@@ -179,14 +179,14 @@ public class Environment extends AbstractApplication
     {
       being.setFitness(creature.getFitness());
       being.setUnderEvaluation(false);
-      float tempAvgFitness = breeding.getCurrentGenAverageFitness();
+      float tempbestFitness = breeding.getBestFitness();
       float fitnessChangePerMinute = 0;
       totalSimTime += deltaSeconds;
       if(totalSimTime == 60f)
       {
-        fitnessChangePerMinute= breeding.getCurrentGenAverageFitness() - tempAvgFitness;
+        fitnessChangePerMinute= breeding.getBestFitness() - tempbestFitness;
         totalSimTime = 0;
-        tempAvgFitness =  breeding.getCurrentGenAverageFitness();
+        tempbestFitness =  breeding.getBestFitness();
       }
       System.out.println("Current best fitness " + breeding.getBestFitness() + "\nFitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "\nFitness change per minute " + fitnessChangePerMinute);             // the text);
       hudText.setText("Current best fitness " + breeding.getBestFitness() + "\nFitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "\nFitness change per minute " + fitnessChangePerMinute);             // the text
