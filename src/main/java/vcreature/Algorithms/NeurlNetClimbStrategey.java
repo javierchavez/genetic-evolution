@@ -15,7 +15,7 @@ public class NeurlNetClimbStrategey<V> implements HillClimbStrategy<ArrayList<Ne
   public V climb(ArrayList<NeuralNode> part)
   {
 
-    if(part.size() < 1)
+    if(part.size() >= 1)
     {
       Random rnd = new Random();
       int index1 = rnd.nextInt(part.size());
