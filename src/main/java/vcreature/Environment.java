@@ -244,9 +244,9 @@ public class Environment extends AbstractApplication
     app.setSettings(settings);
 
 
-    //app.start(JmeContext.Type.Headless);
+    app.start(JmeContext.Type.Headless);
 
-    app.start();
+    //app.start();
   }
 
 

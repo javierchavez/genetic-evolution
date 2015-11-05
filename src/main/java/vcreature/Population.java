@@ -45,6 +45,8 @@ public class Population extends Vector<Being> implements Savable
   private volatile long lifetimeFailedHillClimbs;
   // private boolean isEvolving = false;
 
+
+
   public float getAverageFitness()
   {
     return averageFitness;
