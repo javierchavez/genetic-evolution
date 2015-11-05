@@ -56,6 +56,11 @@ public class Logger
   }
 
 
+  /**
+   * Closes the current writer and opens a new file with the filename
+   *
+   * @param filename filename
+   */
   public void setFileName(String filename)
   {
     this.fileName = filename;
