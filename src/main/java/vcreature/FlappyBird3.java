@@ -25,7 +25,7 @@ import vcreature.phenotype.Neuron;
 
 
 /**
- *
+ * A variation on the flappy bird creature. Used for testing different algorithms and strategies
  */
 public class FlappyBird3 extends Creature
 {

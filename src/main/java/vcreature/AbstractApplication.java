@@ -9,8 +9,6 @@ package vcreature;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
@@ -35,15 +33,22 @@ import com.jme3.texture.Texture;
 import vcreature.phenotype.PhysicsConstants;
 
 
+/**
+ * Class for defining an application to run the genetic algorithm in.
+ * Can run headless.
+ */
 public abstract class AbstractApplication extends SimpleApplication implements ActionListener
 {
-
-
   private BulletAppState bulletAppState;
   private PhysicsSpace physicsSpace;
   private boolean isCameraRotating = true;
   private float cameraAngle = (float) (Math.PI / 2.0);
   private Vector3f tmpVec3; //
+
+  public PhysicsSpace getPhysicsSpace()
+  {
+    return physicsSpace;
+  }
 
   @Override
   public void simpleInitApp()
@@ -57,9 +62,7 @@ public abstract class AbstractApplication extends SimpleApplication implements A
     physicsSpace.setAccuracy(PhysicsConstants.PHYSICS_UPDATE_RATE);
     physicsSpace.setMaxSubSteps(4);
 
-
     Box floor = new Box(50f, 0.1f, 50f);
-
 
     floor.scaleTextureCoordinates(new Vector2f(50, 50));
     Geometry floor_geo = new Geometry("Floor", floor);
@@ -86,8 +89,6 @@ public abstract class AbstractApplication extends SimpleApplication implements A
     floor_phy.setRestitution(PhysicsConstants.GROUND_BOUNCINESS);
     floor_phy.setDamping(PhysicsConstants.GROUND_LINEAR_DAMPINING,
                          PhysicsConstants.GROUND_ANGULAR_DAMPINING);
-
-
   }
 
   private void initLighting()
@@ -113,13 +114,11 @@ public abstract class AbstractApplication extends SimpleApplication implements A
     viewPort.addProcessor(dlsr);
   }
 
-
   @Override
   public void onAction(String name, boolean isPressed, float tpf)
   {
 
   }
-
 
   @Override
   public void simpleUpdate(float tpf)
@@ -139,11 +138,4 @@ public abstract class AbstractApplication extends SimpleApplication implements A
       cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
     }
   }
-
-  public PhysicsSpace getPhysicsSpace()
-  {
-    return physicsSpace;
-  }
-
-
 }

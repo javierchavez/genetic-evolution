@@ -9,8 +9,6 @@ package vcreature;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
@@ -24,6 +22,9 @@ import vcreature.phenotype.EnumNeuronInput;
 import vcreature.phenotype.Neuron;
 
 
+/**
+ * A variation on the flappy bird creature. Used for testing different algorithms and strategies
+ */
 public class FlappyBird extends Creature
 {
   public FlappyBird(PhysicsSpace physicsSpace, Node rootNode)

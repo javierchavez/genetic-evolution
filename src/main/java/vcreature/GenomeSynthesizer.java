@@ -9,8 +9,6 @@ package vcreature;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
@@ -27,6 +25,9 @@ import vcreature.phenotype.Neuron;
 import java.util.*;
 
 
+/**
+ * A class for synthesizing a genome (genotype) into a creature (phenotype)
+ */
 public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
 {
   private Genome genome;
@@ -34,6 +35,12 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
   private final PhysicsSpace physicsSpace;
   private final Node rootNode;
 
+  /**
+   * Create a new synthesizer with the physics space to synthesize the creature too
+   *
+   * @param physicsSpace physics space where the creature will be added
+   * @param rootNode root node of the creature
+   */
   public GenomeSynthesizer(PhysicsSpace physicsSpace, Node rootNode)
   {
     this.physicsSpace = physicsSpace;
@@ -109,12 +116,6 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
     return block;
   }
 
-  @Override
-  public String toString()
-  {
-    return null;
-  }
-
   private List<Neuron> synthesizeNeurons(Gene gene)
   {
     List<Neuron> neurons = new ArrayList<>();
@@ -178,5 +179,11 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
     }
     neuron.setInputType(position, input);
     return input;
+  }
+
+  @Override
+  public String toString()
+  {
+    return null;
   }
 }
