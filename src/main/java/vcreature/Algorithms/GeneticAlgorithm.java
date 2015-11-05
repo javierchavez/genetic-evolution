@@ -1,5 +1,6 @@
 package vcreature.Algorithms;
 
+import com.jme3.math.Vector3f;
 import vcreature.Being;
 import vcreature.Environment;
 import vcreature.Population;
@@ -7,6 +8,7 @@ import vcreature.Subpopulation;
 import vcreature.genotype.Effector;
 import vcreature.genotype.Gene;
 import vcreature.genotype.Genome;
+import vcreature.phenotype.Block;
 
 import java.util.*;
 
@@ -24,8 +26,8 @@ public class GeneticAlgorithm
 
 
   public static final int MAX_ITERATIONS = 50;
-  private int pctMutations = 0;
-  private int pctCrossover = 100;
+  private int pctMutations = 90;
+  private int pctCrossover = 90;
   private float currentGenBestFitness;
   private Being currentGenBestBeing;
   private int populationSize;
@@ -212,9 +214,9 @@ public class GeneticAlgorithm
       Being being2 = population.get(rndIndex2);
 
 
-      while (rndIndex3 == rndIndex1 && rndIndex3 == rndIndex2 )
+      while (rndIndex3 == rndIndex2 )
       {
-        rndIndex2 = rnd.nextInt(population.size());
+        rndIndex3 = rnd.nextInt(population.size());
       }
       Being being3 = population.get(rndIndex2);
 
@@ -563,14 +565,14 @@ public class GeneticAlgorithm
 
     //take a random gene from each parent and append to other parent at random location
 
-      genotype1.getGenes().add(gene2CLONE);
-      genotype1.getGenes().get(crossoverPoint1).addEdge(genotype1.getGenes().size() - 1);
-      setParentJoint(genotype1.getGenes().get(crossoverPoint1), gene2CLONE);
+    genotype1.getGenes().add(gene2CLONE);
+    genotype1.getGenes().get(crossoverPoint1).addEdge(genotype1.getGenes().size() - 1);
+    setParentJoint(genotype1.getGenes().get(crossoverPoint1), gene2CLONE);
 
 
-      genotype2.getGenes().add(gene1CLONE);
-      genotype2.getGenes().get(crossoverPoint2).addEdge(genotype2.getGenes().size() - 1);
-      setParentJoint(genotype2.getGenes().get(crossoverPoint2), gene1CLONE);
+    genotype2.getGenes().add(gene1CLONE);
+    genotype2.getGenes().get(crossoverPoint2).addEdge(genotype2.getGenes().size() - 1);
+    setParentJoint(genotype2.getGenes().get(crossoverPoint2), gene1CLONE);
 
 
     children[0] = parent1;
@@ -582,54 +584,36 @@ public class GeneticAlgorithm
   //use mutations to improve
   private void mutation(Being individual)
   {
-    Genome genotype = individual.getGenotype();
-    LinkedList<Gene> genes = genotype.getGenes();
-    Random rnd = new Random();
-    Gene mutatedGene = genes.get(rnd.nextInt(genes.size()));
+    System.out.println("MUTATION");
+    Vector3f vector3f = new Vector3f();
+    Random rand = new Random();
+    float scaleFactor = rand.nextBoolean() ? 1.05f : 0.95f;
+    // only mutate diminution
+    individual.getGenotype().getRoot().getDimensions(vector3f);
 
-    int m = rnd.nextInt(6);
-    float x = mutatedGene.getLengthX();
-    float y = mutatedGene.getHeightY();
-    float z = mutatedGene.getWidthZ();
+    vector3f.x *= scaleFactor;
+    vector3f.y *= scaleFactor;
+    vector3f.z *= scaleFactor;
 
-    float min = 1000000f;
-    if(x < min)
+    if (Block.min(vector3f) < 0.5f)
     {
-      min = x;
-    }
-    if(y < min)
-    {
-      min = y;
-    }
-    if(z < min)
-    {
-      min = z;
+      return;
     }
 
-
-    switch (m)
+    if (Block.max(vector3f) > 10*Block.min(vector3f))
     {
-      case 0:
-      {
+      return;
+    }
 
-      }
+    individual.getGenotype().getRoot().setDimensions(vector3f);
 
-        break;
-      case 1:
-
-        break;
-      case 2:
-
-      case 3:
-
-        break;
-      case 4:
-
-        break;
-      case 5:
-
-
-        break;
+    for (Gene neighbor : individual.getGenotype().neighbors(individual.getGenotype().getRoot()))
+    {
+      neighbor.getEffector().getParent(vector3f);
+      vector3f.x *= scaleFactor;
+      vector3f.y *= scaleFactor;
+      vector3f.z *= scaleFactor;
+      neighbor.getEffector().setParent(vector3f);
     }
 
   }
@@ -786,8 +770,9 @@ public class GeneticAlgorithm
         {
           this.bestFitness = fitness;
           this.bestBeing = individual;
-          beings.getPopulation().setBestFitness(fitness);
         }
+        beings.getPopulation().setBestFitness(Math.max(fitness, beings.getPopulation().getBestFitness()));
+
        if(beings.getPopulation().getBestBeing() == null || fitness > beings.getPopulation().getBestBeing().getFitness())
        {
          beings.getPopulation().setBestBeing(individual);
@@ -799,12 +784,12 @@ public class GeneticAlgorithm
        beings.getPopulation().setAverageFitness(beings.getPopulation().getTotalLifetimeFitness() / beings.getPopulation().getLifetimeOffspring());
       }
 
-      System.out.println("Beings best population " + beings.getPopulation().getBestFitness());
+      System.out.println("Beings best fitness " + beings.getPopulation().getBestFitness());
       System.out.println("Beings total offspring " + beings.getPopulation().getLifetimeOffspring());
       System.out.println("Beings total fitness " + beings.getPopulation().getTotalLifetimeFitness());
-      System.out.println("Beings average " + beings.getPopulation().getAverageFitness());
+      System.out.println("Beings average fitness" + beings.getPopulation().getAverageFitness());
       System.out.println("Beings best being ");
-      printBeing(beings.getPopulation().getBestBeing());
+      //printBeing(beings.getPopulation().getBestBeing());
       this.currentGenAverageFitness = summedFitness / nextGeneration.size();
       printFitnessStats(nextGeneration);
 
