@@ -1,18 +1,40 @@
 package vcreature.utils;
 
+/**
+ * @author Javier Chavez
+ * @author Alex Baker
+ * @author Dominic Salas
+ * @author Carrie Martinez
+ * <p>
+ * Date November 4, 2015
+ * CS 351
+ * Genetic Evolution
+ */
+
+
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.collision.CollisionResults;
 import com.jme3.scene.Node;
+
 import vcreature.GenomeSynthesizer;
 import vcreature.genotype.Genome;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
 
 
+/**
+ * Provides helper functions and utilities for the genome class
+ */
 public final class GenomeHelper
 {
-
-
+  /**
+   * Tests if a genome produces a valid phenotype
+   *
+   * @param physicsSpace physics space to test the genome int
+   * @param rootNode root node of the physics space
+   * @param genon genome to test for validity
+   * @return true | false if the genome is valid or not
+   */
   public static boolean isValid(PhysicsSpace physicsSpace, Node rootNode, Genome genon)
   {
     GenomeSynthesizer synthesizer = new GenomeSynthesizer(physicsSpace, rootNode);

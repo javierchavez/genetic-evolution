@@ -9,14 +9,12 @@ package vcreature.genotype;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
 /**
  * Sensor for touch.
- *
+ * This sensor is the genotype representation for the EnumNeuronInput TOUCH
  */
 public class TouchSensor extends Sensor<TouchSensor, Float>
 {

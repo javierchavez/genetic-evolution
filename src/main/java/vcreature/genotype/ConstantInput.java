@@ -9,14 +9,15 @@ package vcreature.genotype;
  * Date November 4, 2015
  * CS 351
  * Genetic Evolution
- * <p>
- * Module description here
  */
 
 
 import vcreature.utils.Savable;
 
 
+/**
+ * This class is used to represent the EnumNeuronInput CONSTANT in the genotype
+ */
 public class ConstantInput implements NeuralInput<Float>, EffectorInput, Savable
 {
   private float constant;
