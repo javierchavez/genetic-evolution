@@ -40,10 +40,14 @@ The following are if you are compiling with via command line without a IDE.
 Make sure these are installed in your system (brew is great for this).
 *    Gradle
 *    Java 1.8
+
 ###Running
 Running via the command line
 ```bash
 gradle run
+
+# headless
+gradle server
 ```
 
 ###Building
