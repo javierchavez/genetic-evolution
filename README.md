@@ -44,6 +44,7 @@ Make sure these are installed in your system (brew is great for this).
 ###Running
 Running via the command line
 ```bash
+# gui
 gradle run
 
 # headless
