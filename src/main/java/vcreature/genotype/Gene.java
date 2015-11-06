@@ -13,6 +13,9 @@ package vcreature.genotype;
 
 
 import com.jme3.math.Vector3f;
+import vcreature.genotype.sensors.AngleSensor;
+import vcreature.genotype.sensors.HeightSensor;
+import vcreature.genotype.sensors.TouchSensor;
 import vcreature.utils.Savable;
 
 

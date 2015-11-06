@@ -14,7 +14,7 @@ package vcreature.genotype;
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
-import vcreature.GenomeSynthesizer;
+import vcreature.translations.GenomeSynthesizer;
 import vcreature.phenotype.EnumNeuronInput;
 import vcreature.phenotype.EnumOperator;
 

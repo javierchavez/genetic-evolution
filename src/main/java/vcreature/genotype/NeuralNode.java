@@ -13,6 +13,9 @@ package vcreature.genotype;
 
 
 import vcreature.genotype.NeuralInput.InputPosition;
+import vcreature.genotype.sensors.AngleSensor;
+import vcreature.genotype.sensors.HeightSensor;
+import vcreature.genotype.sensors.TouchSensor;
 import vcreature.phenotype.EnumOperator;
 import vcreature.phenotype.Neuron;
 import vcreature.utils.Savable;

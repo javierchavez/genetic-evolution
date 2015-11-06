@@ -16,7 +16,7 @@ import com.jme3.bullet.PhysicsSpace;
 import com.jme3.collision.CollisionResults;
 import com.jme3.scene.Node;
 
-import vcreature.GenomeSynthesizer;
+import vcreature.translations.GenomeSynthesizer;
 import vcreature.genotype.Genome;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;

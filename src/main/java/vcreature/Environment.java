@@ -18,12 +18,15 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.ColorRGBA;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
-import vcreature.Algorithms.GeneticAlgorithm;
-import vcreature.Algorithms.HillClimbing;
+import vcreature.collections.Evolution;
+import vcreature.collections.Population;
+import vcreature.morphology.GeneticAlgorithm;
+import vcreature.morphology.HillClimb;
 import vcreature.genotype.Genome;
 import vcreature.genotype.GenomeGenerator;
-import vcreature.phenotype.Block;
-import vcreature.phenotype.Creature;
+import vcreature.phenotype.*;
+import vcreature.translations.CreatureSynthesizer;
+import vcreature.translations.GenomeSynthesizer;
 import vcreature.utils.Logger;
 
 import java.time.LocalDateTime;
@@ -56,7 +59,7 @@ public class Environment extends AbstractApplication
 
   // Used for crossing
   private GeneticAlgorithm breeding;
-  private HillClimbing mutating;
+  private HillClimb mutating;
 
   // Generate random genomes
   private GenomeGenerator generator;
@@ -94,7 +97,7 @@ public class Environment extends AbstractApplication
 
 
     breeding = new GeneticAlgorithm(this);
-    mutating = new HillClimbing(this);
+    mutating = new HillClimb(this);
     population = new Population(breeding, mutating);
 
     // initialize population
@@ -105,7 +108,7 @@ public class Environment extends AbstractApplication
     {
 
       FlappyBird _creature = new FlappyBird(getPhysicsSpace(), rootNode);
-      FlappyBird2 _creature2 = new FlappyBird2(getPhysicsSpace(), rootNode);
+      FlappyBird6 _creature2 = new FlappyBird6(getPhysicsSpace(), rootNode);
       FlappyBird3 _creature3 = new FlappyBird3(getPhysicsSpace(), rootNode);
       FlappyBird4 _creature4 = new FlappyBird4(getPhysicsSpace(), rootNode);
       FlappyBird5 _creature5 = new FlappyBird5(getPhysicsSpace(), rootNode);
@@ -260,6 +263,7 @@ public class Environment extends AbstractApplication
         newGenerationSpwan = true;
         new Thread(() -> {
           evolution.crossSubpopulation(genRandDim(evolution.getSubs().size()));
+
         }).start();
       }
     }

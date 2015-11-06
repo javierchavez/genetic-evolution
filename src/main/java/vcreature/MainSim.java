@@ -32,9 +32,7 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.system.AppSettings;
 
-import vcreature.phenotype.PhysicsConstants;
-import vcreature.phenotype.Block;
-import vcreature.phenotype.Creature;
+import vcreature.phenotype.*;
 
 
 /**
@@ -158,7 +156,7 @@ public class MainSim extends SimpleApplication implements ActionListener
     else if (isPressed && name.equals("FlappyBird2"))
     {
       myCreature.remove();
-      myCreature = new FlappyBird2(physicsSpace, rootNode);
+      myCreature = new FlappyBird6(physicsSpace, rootNode);
 
       cameraAngle = (float)(Math.PI/2.0);
       elapsedSimulationTime = 0.0f;
