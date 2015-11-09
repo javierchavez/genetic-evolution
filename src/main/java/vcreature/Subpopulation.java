@@ -64,7 +64,7 @@ public class Subpopulation extends Thread
       {
         isEvolving = true;
 
-        if ((population.getPastAverageFitness() - population.getAverageFitness())/population.getPastAverageFitness() <= .30)
+        if ((population.getPastAverageFitness() - population.getAverageFitness())/population.getPastAverageFitness() <= .30 && false)
         {
           totalPop.getMutating().evolvePopulation(this, totalPop);
         }
