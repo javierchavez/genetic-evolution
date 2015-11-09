@@ -828,7 +828,8 @@ public class GeneticAlgorithm
     }
     while (generationNumber < MAX_ITERATIONS);
 
-    for (int i = 0; i < Math.min(population.size(), generationNumber); i++)
+    //for (int i = 0; i < Math.min(population.size(), generationNumber); i++)
+    for (int i = 0; i < Math.min(population.size(), nextGeneration.size()); i++)
     {
       if (population.get(i).getFitness() < nextGeneration.get(i).getFitness())
       {
