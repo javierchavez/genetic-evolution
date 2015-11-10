@@ -14,10 +14,7 @@ package vcreature.genotype;
 
 import vcreature.utils.Savable;
 
-import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**
@@ -144,7 +141,7 @@ public abstract class AbstractGene<T extends AbstractGene<?>> implements Savable
     }
 
     String output = str.replaceAll("\\|.*\\|,", "");
-    s.replace(0, output.length(), output);
+    s.replace(0, s.length(), output);
   }
 
   @Override

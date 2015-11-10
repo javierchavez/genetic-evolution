@@ -28,15 +28,14 @@ public class AngleSensor extends Sensor<AngleSensor, Float>
   @Override
   public void write(StringBuilder s)
   {
-    s.append("ANGLE").append(":");
+    s.append("ANGLE");
+    s.append("["+getSource().getPosition()+"]").append(":");
     s.append(getValue()).append(",");
   }
 
   @Override
   public void read(StringBuilder s)
   {
-    String value = s.substring(0, s.indexOf(","));
-    setValue(Float.parseFloat(value));
-    s.delete(0, value.length()+2);
+    setValue(Float.parseFloat(s.toString()));
   }
 }

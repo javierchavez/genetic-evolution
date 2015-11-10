@@ -308,9 +308,9 @@ public class Gene extends AbstractGene<Gene> implements Savable
     s.append(rotationX).append(",");
     s.append(recursiveLimit).append(",");
 
-    angleSensor.write(s);
-    touchSensor.write(s);
-    heightSensor.write(s);
+    //angleSensor.write(s);
+    //touchSensor.write(s);
+    //heightSensor.write(s);
     effector.write(s);
   }
 
@@ -319,15 +319,25 @@ public class Gene extends AbstractGene<Gene> implements Savable
   {
     super.read(s);
     String str = s.toString();
-    String[] split = str.split("[,]");
-    for (int i = 0; i < split.length; i++)
-    {
-      if (Character.isDigit(split[i].charAt(0)))
-      {
-        int num = (int)Float.parseFloat(split[i]);
-        addEdge(num);
-      }
-    }
+    String[] values = str.split(",");
+    position = Integer.parseInt(values[0]);
+    s.delete(0, values[0].length()+1);
+    lengthX = Float.parseFloat(values[1]);
+    s.delete(0, values[1].length()+1);
+    widthZ  = Float.parseFloat(values[2]);
+    s.delete(0, values[2].length()+1);
+    heightY = Float.parseFloat(values[3]);
+    s.delete(0, values[3].length()+1);
+    rotationY = Float.parseFloat(values[4]);
+    s.delete(0, values[4].length()+1);
+    rotationZ = Float.parseFloat(values[5]);
+    s.delete(0, values[5].length()+1);
+    rotationX = Float.parseFloat(values[6]);
+    s.delete(0, values[6].length()+1);
+    recursiveLimit = Integer.parseInt(values[7]);
+    s.delete(0, values[7].length()+1);
+
+    effector.read(s);
   }
 
   @Override

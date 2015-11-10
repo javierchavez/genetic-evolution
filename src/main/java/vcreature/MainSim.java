@@ -16,25 +16,27 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
+import com.jme3.light.AmbientLight;
+import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
-import com.jme3.texture.Texture;
-import com.jme3.renderer.queue.RenderQueue.ShadowMode;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.light.DirectionalLight;
-import com.jme3.math.ColorRGBA;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
-import com.jme3.light.AmbientLight;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.KeyTrigger;
 import com.jme3.system.AppSettings;
-
-import vcreature.phenotype.PhysicsConstants;
+import com.jme3.texture.Texture;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
+import vcreature.phenotype.PhysicsConstants;
+import vcreature.utils.Logger;
+
+import java.io.File;
 
 
 /**
@@ -51,6 +53,11 @@ public class MainSim extends SimpleApplication implements ActionListener
   private Vector3f tmpVec3; //
   private Creature myCreature;
   private boolean isCameraRotating = true;
+
+  private TextSynthesizer textSynthesizer;
+  private Logger logger;
+  private GenomeSynthesizer genomeSynthesizer;
+  private CreatureSynthesizer creatureSynthesizer;
 
   @Override
   public void simpleInitApp()
@@ -92,7 +99,16 @@ public class MainSim extends SimpleApplication implements ActionListener
             PhysicsConstants.GROUND_ANGULAR_DAMPINING);
 
     Block.initStaticMaterials(assetManager);
+
+    logger = new Logger("flappybird.txt");
+    textSynthesizer = new TextSynthesizer();
+    creatureSynthesizer = new CreatureSynthesizer();
+    genomeSynthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
+
     myCreature = new FlappyBird(physicsSpace, rootNode);
+    logger.export(creatureSynthesizer.encode(myCreature));
+    myCreature.remove();
+    myCreature = genomeSynthesizer.encode(textSynthesizer.encode(new File("flappybird.txt")));
     //myCreature = new Tigger(physicsSpace, rootNode);
 
     initLighting();

@@ -14,6 +14,7 @@ package vcreature;
 
 import vcreature.utils.Savable;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -151,6 +152,7 @@ public class Evolution extends Thread implements Savable
   @Override
   public void write(StringBuilder s)
   {
+    s.append(LocalDateTime.now()).append("\n");
     for (Being being : population.getBeings())
     {
       being.getGenotype().write(s);

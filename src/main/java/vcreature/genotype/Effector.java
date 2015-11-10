@@ -414,16 +414,52 @@ public class Effector implements Savable
     s.append(pivotAxisY).append(",");
     s.append(pivotAxisZ).append(",");
 
+    s.append("{");
     for (NeuralNode node : neuralNet)
     {
       node.write(s);
+      s.append("|");
     }
+    s.append("}");
   }
 
   @Override
   public void read(StringBuilder s)
   {
+    String str = s.toString();
+    String[] values = str.split(",");
+    maxForce = Float.parseFloat(values[0]);
+    s.delete(0, values[0].length()+1);
+    jointParentIndex = Integer.parseInt(values[1]);
+    s.delete(0, values[1].length()+1);
+    parentX = Float.parseFloat(values[2]);
+    s.delete(0, values[2].length()+1);
+    parentY = Float.parseFloat(values[3]);
+    s.delete(0, values[3].length()+1);
+    parentZ = Float.parseFloat(values[4]);
+    s.delete(0, values[4].length()+1);
+    childX = Float.parseFloat(values[5]);
+    s.delete(0, values[5].length()+1);
+    childY = Float.parseFloat(values[6]);
+    s.delete(0, values[6].length()+1);
+    childZ = Float.parseFloat(values[7]);
+    s.delete(0, values[7].length()+1);
+    pivotAxisX = Float.parseFloat(values[8]);
+    s.delete(0, values[8].length()+1);
+    pivotAxisY = Float.parseFloat(values[9]);
+    s.delete(0, values[9].length()+1);
+    pivotAxisZ = Float.parseFloat(values[10]);
+    s.delete(0, values[10].length()+1);
 
+    String neurons = s.substring(s.indexOf("{")+1, s.indexOf("}"));
+    for (String neuron : neurons.split("[|]"))
+    {
+      if (!neuron.equals(""))
+      {
+        NeuralNode node = new NeuralNode();
+        node.read(new StringBuilder(neuron));
+        neuralNet.add(node);
+      }
+    }
   }
-
 }

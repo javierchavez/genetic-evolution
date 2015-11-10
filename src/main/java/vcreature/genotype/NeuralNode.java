@@ -134,23 +134,26 @@ public class NeuralNode implements EffectorInput, Savable
   {
     String type;
     NeuralInput input;
+    String str = s.toString();
+    String[] values = str.split("[,]");
+    int i = 0;
     for (InputPosition position : InputPosition.values())
     {
-      type = s.substring(0, s.indexOf(":"));
+      type = values[i].substring(0, values[i].indexOf("["));
       input = getInput(type);
       inputs.put(position, input);
-      s.delete(0, type.length()+2);
-      input.read(s);
+      input.read(new StringBuilder(values[i].substring(values[i].indexOf(":") + 1)));
+      i++;
     }
 
     String operator;
     EnumOperator op;
     for (NeuralOperatorPosition position : NeuralOperatorPosition.values())
     {
-      operator = s.substring(0, s.indexOf(","));
+      operator = values[i];
       op = EnumOperator.valueOf(operator);
       operators.put(position, op);
-      s.delete(0, operator.length()+2);
+      i++;
     }
   }
 
