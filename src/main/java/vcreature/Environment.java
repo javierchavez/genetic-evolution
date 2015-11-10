@@ -101,7 +101,7 @@ public class Environment extends AbstractApplication
     generator = new GenomeGenerator(getPhysicsSpace(), rootNode);
 
     // Fill up the population
-    for (int i = 0; i < 25; i++)
+    for (int i = 0; i < 100; i++)
     {
 
       FlappyBird _creature = new FlappyBird(getPhysicsSpace(), rootNode);
@@ -273,7 +273,7 @@ public class Environment extends AbstractApplication
     if(totalSimTime >= 60f)
     {
       float newBest = evolution.getBestFitness();
-      fitnessChangePerMinute= tempbestFitness - newBest;
+      fitnessChangePerMinute= newBest -tempbestFitness;
       tempbestFitness =  newBest;
       totalSimTime = 0;
     }

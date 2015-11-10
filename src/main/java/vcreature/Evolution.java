@@ -49,7 +49,7 @@ public class Evolution extends Thread implements Savable
     subs = new ArrayList<>();
     totalPopulationOld = totalPopulationCurrent = population.size();
 
-    int chunkSize = 10;
+    int chunkSize = 100;
     int numOfChunks = (int) Math.ceil((double) population.size() / chunkSize);
 
     // Given a list split into equal parts of 10.
@@ -104,7 +104,7 @@ public class Evolution extends Thread implements Savable
 
   public float fitnessChange()
   {
-    float a = (population.getBreeding().getBestFitness() - population.getBreeding().getFirstGenAvgFitness()) + (population.getMutating().getBestFitness() - population.getMutating().getGenAvgFitness());
+    float a = (population.getBreeding().getBestFitness() - population.getBreeding().getFirstGenAvgFitness());// + (population.getMutating().getBestFitness() - population.getMutating().getGenAvgFitness());
     return a/2;
   }
 
