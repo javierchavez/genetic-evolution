@@ -255,7 +255,7 @@ public class Creature
     }
     
     elapsedSimulationTime  = 0;
-    System.out.println("Creature.placeOnGround() shift:"+ -currentHeightOfLowestPoint);
+    //System.out.println("Creature.placeOnGround() shift:"+ -currentHeightOfLowestPoint);
   }
 
   

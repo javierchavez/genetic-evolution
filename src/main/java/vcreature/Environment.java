@@ -251,6 +251,7 @@ public class Environment extends AbstractApplication
         // System.out.println("Current best fitness " + evolution.getBestFitness() + "\nFitness change from start " + evolution.fitnessChange() + "\nFitness change per minute " + fitnessChangePerMinute);             // the text);
 
         creature.remove();
+        getPhysicsSpace().distributeEvents();
         creature = null;
       }
 
