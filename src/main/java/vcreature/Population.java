@@ -26,7 +26,7 @@ import java.util.Vector;
  * some number of beings are chosen and sent to the breeder to be
  * evolved
  */
-public class Population extends Vector<Being> implements Savable
+public class Population extends Thread implements Savable
 {
   private final Vector<Being> beings;
 
@@ -35,6 +35,10 @@ public class Population extends Vector<Being> implements Savable
   private volatile float bestFitness = 1;
   private volatile float totalLifetimeFitness = 1;
   private volatile Being bestBeing = null;
+  private volatile boolean paused = true;
+  private boolean running = true;
+  private boolean isEvolving = false;
+  private float totalFitness = 2;
 
   private GeneticAlgorithm breeding;
   private HillClimbing mutating;
@@ -281,31 +285,31 @@ public class Population extends Vector<Being> implements Savable
     this.beings.add(i, being);
   }
 
-  @Override
+
   public synchronized List<Being> subList(int fromIndex, int toIndex)
   {
     return beings.subList(fromIndex, toIndex);
   }
 
-  @Override
+
   public synchronized Being remove(int index)
   {
     return beings.remove(index);
   }
 
-  @Override
+
   public synchronized Being get(int index)
   {
     return beings.get(index);
   }
 
-  @Override
+
   public synchronized int size()
   {
     return beings.size();
   }
 
-  @Override
+
   public synchronized boolean add(Being being)
   {
     return this.beings.add(being);
@@ -341,4 +345,53 @@ public class Population extends Vector<Being> implements Savable
   {
     this.pastAverageFitness = pastAverageFitness;
   }
+
+
+  /**
+   * Start the next generation in the sub population
+   */
+  public void nextGeneration()
+  {
+    synchronized (this)
+    {
+      if (!isEvolving)
+      {
+        isEvolving = true;
+
+        if (getMutating().getBestFitness() < averageFitness)
+        {
+          getMutating().evolvePopulation(this);
+        }
+        else
+        {
+          getBreeding().evolvePopulation(this);
+        }
+
+        isEvolving = false;
+      }
+
+    }
+  }
+
+  @Override
+  public void run()
+  {
+    while (running)
+    {
+      synchronized (this)
+      {
+        if (Thread.interrupted())
+        {
+          paused = !paused;
+        }
+
+        if (!paused)
+        {
+          nextGeneration();
+        }
+      }
+    }
+  }
+
 }
+

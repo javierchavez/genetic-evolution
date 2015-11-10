@@ -25,7 +25,7 @@ import java.util.Collections;
  */
 public class Evolution extends Thread implements Savable
 {
-  private ArrayList<Subpopulation> subs;
+
   private Population population;
   private int totalSubpopulations;
   private int totalSubpopulationAvg;
@@ -46,38 +46,8 @@ public class Evolution extends Thread implements Savable
   {
     this.population = population;
 
-    subs = new ArrayList<>();
     totalPopulationOld = totalPopulationCurrent = population.size();
-
-    int chunkSize = 10;
-    int numOfChunks = (int) Math.ceil((double) population.size() / chunkSize);
-
-    // Given a list split into equal parts of 10.
-    for (int i = 0; i < numOfChunks; i++)
-    {
-      int start = i * chunkSize;
-      int length = Math.min(population.size() - start, chunkSize);
-
-      subs.add(new Subpopulation(String.valueOf(i) + " population",
-                                 population,
-                                 start,
-                                 length + start));
-    }
-    // Start all the SubPopulation threads
-    for (Subpopulation subpopulation : subs)
-    {
-      subpopulation.start();
-    }
-  }
-
-  /**
-   * Get the sub-populations from the evolution
-   *
-   * @return a list of sub-populations
-   */
-  public ArrayList<Subpopulation> getSubs()
-  {
-    return subs;
+    population.start();
   }
 
   /**
@@ -87,8 +57,8 @@ public class Evolution extends Thread implements Savable
    */
   public void crossSubpopulation(int subpopulation)
   {
-    activeSubs.add(subpopulation);
-    subs.get(subpopulation).interrupt();
+
+    population.interrupt();
   }
 
   /**
@@ -108,29 +78,10 @@ public class Evolution extends Thread implements Savable
     return a/2;
   }
 
-  public float getActiveEvolvingFitness()
-  {
-    if (activeSubs.size() > 0)
-    {
-      return subs.get(activeSubs.get(0)).getPopulation().getAverageFitness();
-    }
-    return 0f;
-  }
-
-  public int totalBeings ()
-  {
-    int total = 0;
-    for (Subpopulation sub : subs)
-    {
-      total += sub.getSize();
-    }
-
-    return total;
-  }
 
   public Being getBest()
   {
-    Collections.sort(population);
+    Collections.sort(population.getBeings());
     return population.get(0);
   }
 
@@ -176,4 +127,6 @@ public class Evolution extends Thread implements Savable
 
     return getPopulation().getBestFitness();
   }
+
+
 }

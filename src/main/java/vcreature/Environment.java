@@ -259,7 +259,7 @@ public class Environment extends AbstractApplication
         System.out.println("New generation kicked off");
         newGenerationSpwan = true;
         new Thread(() -> {
-          evolution.crossSubpopulation(genRandDim(evolution.getSubs().size()));
+          evolution.crossSubpopulation(genRandDim(evolution.getPopulation().size()));
         }).start();
       }
     }

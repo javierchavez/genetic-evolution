@@ -17,7 +17,6 @@ package vcreature.Algorithms;
 import vcreature.Being;
 import vcreature.Environment;
 import vcreature.Population;
-import vcreature.Subpopulation;
 import vcreature.genotype.Gene;
 
 import java.util.*;
@@ -43,7 +42,7 @@ public class HillClimbing
   private int lifetimeRuns = 0;
   private Being bestBeing;
   private ArrayList<Being> kill = new ArrayList<>();
-  private Subpopulation subPopulation;
+  // private Subpopulation subPopulation;
   private float bestFitness;
   private float sumFitness=0f;
   private float lifeTime = 0f;
@@ -54,9 +53,9 @@ public class HillClimbing
   {
     this.environment = environment;
 
-    hillClimbMapStrats.put(HillClimbStrategy.Strategies.EFFECTOR, 1f);
-    hillClimbMapStrats.put(HillClimbStrategy.Strategies.NEURAL_NET, 1f);
-    hillClimbMapStrats.put(HillClimbStrategy.Strategies.ROOT_GENE, 1f);
+    hillClimbMapStrats.put(HillClimbStrategy.Strategies.EFFECTOR, .02f);
+    hillClimbMapStrats.put(HillClimbStrategy.Strategies.NEURAL_NET, .02f);
+    hillClimbMapStrats.put(HillClimbStrategy.Strategies.ROOT_GENE, 0.75f);
     hillClimbMapStrats.put(HillClimbStrategy.Strategies.LIMB_GENE, 1f);
 
   }
@@ -192,12 +191,12 @@ public class HillClimbing
    * @return and evolved population.
    */
 
-  public Vector<Being> evolvePopulation (Subpopulation beings, Population population)
+  public Vector<Being> evolvePopulation(Population population)
   {
-    subPopulation = beings;
+
     this.population = population;
     Vector<Being> current = new Vector<>();
-    current.addAll(beings.getPopulation().getBeings());
+    current.addAll(population.getBeings());
     for (int i = 0; i < 4; i++)
     {
 
@@ -205,18 +204,19 @@ public class HillClimbing
 
     }
 
-    beings.getPopulation().getBeings().clear();
-    beings.getPopulation().getBeings().addAll(current);
-    beings.getPopulation().getBeings().removeIf(kill::contains);
+    population.getBeings().clear();
+    population.getBeings().addAll(current);
+    population.getBeings().removeIf(kill::contains);
 
 
     System.out.println("Hill climbing complete on current individuals");
 
-    beings.getPopulation().setCurrentFailedHillClimbs(fails);
-    beings.getPopulation().setCurrentRejectedCreatures(kill.size());
-    beings.getPopulation().setTotalLifetimeFitness(beings.getPopulation().getTotalLifetimeFitness() + fitness);
-    beings.getPopulation().setPastAverageFitness(beings.getPopulation().getAverageFitness());
-    beings.getPopulation().setAverageFitness(beings.getPopulation().getTotalLifetimeFitness() / beings.getPopulation().getLifetimeOffspring());
+
+    population.setCurrentFailedHillClimbs(fails);
+    population.setCurrentRejectedCreatures(kill.size());
+    population.setTotalLifetimeFitness(population.getTotalLifetimeFitness() + fitness);
+    population.setPastAverageFitness(population.getAverageFitness());
+    population.setAverageFitness(population.getTotalLifetimeFitness() / population.getLifetimeOffspring());
 
     currentTotal=0;
     sumFitness = 0;

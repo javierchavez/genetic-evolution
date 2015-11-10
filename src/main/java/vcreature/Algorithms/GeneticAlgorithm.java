@@ -4,7 +4,6 @@ import com.jme3.math.Vector3f;
 import vcreature.Being;
 import vcreature.Environment;
 import vcreature.Population;
-import vcreature.Subpopulation;
 import vcreature.genotype.Effector;
 import vcreature.genotype.Gene;
 import vcreature.genotype.Genome;
@@ -721,25 +720,24 @@ public class GeneticAlgorithm
 
   /**
    *
-   * @param beings  Portion of population of Beings GA is currently evolving
    * @param population  Full population of Beings available to be evolved
    * @return  evolved population of Beings
    */
-  public Population evolvePopulation(Subpopulation beings, Population population)
+  public Population evolvePopulation(Population population)
   {
     System.out.println("EVOLVE POPULATION, Generation: " + this.generationNumber);
     generationNumber++;
     float averageFitness;
-    beings.getPopulation().setGenerations(beings.getPopulation().getGenerations() + 1);
+    population.setGenerations(population.getGenerations() + 1);
 
 
     Vector<Being> currentGeneration = new Vector<>();
     // Need to do this //
-    currentGeneration.addAll(beings.getPopulation().getBeings());
+    currentGeneration.addAll(population.getBeings());
    // currentGeneration.addAll(population.getBeings());
 
 
-    this.populationSize = beings.getPopulation().size();
+    this.populationSize = population.size();
    // this.populationSize = population.size();
 
     for(Being being: currentGeneration)
@@ -750,7 +748,7 @@ public class GeneticAlgorithm
 
     Vector<Being> nextGeneration;
     float summedFitness;
-    System.out.println("Next gen from " + beings.getName());
+    // System.out.println("Next gen from " + population);
 
     do
     {
@@ -792,26 +790,27 @@ public class GeneticAlgorithm
           this.bestFitness = fitness;
           this.bestBeing = individual;
         }
-        beings.getPopulation().setBestFitness(Math.max(fitness, beings.getPopulation().getBestFitness()));
 
-       if(beings.getPopulation().getBestBeing() == null || fitness > beings.getPopulation().getBestBeing().getFitness())
+       population.setBestFitness(Math.max(fitness, population.getBestFitness()));
+
+       if(population.getBestBeing() == null || fitness > population.getBestBeing().getFitness())
        {
-         beings.getPopulation().setBestBeing(individual);
+         population.setBestBeing(individual);
        }
 
 
-       beings.getPopulation().setLifetimeOffspring(beings.getPopulation().getLifetimeOffspring() + 1);
-       beings.getPopulation().setTotalLifetimeFitness(beings.getPopulation().getTotalLifetimeFitness() + fitness);
-       beings.getPopulation().setPastAverageFitness(beings.getPopulation().getAverageFitness());
-       beings.getPopulation().setAverageFitness(beings.getPopulation().getTotalLifetimeFitness() / beings.getPopulation().getLifetimeOffspring());
+       population.setLifetimeOffspring(population.getLifetimeOffspring() + 1);
+       population.setTotalLifetimeFitness(population.getTotalLifetimeFitness() + fitness);
+       population.setPastAverageFitness(population.getAverageFitness());
+       population.setAverageFitness(population.getTotalLifetimeFitness() / population.getLifetimeOffspring());
       }
 
-      System.out.println("Beings best fitness " + beings.getPopulation().getBestFitness());
-      System.out.println("Beings total offspring " + beings.getPopulation().getLifetimeOffspring());
-      System.out.println("Beings total fitness " + beings.getPopulation().getTotalLifetimeFitness());
-      System.out.println("Beings average fitness" + beings.getPopulation().getAverageFitness());
+      System.out.println("Beings best fitness " + population.getBestFitness());
+      System.out.println("Beings total offspring " + population.getLifetimeOffspring());
+      System.out.println("Beings total fitness " + population.getTotalLifetimeFitness());
+      System.out.println("Beings average fitness" + population.getAverageFitness());
       System.out.println("Beings best being ");
-      //printBeing(beings.getPopulation().getBestBeing());
+      //printBeing(population.getBestBeing());
       this.currentGenAverageFitness = summedFitness / nextGeneration.size();
       if(generationNumber == 1)
       {
