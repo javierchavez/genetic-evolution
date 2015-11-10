@@ -553,91 +553,96 @@ public class GeneticAlgorithm
     Being[] children = {parent1, parent2};
     if (parent1.getGenotype().getGenes().size() < 2 || parent2.getGenotype().getGenes().size() < 2)
     {
-     // System.out.println("CROSSOVER not performed; crossover not implemented for parent size 1");
+      // System.out.println("CROSSOVER not performed; crossover not implemented for parent size 1");
       return children;
     }
 
 
     Random rnd = new Random();
-    //index of first gene to be swapped on each parent
-    int crossoverPoint1 = 1 + rnd.nextInt((parent1.getGenotype().getGenes().size() - 1));
-    int crossoverPoint2 = 1 + rnd.nextInt((parent2.getGenotype().getGenes().size() - 1));
-    Genome genotype1 = parent1.getGenotype();
-    Gene gene1 = genotype1.getGenes().get(crossoverPoint1);
-    Genome genotype2 = parent2.getGenotype();
-    Gene gene2 = parent2.getGenotype().getGenes().get(crossoverPoint2);
+    if (rnd.nextInt(100) > 90)
+    {
+      //index of first gene to be swapped on each parent
+      int crossoverPoint1 = 1 + rnd.nextInt((parent1.getGenotype().getGenes().size() - 1));
+      int crossoverPoint2 = 1 + rnd.nextInt((parent2.getGenotype().getGenes().size() - 1));
+      Genome genotype1 = parent1.getGenotype();
+      Gene gene1 = genotype1.getGenes().get(crossoverPoint1);
+      Genome genotype2 = parent2.getGenotype();
+      Gene gene2 = parent2.getGenotype().getGenes().get(crossoverPoint2);
 
-    //make copies of parents
-    Being parent1CLONE = parent1.clone();
-    Being parent2CLONE = parent2.clone();
+      //make copies of parents
+      Being parent1CLONE = parent1.clone();
+      Being parent2CLONE = parent2.clone();
 
-    Genome genotype1CLONE = parent1CLONE.getGenotype();
-    Gene gene1CLONE = genotype1CLONE.getGenes().get(crossoverPoint1);
-    Genome genotype2CLONE = parent2CLONE.getGenotype();
-    Gene gene2CLONE = parent2CLONE.getGenotype().getGenes().get(crossoverPoint2);
-
-
-    ArrayList<Integer> neighbors1 = gene1.getEdges();
-    ArrayList<Integer> neighbors2 = gene2.getEdges();
+      Genome genotype1CLONE = parent1CLONE.getGenotype();
+      Gene gene1CLONE = genotype1CLONE.getGenes().get(crossoverPoint1);
+      Genome genotype2CLONE = parent2CLONE.getGenotype();
+      Gene gene2CLONE = parent2CLONE.getGenotype().getGenes().get(crossoverPoint2);
 
 
-    int parentIndex1 = getParentIndex(genotype1, crossoverPoint1);
-    int parentIndex2 = getParentIndex(genotype2, crossoverPoint2);
+      ArrayList<Integer> neighbors1 = gene1.getEdges();
+      ArrayList<Integer> neighbors2 = gene2.getEdges();
 
 
-    //take a random gene from each parent and append to other parent at random location
-
-    genotype1.getGenes().add(gene2CLONE);
-    genotype1.getGenes().get(crossoverPoint1).addEdge(genotype1.getGenes().size() - 1);
-    setParentJoint(genotype1.getGenes().get(crossoverPoint1), gene2CLONE);
+      int parentIndex1 = getParentIndex(genotype1, crossoverPoint1);
+      int parentIndex2 = getParentIndex(genotype2, crossoverPoint2);
 
 
-    genotype2.getGenes().add(gene1CLONE);
-    genotype2.getGenes().get(crossoverPoint2).addEdge(genotype2.getGenes().size() - 1);
-    setParentJoint(genotype2.getGenes().get(crossoverPoint2), gene1CLONE);
+      //take a random gene from each parent and append to other parent at random location
 
 
-    children[0] = parent1;
-    children[1] = parent2;
+      genotype1.getGenes().add(gene2CLONE);
+      genotype1.getGenes().get(crossoverPoint1).addEdge(genotype1.getGenes().size() - 1);
+      setParentJoint(genotype1.getGenes().get(crossoverPoint1), gene2CLONE);
 
-    return children;
-  }
+
+      genotype2.getGenes().add(gene1CLONE);
+      genotype2.getGenes().get(crossoverPoint2).addEdge(genotype2.getGenes().size() - 1);
+      setParentJoint(genotype2.getGenes().get(crossoverPoint2), gene1CLONE);
+
+
+      children[0] = parent1;
+      children[1] = parent2;
+    }
+
+      return children;
+    }
+
 
   //use mutations to improve
   private void mutation(Being individual)
-  {
-    Vector3f vector3f = new Vector3f();
-    Random rand = new Random();
-    float scaleFactor = rand.nextBoolean() ? 1.05f : 0.95f;
-    // only mutate diminution
-    individual.getGenotype().getRoot().getDimensions(vector3f);
+{
+  Vector3f vector3f = new Vector3f();
+  Random rand = new Random();
+  float scaleFactor = rand.nextBoolean() ? 1.05f : 0.95f;
+  // only mutate diminution
+  individual.getGenotype().getRoot().getDimensions(vector3f);
 
+  vector3f.x *= scaleFactor;
+  vector3f.y *= scaleFactor;
+  vector3f.z *= scaleFactor;
+
+  if (Block.min(vector3f) < 0.5f)
+  {
+    return;
+  }
+
+  if (Block.max(vector3f) > 10 * Block.min(vector3f))
+  {
+    return;
+  }
+
+  individual.getGenotype().getRoot().setDimensions(vector3f);
+
+  for (Gene neighbor : individual.getGenotype().neighbors(individual.getGenotype().getRoot()))
+  {
+    neighbor.getEffector().getParent(vector3f);
     vector3f.x *= scaleFactor;
     vector3f.y *= scaleFactor;
     vector3f.z *= scaleFactor;
-
-    if (Block.min(vector3f) < 0.5f)
-    {
-      return;
-    }
-
-    if (Block.max(vector3f) > 10*Block.min(vector3f))
-    {
-      return;
-    }
-
-    individual.getGenotype().getRoot().setDimensions(vector3f);
-
-    for (Gene neighbor : individual.getGenotype().neighbors(individual.getGenotype().getRoot()))
-    {
-      neighbor.getEffector().getParent(vector3f);
-      vector3f.x *= scaleFactor;
-      vector3f.y *= scaleFactor;
-      vector3f.z *= scaleFactor;
-      neighbor.getEffector().setParent(vector3f);
-    }
-
+    neighbor.getEffector().setParent(vector3f);
   }
+
+}
 
   //Runs through all phases of GA
   private Vector<Being> createNextGeneration(Vector<Being> population)
