@@ -284,7 +284,8 @@ public class Environment extends AbstractApplication
 
     if ((System.currentTimeMillis() - logStartTime) > Attributes.LOG_INTERVAL)
     {
-      evoLogger.export(evolution);
+      System.out.println("logging");
+      //evoLogger.export(evolution);
       popLogger.export(population);
       logStartTime = System.currentTimeMillis();
     }

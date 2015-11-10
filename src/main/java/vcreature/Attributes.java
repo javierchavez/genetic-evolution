@@ -32,5 +32,5 @@ public final class Attributes
 
   public static final float VERTICAL_OFFSET = 200f; // work around for joel's code
 
-  public static final float LOG_INTERVAL = 10000.0f; // log every 10 min
+  public static final float LOG_INTERVAL = 600000.0f; // log every 10 min
 }
