@@ -35,6 +35,8 @@ import java.util.Random;
  */
 public class Environment extends AbstractApplication
 {
+  String runType = "GA";
+
   private float elapsedSimulationTime = 0.0f;
   private float totalSimTime = 0.0f;
   private float fitnessChangePerMinute = 0;
@@ -74,8 +76,8 @@ public class Environment extends AbstractApplication
   private boolean beingAdded;
 
   private double logStartTime = 0.0;
-  private Logger popLogger = new Logger("population-stats-"+LocalDateTime.now().toString().replace(":", "")+".txt");
-  private Logger evoLogger = new Logger("population-"+LocalDateTime.now().toString().replace(":", "")+".txt");
+  private Logger popLogger = new Logger("population-stats-"+LocalDateTime.now().toString().replace(":", "")+"-"+runType+".txt");
+  private Logger evoLogger = new Logger("population-"+LocalDateTime.now().toString().replace(":", "")+"-"+runType+".txt");
 
   float tempbestFitness = 0f;
   BitmapText hudText;
@@ -339,7 +341,6 @@ public class Environment extends AbstractApplication
 
     if (args.length > 0)
     {
-
       if (args[0].equalsIgnoreCase("headless"))
       {
         app.start(JmeContext.Type.Headless);
@@ -354,6 +355,4 @@ public class Environment extends AbstractApplication
       app.start();
     }
   }
-
-
 }
