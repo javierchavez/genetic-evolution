@@ -13,9 +13,6 @@ package vcreature.genotype;
 
 
 import com.jme3.math.Vector3f;
-import vcreature.genotype.sensors.AngleSensor;
-import vcreature.genotype.sensors.HeightSensor;
-import vcreature.genotype.sensors.TouchSensor;
 import vcreature.utils.Savable;
 
 
@@ -25,6 +22,8 @@ import vcreature.utils.Savable;
  */
 public class Gene extends AbstractGene<Gene> implements Savable
 {
+  public static int TOTAL = 0;
+  
   private float lengthX;
   private float widthZ;
   private float heightY;
@@ -51,6 +50,7 @@ public class Gene extends AbstractGene<Gene> implements Savable
   public Gene(int position)
   {
     this();
+    TOTAL++;
     this.position = position;
   }
 

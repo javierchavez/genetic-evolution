@@ -1,4 +1,4 @@
-package vcreature.genotype.sensors;
+package vcreature.genotype;
 
 /**
  * @author Javier Chavez
@@ -12,17 +12,15 @@ package vcreature.genotype.sensors;
  */
 
 
-import vcreature.genotype.Gene;
-
 /**
- * Sensor for Height. Height is measure from the center of the block to the ground
+ * This class represents the EnumNeuronInput JOINT in the genotype
  */
-public class HeightSensor extends Sensor<HeightSensor, Float>
+public class AngleSensor extends Sensor<AngleSensor, Float>
 {
   /**
    * Senors shall only be instantiated by Genes
    */
-  protected HeightSensor(Gene source)
+  protected AngleSensor(Gene source)
   {
     super(source);
   }
@@ -30,7 +28,7 @@ public class HeightSensor extends Sensor<HeightSensor, Float>
   @Override
   public void write(StringBuilder s)
   {
-    s.append("HEIGHT").append(":");
+    s.append("ANGLE").append(":");
     s.append(getValue()).append(",");
   }
 

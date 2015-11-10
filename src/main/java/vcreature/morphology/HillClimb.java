@@ -17,7 +17,6 @@ package vcreature.morphology;
 import vcreature.Being;
 import vcreature.Environment;
 import vcreature.collections.Population;
-import vcreature.Subpopulation;
 import vcreature.genotype.Gene;
 import vcreature.morphology.strategies.*;
 
@@ -164,8 +163,8 @@ public class HillClimb
         {
           factor = .55f;
           bestBeing = individual;
-          population.setBestFitness((float) currentOptimizedFitness);
-          population.setBestBeing(individual);
+//          population.setBestFitness((float) currentOptimizedFitness);
+//          population.setBestBeing(individual);
 
         }
         fitness += currentOptimizedFitness;
@@ -194,10 +193,9 @@ public class HillClimb
 
   public void evolvePopulation(Population population)
   {
-    subPopulation = beings;
     this.population = population;
-    Vector<Being> current = new Vector<>();
-    current.addAll(beings.getPopulation().getBeings());
+    ArrayList<Being> current = new ArrayList<>();
+    current.addAll(population.getBeings());
     for (int i = 0; i < current.size(); i++)
     {
 
@@ -205,22 +203,11 @@ public class HillClimb
 
     }
 
-    beings.getPopulation().getBeings().clear();
-    beings.getPopulation().getBeings().addAll(current);
-    beings.getPopulation().getBeings().removeIf(kill::contains);
-
-
     System.out.println("Hill climbing complete on current individuals");
 
-    beings.getPopulation().setCurrentFailedHillClimbs(fails);
-    beings.getPopulation().setCurrentRejectedCreatures(kill.size());
-    beings.getPopulation().setTotalLifetimeFitness(beings.getPopulation().getTotalLifetimeFitness() + fitness);
-    beings.getPopulation().setPastAverageFitness(beings.getPopulation().getAverageFitness());
-    beings.getPopulation().setAverageFitness(beings.getPopulation().getTotalLifetimeFitness() / beings.getPopulation().getLifetimeOffspring());
 
     currentTotal=0;
     sumFitness = 0;
-    return new Vector<Being>();
 
   }
 

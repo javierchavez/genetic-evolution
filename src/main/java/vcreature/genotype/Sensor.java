@@ -1,4 +1,4 @@
-package vcreature.genotype.sensors;
+package vcreature.genotype;
 
 /**
  * @author Javier Chavez
@@ -12,9 +12,6 @@ package vcreature.genotype.sensors;
  */
 
 
-import vcreature.genotype.EffectorInput;
-import vcreature.genotype.Gene;
-import vcreature.genotype.NeuralInput;
 import vcreature.utils.Savable;
 
 import java.lang.reflect.InvocationTargetException;

@@ -18,9 +18,9 @@ import com.jme3.scene.Node;
 
 import vcreature.Attributes;
 import vcreature.genotype.*;
-import vcreature.genotype.sensors.AngleSensor;
-import vcreature.genotype.sensors.HeightSensor;
-import vcreature.genotype.sensors.TouchSensor;
+import vcreature.genotype.AngleSensor;
+import vcreature.genotype.HeightSensor;
+import vcreature.genotype.TouchSensor;
 import vcreature.phenotype.Block;
 import vcreature.phenotype.Creature;
 import vcreature.phenotype.EnumNeuronInput;

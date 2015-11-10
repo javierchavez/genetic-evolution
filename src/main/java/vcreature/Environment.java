@@ -18,7 +18,7 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.ColorRGBA;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
-import vcreature.collections.Evolution;
+import vcreature.collections.EvolveManager;
 import vcreature.collections.Population;
 import vcreature.morphology.GeneticAlgorithm;
 import vcreature.morphology.HillClimb;
@@ -46,7 +46,7 @@ public class Environment extends AbstractApplication
   private Population population;
 
   // Wrapper for population and controlling populations
-  private Evolution evolution;
+  private EvolveManager evolution;
 
   // Turning creatures into DNA and Blocks
   private CreatureSynthesizer creatureSynthesizer;
@@ -152,7 +152,7 @@ public class Environment extends AbstractApplication
     }
 
     // set the population to a evolution
-    evolution = new Evolution(population);
+    evolution = new EvolveManager(population);
     logStartTime = System.currentTimeMillis();
 
     hudText = new BitmapText(guiFont, false);
@@ -163,8 +163,10 @@ public class Environment extends AbstractApplication
     hudText.setLocalTranslation(20, hudText.getLineHeight() * 36, 0); // position
     guiNode.attachChild(hudText);
 
-    tempbestFitness = evolution.getBestFitness();
+    // tempbestFitness = evolution.getBestFitness();
     initKeys();
+
+    evolution.start();
   }
 
 
@@ -226,7 +228,7 @@ public class Environment extends AbstractApplication
 
     elapsedSimulationTime += deltaSeconds;
 
-    hudText.setText("Current best fitness " + evolution.getBestFitness() + "\nFitness change from start " + evolution.fitnessChange() + "\nFitness change per minute " + fitnessChangePerMinute);             // the text
+//    hudText.setText("Current best fitness " + evolution.getBestFitness() + "\nFitness change from start " + evolution.fitnessChange() + "\nFitness change per minute " + fitnessChangePerMinute);             // the text
 
     if (!pauseEvaluation)
     {
@@ -262,7 +264,7 @@ public class Environment extends AbstractApplication
         System.out.println("New generation kicked off");
         newGenerationSpwan = true;
         new Thread(() -> {
-          evolution.crossSubpopulation(genRandDim(evolution.getSubs().size()));
+          evolution.interrupt();
 
         }).start();
       }
@@ -276,7 +278,7 @@ public class Environment extends AbstractApplication
     totalSimTime += deltaSeconds;
     if(totalSimTime >= 60f)
     {
-      float newBest = evolution.getBestFitness();
+      float newBest = 1;// evolution.getBestFitness();
       fitnessChangePerMinute= tempbestFitness - newBest;
       tempbestFitness =  newBest;
       totalSimTime = 0;

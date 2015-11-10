@@ -1,4 +1,4 @@
-package vcreature.genotype.sensors;
+package vcreature.genotype;
 
 /**
  * @author Javier Chavez
@@ -11,8 +11,6 @@ package vcreature.genotype.sensors;
  * Genetic Evolution
  */
 
-
-import vcreature.genotype.Gene;
 
 /**
  * Sensor for touch.
