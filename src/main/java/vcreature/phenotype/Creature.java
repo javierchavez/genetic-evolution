@@ -255,7 +255,7 @@ public class Creature
     }
     
     elapsedSimulationTime  = 0;
-    // System.out.println("Creature.placeOnGround() shift:"+ -currentHeightOfLowestPoint);
+    System.out.println("Creature.placeOnGround() shift:"+ -currentHeightOfLowestPoint);
   }
 
   
@@ -395,7 +395,6 @@ public class Creature
    */
   public float updateBrain(float elapsedSimulationTime)
   {
-
     if (body.size() < 1) return 0;
     if (this.elapsedSimulationTime == 0f) 
     { 
@@ -451,7 +450,6 @@ public class Creature
     }
     //System.out.println("getCurrentHeightOfLowestPoint(): " + currentHeightOfLowestPoint);
     return currentHeightOfLowestPoint;
-    
   }
   
   /**
