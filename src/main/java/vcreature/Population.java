@@ -318,7 +318,10 @@ public class Population extends Vector<Being> implements Savable
     s.append(averageFitness).append(",");
     s.append(bestFitness).append(",");
     s.append(this.size()).append("\n");
-    bestBeing.getGenotype().write(s);
+    if (bestBeing != null)
+    {
+      bestBeing.getGenotype().write(s);
+    }
     s.append("\n");
   }
 
