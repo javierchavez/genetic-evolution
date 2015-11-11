@@ -758,6 +758,19 @@ public class GeneticAlgorithm
     {
       being.setAge(0);
       being.setChildren(0);
+     // simulation.beginEvaluation(being);
+     // while (true)
+     // {
+     //   if (!being.isUnderEvaluation())
+     //   {
+     //     break;
+     //   }
+     // }
+
+
+      // printBeing(individual);
+     // float fitness = being.getFitness();
+     // System.out.println("Evaluation complete...");
     }
 
     Vector<Being> nextGeneration;

@@ -103,7 +103,7 @@ public class Environment extends AbstractApplication
     generator = new GenomeGenerator(getPhysicsSpace(), rootNode);
 
     // Fill up the population
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 5; i++)
     {
 
       FlappyBird _creature = new FlappyBird(getPhysicsSpace(), rootNode);
@@ -142,13 +142,16 @@ public class Environment extends AbstractApplication
       bb5.setGenotype(_genome5);
       population.add(bb5);
 
-      if(i % 2 == 0)
+      //if(i % 2 == 0)
+      // {
+    }
+    for (int i = 0; i < 200; i++)
       {
         Being _randBeing = new Being();
         _randBeing.setGenotype(generator.generateGenome());
         population.add(_randBeing);
+     // }
       }
-    }
 
     // set the population to a evolution
     evolution = new Evolution(population);
