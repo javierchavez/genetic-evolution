@@ -644,11 +644,13 @@ public class GeneticAlgorithm
 
 }
 
+
   //Runs through all phases of GA
   private Vector<Being> createNextGeneration(Vector<Being> population)
   {
     Vector<Being> nextGeneration = new Vector();
-    Vector<Being> newParents = selection(population); //use selection3 method for tournament size 3 instead of 2
+    //select parents for next generation
+    Vector<Being> newParents = selection3(population); //use selection3 method for tournament size 3 instead of 2
     Random rnd = new Random();
     Being parent1;
     Being parent2;
@@ -665,6 +667,7 @@ public class GeneticAlgorithm
     nextGeneration.add(mutatedBest);
     mutatedBest.setAge(mutatedBest.getAge() + 1);
 
+    //Pick pairs of parents randomly for breeding
     while (newParents.size() > 2)
     {
       int parent1index = rnd.nextInt(newParents.size());
@@ -680,6 +683,8 @@ public class GeneticAlgorithm
 
       newParents.remove(newParents.get(parent2index));
 
+      //Perform crossover on selected parents (pctCrossover percent of the time) and replace parents with children;
+      //crossover produces 2 children per set of parents
       if (rnd.nextInt(100) < this.pctCrossover)
       {
         Being[] children = crossover(parent1, parent2);  //use crossover2 method for simpler, but fast-growing crossover
@@ -690,25 +695,26 @@ public class GeneticAlgorithm
         parent2.setChildren(parent1.getChildren() + 1);
 
       }
+      //If no crossover for this pair, these parents move on to the next generation
       else
       {
         parent1.setAge(parent1.getAge() + 1);
         parent2.setAge(parent1.getAge() + 1);
 
       }
-
+      //Perform mutation operation on parent1 pctMutation percent of the time
       if (rnd.nextInt(100) < this.pctMutations)
       {
         mutation(parent1);
       }
 
-
+      //Perform mutation operation on parent2 pctMutation percent of the time
       if (rnd.nextInt(100) < this.pctMutations)
       {
         mutation(parent2);
       }
 
-
+      //add two resulting individuals to next generation
       nextGeneration.add(parent1);
       nextGeneration.add(parent2);
     }
