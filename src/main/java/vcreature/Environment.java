@@ -163,7 +163,7 @@ public class Environment extends AbstractApplication
       //if(i % 2 == 0)
       // {
     }
-    for (int i = 0; i < 200; i++)
+    for (int i = 0; i < 5; i++)
       {
         Being _randBeing = new Being();
         _randBeing.setGenotype(generator.generateGenome());

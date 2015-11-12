@@ -19,6 +19,7 @@ import vcreature.utils.Savable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -156,5 +157,11 @@ public class Population extends ArrayList<Being> implements Savable
       }
     }
     return null;
+  }
+
+  public Being getBest()
+  {
+    Collections.sort(beings);
+    return beings.get(0);
   }
 }

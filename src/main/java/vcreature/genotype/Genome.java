@@ -57,15 +57,15 @@ public class Genome implements Savable
    */
   public void append(Gene gene)
   {
-    // genes.add(gene);
-    genes.add(gene.getPosition(), gene);
-    if (gene.getPosition() > 0)
-    {
-      if (gene.getPosition() != genes.indexOf(gene))
-      {
-        throw new NoSuchElementException(gene.getPosition() + " " + genes.indexOf(gene) + " sz" + genes.size());
-      }
-    }
+    genes.add(gene);
+//    genes.add(gene.getPosition(), gene);
+//    if (gene.getPosition() > 0)
+//    {
+//      if (gene.getPosition() != genes.indexOf(gene))
+//      {
+//        throw new NoSuchElementException(gene.getPosition() + " " + genes.indexOf(gene) + " sz" + genes.size());
+//      }
+//    }
   }
 
   /**

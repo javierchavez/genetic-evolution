@@ -37,6 +37,7 @@ public class Statistics implements Savable
   private volatile double _current = 0;
   private volatile float tenMinCounter = 0;
   private volatile float minCounter = 0;
+  private volatile long timesCalled;
 
   public Statistics(Population population)
   {
@@ -54,22 +55,6 @@ public class Statistics implements Savable
     this.firstGenAvgFitness = firstGenAvgFitness;
   }
 
-//  public float setAverageFitness()
-//  {
-//    float d = 0f;
-//    for (Being o : population)
-//    {
-//      d += o.getFitness();
-//    }
-//    averageFitness = d/population.size();
-//    return averageFitness;
-//  }
-
-//  public void setCurrentGenAverageFitness(float currentGenAverageFitness)
-//  {
-//    this.currentGenAverageFitness = currentGenAverageFitness;
-//  }
-
   public Being getBestBeing()
   {
     return bestBeing;
@@ -84,6 +69,7 @@ public class Statistics implements Savable
   public void addFitnessToSum(float fitness)
   {
     fitnessSumTotal += fitness;
+    timesCalled += 1;
   }
 
   public void addHillClimbToSum(int hc)
@@ -128,10 +114,6 @@ public class Statistics implements Savable
     return generationNumber;
   }
 
-  public void setGenerationNumber(int generationNumber)
-  {
-    this.generationNumber = generationNumber;
-  }
 
   public int getPopulationSize()
   {
@@ -157,10 +139,10 @@ public class Statistics implements Savable
     {
       if (_past == 0)
       {
-        _past = getBestFitness();
+        _past = getFitnessSumTotal();
       }
-      _current = getBestFitness();
-      _past = (_past + _current)/2;
+      _current = getFitnessSumTotal();
+      _past = (_past + _current)/timesCalled;
     }
     if (tenMinCounter >= 60)
     {
@@ -178,7 +160,7 @@ public class Statistics implements Savable
   public void write(StringBuilder s)
   {
     s.append("-------- Generation "+ getGenerationNumber() +" ---------\n");
-    s.append("Time (elapsed min):\t" + ((float)elapsedTime/60.0f/60.0f)).append("\n");
+    s.append("Time (elapsed min):\t" + ((float)elapsedTime/60.0f)).append("\n");
     s.append("Population:\t" + getPopulationSize()).append("\n");
     s.append("Genes:\t" + Gene.TOTAL).append("\n");
     s.append("Beings:\t" + Being.TOTAL).append("\n");
@@ -187,7 +169,7 @@ public class Statistics implements Savable
     s.append("Lifetime HillClimbs:\t" + lifetimeHillClimbs).append("\n");
     s.append("Lifetime Crossovers:\t" + lifetimeCrosses).append("\n");
     s.append("Average fitness/min:\t" + _past).append("\n");
-    s.append("Diversity:\t" + (Being.TOTAL*getGenerationNumber())/Gene.TOTAL ).append("\n\n");
+    s.append("Diversity:\t" + (((lifetimeCrosses) / Gene.TOTAL) * Math.log((lifetimeCrosses) / Gene.TOTAL))/Being.TOTAL ).append("\n\n");
   }
 
   @Override

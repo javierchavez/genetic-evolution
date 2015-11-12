@@ -43,7 +43,6 @@ public class GeneticAlgorithm
     this.environment = environment;
     ga = new CrossoverStrategy();
     gam = new CrossoverMutation();
-    select = new TournamentSelect(environment.getStats());
   }
 
 
@@ -74,6 +73,7 @@ public class GeneticAlgorithm
       for (Being individual : nextGeneration)
       {
 
+        beings.add(individual);
         environment.beginEvaluation(individual);
         while (true)
         {
@@ -89,8 +89,8 @@ public class GeneticAlgorithm
         {
           statistics.setBestBeing(individual);
         }
-
       }
+
     }
     while (localGenerations < 50);
 
@@ -225,6 +225,7 @@ public class GeneticAlgorithm
   public void setDataHandler(Statistics dataHandler)
   {
     this.statistics = dataHandler;
+    select = new TournamentSelect(dataHandler);
   }
 }
 

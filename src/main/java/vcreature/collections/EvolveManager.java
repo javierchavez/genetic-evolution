@@ -30,6 +30,7 @@ public class EvolveManager extends Thread implements Savable
   private boolean running = true;
   private boolean isEvolving = false;
   private Boolean mutate = true;
+  private Statistics statistics;
 
   /**
    * Create a evolution given a population
@@ -39,6 +40,7 @@ public class EvolveManager extends Thread implements Savable
   public EvolveManager(Population population, Statistics statistics)
   {
     this.population = population;
+    this.statistics = statistics;
   }
 
 
@@ -74,6 +76,17 @@ public class EvolveManager extends Thread implements Savable
           System.out.println("DONE Mating");
         }
 
+        Collections.sort(population);
+        double avg = statistics.getAverageFitness();
+
+        for (int i = 0; i < population.size(); i++)
+        {
+          if ( (avg - population.get(i).getFitness())/ avg >= .65)
+          {
+            population.remove(i);
+          }
+        }
+
       }
     }
   }
@@ -98,14 +111,6 @@ public class EvolveManager extends Thread implements Savable
     }
   }
 
-
-
-
-  public Being getBest()
-  {
-    Collections.sort(population);
-    return population.get(0);
-  }
 
   /**
    * Get the current population
