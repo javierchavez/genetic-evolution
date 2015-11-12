@@ -30,6 +30,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
+import com.jme3.texture.Texture;
 import vcreature.phenotype.*;
 import vcreature.translations.CreatureSynthesizer;
 import vcreature.translations.GenomeSynthesizer;
@@ -74,10 +75,13 @@ public class MainSim extends SimpleApplication implements ActionListener
     physicsSpace.setAccuracy(PhysicsConstants.PHYSICS_UPDATE_RATE);
     physicsSpace.setMaxSubSteps(4);
 
-    //Set up inmovable floor
+    //Set up immovable floor
     Box floor = new Box(50f, 0.1f, 50f);
     Material floor_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    Texture floorTexture = assetManager.loadTexture("Textures/FloorTile.png");
 
+    floorTexture.setWrap(Texture.WrapMode.Repeat);
+    floor_mat.setTexture("ColorMap", floorTexture);
 
     floor.scaleTextureCoordinates(new Vector2f(50, 50));
     Geometry floor_geo = new Geometry("Floor", floor);
@@ -96,17 +100,6 @@ public class MainSim extends SimpleApplication implements ActionListener
             PhysicsConstants.GROUND_ANGULAR_DAMPINING);
 
     Block.initStaticMaterials(assetManager);
-
-
-//    logger = new Logger("best.txt");
-//    textSynthesizer = new TextSynthesizer();
-//    creatureSynthesizer = new CreatureSynthesizer();
-//    genomeSynthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
-//
-//    myCreature = new FlappyBird(physicsSpace, rootNode);
-//    logger.export(creatureSynthesizer.encode(myCreature));
-//    myCreature.remove();
-//    myCreature = genomeSynthesizer.encode(textSynthesizer.encode(new File("best.txt")));
 
     textSynthesizer = new TextSynthesizer();
     creatureSynthesizer = new CreatureSynthesizer();
@@ -236,10 +229,10 @@ public class MainSim extends SimpleApplication implements ActionListener
       //Move camera continously in circle of radius 25 meters centered 10 meters
       //  above the origin. 
       cameraAngle += deltaSeconds * 2.0 * Math.PI / 60.0; //rotate full circle every minute
-      float x = (float) (25.0 * Math.cos(cameraAngle));
-      float z = (float) (25.0 * Math.sin(cameraAngle));
+      float x = (float) (100.0 * Math.cos(cameraAngle));
+      float z = (float) (100.0 * Math.sin(cameraAngle));
     
-      tmpVec3 = new Vector3f(x, 10.0f, z);
+      tmpVec3 = new Vector3f(x, 50.0f, z);
       cam.setLocation(tmpVec3);
       cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
     }

@@ -63,7 +63,7 @@ public abstract class AbstractApplication extends SimpleApplication implements A
 
     Box floor = new Box(50f, 0.1f, 50f);
 
-    floor.scaleTextureCoordinates(new Vector2f(50, 50));
+    floor.scaleTextureCoordinates(new Vector2f(100, 100));
     Geometry floor_geo = new Geometry("Floor", floor);
     floor_geo.setShadowMode(RenderQueue.ShadowMode.Receive);
     floor_geo.setLocalTranslation(0, -0.11f, 0);
@@ -124,10 +124,10 @@ public abstract class AbstractApplication extends SimpleApplication implements A
       //Move camera continously in circle of radius 25 meters centered 10 meters
       //  above the origin.
       cameraAngle += tpf * 2.0 * Math.PI / 60.0; //rotate full circle every minute
-      float x = (float) (25.0 * Math.cos(cameraAngle));
-      float z = (float) (25.0 * Math.sin(cameraAngle));
+      float x = (float) (75.0 * Math.cos(cameraAngle));
+      float z = (float) (75.0 * Math.sin(cameraAngle));
 
-      tmpVec3 = new Vector3f(x, 10.0f, z);
+      tmpVec3 = new Vector3f(x, 40.0f, z);
       cam.setLocation(tmpVec3);
       cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
     }
