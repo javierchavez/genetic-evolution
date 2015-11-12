@@ -13,9 +13,6 @@ package vcreature;
 
 
 import com.jme3.font.BitmapText;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.KeyTrigger;
-import com.jme3.math.ColorRGBA;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
 import vcreature.collections.EvolveManager;
@@ -89,6 +86,12 @@ public class Environment extends AbstractApplication
   float tempbestFitness = 0f;
   BitmapText hudText;
   private boolean pauseEvaluation = false;
+
+  public Statistics getStats()
+  {
+    return stats;
+  }
+
   private Statistics stats;
 
 
@@ -167,32 +170,10 @@ public class Environment extends AbstractApplication
     evolution = new EvolveManager(population, stats);
     logStartTime = System.currentTimeMillis();
 
-    hudText = new BitmapText(guiFont, false);
-    hudText.setSize(guiFont.getCharSet().getRenderedSize());      // font size
-    hudText.setColor(ColorRGBA.Green);// font color
-    //hudText.setText("Current best fitness " + breeding.getBestFitness() + "\nFitness change from start " + (breeding.getBestFitness() - breeding.getFirstGenAvgFitness()) + "\nFitness change per minute " + breeding.getCurrentGenAverageFitness());             // the text
-    //hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
-    hudText.setLocalTranslation(20, hudText.getLineHeight() * 36, 0); // position
-    guiNode.attachChild(hudText);
-
-    // tempbestFitness = evolution.getBestFitness();
-    initKeys();
-
     evolution.start();
   }
 
 
-
-  private void initKeys()
-  {
-    inputManager.addMapping("Quit",  new KeyTrigger(KeyInput.KEY_Q));
-    inputManager.addMapping("Best",  new KeyTrigger(KeyInput.KEY_B));
-
-    // Add the names to the action listener.
-    inputManager.addListener(this, "Best");
-    inputManager.addListener(this,"Quit");
-    inputManager.addListener(this,"Toggle Camera Rotation");
-  }
 
   @Override
   public void onAction(String name, boolean isPressed, float timePerFrame)
@@ -315,6 +296,11 @@ public class Environment extends AbstractApplication
     being.setUnderEvaluation(true);
     beingAdded = true;
     genome = being.getGenotype();
+  }
+
+  public Population getPopulation()
+  {
+    return population;
   }
 
   /**

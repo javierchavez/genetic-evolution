@@ -27,7 +27,7 @@ public class GenomeGeneratorParameters
   public static final int MAX_CHILDREN = 4; // maximum number of children any block can have
   public static final int MAX_DEPTH = 4; // maximum number of children any block can be from root
 
-  public static final float CHILD_SPAWN_CHANCE = 0.45f; // chance that a block will spawn a child block
+  public static final float CHILD_SPAWN_CHANCE = 0.35f; // chance that a block will spawn a child block
   public static final float RECURSE_CHANCE = 0.25f; // chance that a block will spawn at depth n+1 from root block
 
   public static final int MIN_CONST = 0;

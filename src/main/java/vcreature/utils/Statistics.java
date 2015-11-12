@@ -186,8 +186,8 @@ public class Statistics implements Savable
     s.append("Best fitness:\t" + getBestFitness()).append("\n");
     s.append("Lifetime HillClimbs:\t" + lifetimeHillClimbs).append("\n");
     s.append("Lifetime Crossovers:\t" + lifetimeCrosses).append("\n");
-    s.append("Average fitness/min:\t" + _past).append("\n\n");
-    s.append("Diversity:\t" + (Being.TOTAL*getGenerationNumber())/Gene.TOTAL ).append("\n");
+    s.append("Average fitness/min:\t" + _past).append("\n");
+    s.append("Diversity:\t" + (Being.TOTAL*getGenerationNumber())/Gene.TOTAL ).append("\n\n");
   }
 
   @Override
