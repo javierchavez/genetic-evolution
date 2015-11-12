@@ -176,7 +176,7 @@ public class MainSim extends AbstractApplication implements ActionListener
 
     System.out.println("Starting App");
 
-    Environment env = new Environment();
+    Environment env = new Environment(2);
     env.setSettings(settings);
     env.start(JmeContext.Type.Headless);
 

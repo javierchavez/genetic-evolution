@@ -85,6 +85,17 @@ public class Environment extends AbstractApplication
 
   private boolean pauseEvaluation = false;
 
+  public Environment(int i)
+  {
+    super();
+    speed = 2;
+  }
+
+  public Environment()
+  {
+    super();
+  }
+
   public Statistics getStats()
   {
     return stats;
