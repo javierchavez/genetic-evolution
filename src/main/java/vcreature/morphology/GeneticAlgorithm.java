@@ -57,21 +57,17 @@ public class GeneticAlgorithm
    */
   public boolean evolve(Population beings, EvolveManager evolveManager)
   {
-    int generationNumber = 0;
-    float averageFitness = 0f;
+    int localGenerations = 0;
     for (Being being : beings)
     {
       being.setAge(0);
       being.setChildren(0);
     }
 
-    float summedFitness;
-
     do
     {
-      summedFitness = 0f;
-      averageFitness = 0f;
-      generationNumber++;
+      localGenerations++;
+      statistics.addGenerationToSum(1);
       nextGeneration = helper(beings);
 
 
@@ -87,20 +83,16 @@ public class GeneticAlgorithm
           }
         }
 
-
-        // printBeing(individual);
         float fitness = individual.getFitness();
         statistics.addFitnessToSum((fitness));
         if (fitness >= statistics.getBestFitness())
         {
           statistics.setBestBeing(individual);
         }
-        System.out.println("Evaluation complete...");
 
-        //summedFitness = summedFitness + fitness;
       }
     }
-    while (generationNumber < 50);
+    while (localGenerations < 50);
 
     return false;
   }
@@ -128,12 +120,13 @@ public class GeneticAlgorithm
     Being mutatedBest = statistics.getBestBeing().clone();
     mutation(mutatedBest);
     nextGeneration.add(mutatedBest);
+
     mutatedBest.setAge(mutatedBest.getAge() + 1);
-    float summedFitness;
 
     //Pick pairs of parents randomly for breeding
     while (newParents.size() > 2)
     {
+      statistics.addCrossesToSum(1);
       int parent1index = rnd.nextInt(newParents.size());
       parent1 = newParents.get(parent1index);
 

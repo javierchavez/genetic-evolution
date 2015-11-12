@@ -69,12 +69,14 @@ public class MainSim extends AbstractApplication implements ActionListener
     inputManager.addMapping("Toggle Camera Rotation", new KeyTrigger(KeyInput.KEY_P));
     inputManager.addMapping("Change Creature", new KeyTrigger(KeyInput.KEY_C));
     inputManager.addMapping("Iterate", new KeyTrigger(KeyInput.KEY_N));
+    inputManager.addMapping("Evaluation", new KeyTrigger(KeyInput.KEY_E));
 
     // Add the names to the action listener.
     inputManager.addListener(this, "Quit");
     inputManager.addListener(this, "Toggle Camera Rotation");
     inputManager.addListener(this, "Change Creature");
     inputManager.addListener(this, "Iterate");
+    inputManager.addListener(this, "Evaluation");
   }
 
   public void onAction(String name, boolean isPressed, float timePerFrame)
@@ -108,6 +110,39 @@ public class MainSim extends AbstractApplication implements ActionListener
       elapsedSimulationTime = 0.0f;
 
     }
+    else if (isPressed && name.equals("Evaluation"))
+    {
+      if (myCreature != null)
+      {
+        myCreature.remove();
+      }
+
+      if (environment.getPopulation() != null)
+      {
+
+        Being being = environment.getPopulation().getActive();
+        Genome genome;
+        if (being !=null)
+        {
+          genome = being.getGenotype().clone();
+          myCreature = genomeSynthesizer.encode(genome);
+          hudText.setText("Current: " + being.getFitness());
+        }
+        else
+        {
+          hudText.setText("No one being evaluated.");
+        }
+
+      }
+      else
+      {
+        hudText.setText("No best creature yet...");
+      }
+
+      cameraAngle = (float) (Math.PI / 2.0);
+      elapsedSimulationTime = 0.0f;
+    }
+
     else if (isPressed && name.equals("Change Creature"))
     {
       if (myCreature != null)
@@ -120,7 +155,11 @@ public class MainSim extends AbstractApplication implements ActionListener
 
         Genome genome = environment.getStats().getBestBeing().getGenotype().clone();
         myCreature = genomeSynthesizer.encode(genome);
-        hudText.setText("Current Creature's best fitness: " + environment.getStats().getBestFitness());
+        hudText.setText("Best fitness: " + environment.getStats().getBestFitness());
+      }
+      else
+      {
+        hudText.setText("No best creature yet...");
       }
 
       cameraAngle = (float) (Math.PI / 2.0);

@@ -68,6 +68,7 @@ public class HillClimb
 
     for (int i = 0; i < individual.getGenotype().size(); i++)
     {
+      stats.addHillClimbToSum(1);
       iterations++;
       tries++;
       lifetimeRuns++;
@@ -107,7 +108,7 @@ public class HillClimb
         if (tries > 4)
         {
           // kill.add(individual);
-          // System.out.println("Killing individual");f
+          // System.out.println("Killing individual");
           break;
         }
       }
@@ -175,12 +176,13 @@ public class HillClimb
   public boolean evolve(ArrayList<Being> beings, EvolveManager evolveManager)
   {
     double initialBest = stats.getBestFitness();
+
     // this is morphing the population straight away.
     for (int i = 0; i < beings.size(); i++)
     {
       hillClimbingEvaluation(beings.get(i));
 
-      //if ( stats.getBestFitness()/(stats.getAverageFitness()/iterations) <=  .15)
+
       if (iterations > beings.size() -1)
       {
         if ((stats.getBestFitness() - initialBest) / stats.getBestFitness() <= .35)

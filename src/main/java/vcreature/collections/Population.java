@@ -145,4 +145,16 @@ public class Population extends ArrayList<Being> implements Savable
   {
   }
 
+  public Being getActive()
+  {
+
+    for (Being being1 : beings)
+    {
+      if (being1.isUnderEvaluation())
+      {
+        return being1;
+      }
+    }
+    return null;
+  }
 }
