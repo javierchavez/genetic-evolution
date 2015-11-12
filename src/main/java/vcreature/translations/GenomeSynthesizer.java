@@ -61,6 +61,7 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
 
     Queue<Gene> frontier = new LinkedList<>();
     frontier.add(genome.getRoot());
+
     HashMap<Gene, Gene> cameFrom = new HashMap<>();
     HashMap<Gene, Block> blockParent = new HashMap<>();
     cameFrom.put(genome.getRoot(), null);
@@ -91,19 +92,20 @@ public final class GenomeSynthesizer extends Synthesizer<Genome, Creature>
   private Block synthesizeGene(Gene current, Block parent)
   {
     Block block;
+
     Vector3f size = new Vector3f();
     current.getDimensions(size);
 
+    float[] rotations = new float[3];
+    current.getRotation(rotations);
+
     if (parent == null)
     {
-      block = creature.addRoot(new Vector3f(0, Attributes.VERTICAL_OFFSET, 0), size);
+      block = creature.addRoot(new Vector3f(0, Attributes.VERTICAL_OFFSET, 0), size, rotations);
       block.setMaterial(Block.MATERIAL_RED);
     }
     else
     {
-      float[] rotations = new float[3];
-      current.getRotation(rotations);
-
       Vector3f parentPivot = new Vector3f();
       current.getEffector().getParent(parentPivot);
 

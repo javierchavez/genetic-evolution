@@ -44,6 +44,7 @@ public class MainSim extends AbstractApplication implements ActionListener
   @Override
   public void simpleInitApp()
   {
+<<<<<<< HEAD
     super.simpleInitApp();
 
     hudText = new BitmapText(guiFont, false);
@@ -54,6 +55,58 @@ public class MainSim extends AbstractApplication implements ActionListener
 
     genomeSynthesizer = new GenomeSynthesizer(getPhysicsSpace(), getRootNode());
 
+=======
+    /**
+     * Set up Physics
+     */
+    bulletAppState = new BulletAppState();
+    stateManager.attach(bulletAppState);
+    physicsSpace = bulletAppState.getPhysicsSpace();
+    //bulletAppState.setDebugEnabled(true);
+    
+    physicsSpace.setGravity(PhysicsConstants.GRAVITY);
+    physicsSpace.setAccuracy(PhysicsConstants.PHYSICS_UPDATE_RATE);
+    physicsSpace.setMaxSubSteps(4);
+
+    //Set up inmovable floor
+    Box floor = new Box(50f, 0.1f, 50f);
+    Material floor_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+    Texture floorTexture = assetManager.loadTexture("Textures/FloorTile.png");
+
+    floorTexture.setWrap(Texture.WrapMode.Repeat);
+    floor_mat.setTexture("ColorMap", floorTexture);
+
+    floor.scaleTextureCoordinates(new Vector2f(50, 50));
+    Geometry floor_geo = new Geometry("Floor", floor);
+    floor_geo.setMaterial(floor_mat);
+    floor_geo.setShadowMode(ShadowMode.Receive);
+    floor_geo.setLocalTranslation(0, -0.11f, 0);
+    rootNode.attachChild(floor_geo);
+
+    /* Make the floor physical with mass 0.0f */
+    RigidBodyControl floor_phy = new RigidBodyControl(0.0f);
+    floor_geo.addControl(floor_phy);
+    physicsSpace.add(floor_phy);
+    floor_phy.setFriction(PhysicsConstants.GROUND_SLIDING_FRICTION);
+    floor_phy.setRestitution(PhysicsConstants.GROUND_BOUNCINESS);
+    floor_phy.setDamping(PhysicsConstants.GROUND_LINEAR_DAMPINING, 
+            PhysicsConstants.GROUND_ANGULAR_DAMPINING);
+
+    Block.initStaticMaterials(assetManager);
+
+    //logger = new Logger("flappybird.txt");
+    textSynthesizer = new TextSynthesizer();
+    creatureSynthesizer = new CreatureSynthesizer();
+    genomeSynthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
+
+    //myCreature = new FlappyBird(physicsSpace, rootNode);
+    //logger.export(creatureSynthesizer.encode(myCreature));
+    //myCreature.remove();
+    myCreature = genomeSynthesizer.encode(textSynthesizer.encode(new File("best.txt")));
+    //myCreature = new Tigger(physicsSpace, rootNode);
+
+    initLighting();
+>>>>>>> d85fda4ee7b59fa429a2e64c72f8c77ee2184cc8
     initKeys();
 
     flyCam.setDragToRotate(true);
