@@ -33,7 +33,7 @@ public class RootGeneDimensionClimbStrategy<V> implements HillClimbStrategy<Geno
   {
     Random rand = new Random();
     float scaleFactor = rand.nextBoolean() ? 1.05f : 0.95f;
-    // only mutate diminution
+    // only mutate dimensions
     part.getRoot().getDimensions(vector3f);
 
     vector3f.x *= scaleFactor;

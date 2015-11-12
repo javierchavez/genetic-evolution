@@ -100,15 +100,15 @@ public class MainSim extends SimpleApplication implements ActionListener
 
     Block.initStaticMaterials(assetManager);
 
-    logger = new Logger("flappybird.txt");
+    //logger = new Logger("flappybird.txt");
     textSynthesizer = new TextSynthesizer();
     creatureSynthesizer = new CreatureSynthesizer();
     genomeSynthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
 
-    myCreature = new FlappyBird(physicsSpace, rootNode);
-    logger.export(creatureSynthesizer.encode(myCreature));
-    myCreature.remove();
-    myCreature = genomeSynthesizer.encode(textSynthesizer.encode(new File("flappybird.txt")));
+    //myCreature = new FlappyBird(physicsSpace, rootNode);
+    //logger.export(creatureSynthesizer.encode(myCreature));
+    //myCreature.remove();
+    myCreature = genomeSynthesizer.encode(textSynthesizer.encode(new File("best.txt")));
     //myCreature = new Tigger(physicsSpace, rootNode);
 
     initLighting();

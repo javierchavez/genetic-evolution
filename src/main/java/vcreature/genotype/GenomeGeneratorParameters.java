@@ -19,7 +19,7 @@ package vcreature.genotype;
  */
 public class GenomeGeneratorParameters
 {
-  public static final float MIN_BLOCK_DIM = 1.1f; // minimum size in any x, y, or z direction
+  public static final float MIN_BLOCK_DIM = 1f; // minimum size in any x, y, or z direction
   public static final float MAX_BLOCK_DIM = 10f; // maximum size in any x, y, or z direction
 
   public static final int MAX_GENERATION_ATTEMPTS = 100; // maximum number of attempts to try and generate a child block
