@@ -179,7 +179,7 @@ public class Statistics implements Savable
   {
     s.append("-------- Generation "+ getGenerationNumber() +" ---------\n");
     s.append("Time (elapsed min):\t" + ((float)elapsedTime/60.0f/60.0f)).append("\n");
-    s.append("Population:\t" + populationSize).append("\n");
+    s.append("Population:\t" + getPopulationSize()).append("\n");
     s.append("Genes:\t" + Gene.TOTAL).append("\n");
     s.append("Beings:\t" + Being.TOTAL).append("\n");
     s.append("Average fitness:\t" + getAverageFitness()).append("\n");
