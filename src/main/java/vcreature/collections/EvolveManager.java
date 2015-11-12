@@ -18,6 +18,9 @@ import vcreature.utils.Statistics;
 
 import java.util.Collections;
 
+import static vcreature.morphology.GeneticAlgorithmParams.GA;
+import static vcreature.morphology.GeneticAlgorithmParams.HILL_CLIMB;
+
 
 /**
  * This is the wrapper for actually splitting the large population up
@@ -60,20 +63,28 @@ public class EvolveManager extends Thread implements Savable
       {
         isEvolving = true;
 
-
-        if (mutate)
+        if (GA || HILL_CLIMB)
         {
-          population.getMutating().evolve(population, this);
-          interrupt();
-          isEvolving = false;
-          System.out.println("DONE HC");
-        }
-        else
-        {
-          population.getBreeding().evolve(population, this);
-          interrupt();
-          isEvolving = false;
-          System.out.println("DONE Mating");
+          if (mutate)
+          {
+            if (HILL_CLIMB)
+            {
+              population.getMutating().evolve(population, this);
+              interrupt();
+              isEvolving = false;
+              System.out.println("DONE HC");
+            }
+          }
+          else
+          {
+            if (GA)
+            {
+              population.getBreeding().evolve(population, this);
+              interrupt();
+              isEvolving = false;
+              System.out.println("DONE Mating");
+            }
+          }
         }
 
         Collections.sort(population);

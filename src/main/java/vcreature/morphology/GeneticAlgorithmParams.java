@@ -12,4 +12,8 @@ public final class GeneticAlgorithmParams
   public static final float PERCENT_CROSSOVER = .90f;
   public static final int GENERATIONS_TO_CREATE = 50;
 
+
+  public static final boolean HILL_CLIMB = true;
+  public static final boolean GA = true;
+
 }

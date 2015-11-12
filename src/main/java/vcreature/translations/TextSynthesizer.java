@@ -12,21 +12,24 @@ package vcreature.translations;
  */
 
 
+import vcreature.Being;
 import vcreature.genotype.Genome;
 
 import java.io.*;
+import java.util.ArrayList;
 
 
 /**
  * This class will read in objects from a text file that was created by the logger.
  */
-public class TextSynthesizer extends Synthesizer<File, Genome>
+public class TextSynthesizer extends Synthesizer<File, ArrayList<Being>>
 {
   @Override
-  public Genome encode(File typeToConvert)
+  public ArrayList<Being> encode(File typeToConvert)
   {
+    ArrayList<Being> population = new ArrayList<>();
     BufferedReader br = null;
-    Genome genome = new Genome();
+
 
     try
     {
@@ -46,11 +49,16 @@ public class TextSynthesizer extends Synthesizer<File, Genome>
 
             if (line.equalsIgnoreCase("END"))
             {
+              Genome genome = new Genome();
+              Being being = new Being();
               genome.read(sb);
+              being.setGenotype(genome);
+              population.add(being);
 
               sb.delete(0, sb.toString().length());
               //break;
-              return genome;
+              // return genome;
+
             }
           }
         }
@@ -77,7 +85,7 @@ public class TextSynthesizer extends Synthesizer<File, Genome>
       }
     }
 
-    return null;
+    return population;
   }
 
   @Override

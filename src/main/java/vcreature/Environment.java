@@ -118,18 +118,18 @@ public class Environment extends AbstractApplication
     generator = new GenomeGenerator(getPhysicsSpace(), rootNode);
 
     // Fill up the population
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 2; i++)
     {
 
-      FlappyBird _creature = new FlappyBird(getPhysicsSpace(), rootNode);
+//      FlappyBird _creature = new FlappyBird(getPhysicsSpace(), rootNode);
       FlappyBird3 _creature3 = new FlappyBird3(getPhysicsSpace(), rootNode);
       FlappyBird4 _creature4 = new FlappyBird4(getPhysicsSpace(), rootNode);
 
-      Genome _genome = creatureSynthesizer.encode(_creature);
-      _creature.remove();
-      Being bb = new Being();
-      bb.setGenotype(_genome);
-      population.add(bb);
+//      Genome _genome = creatureSynthesizer.encode(_creature);
+//      _creature.remove();
+//      Being bb = new Being();
+//      bb.setGenotype(_genome);
+//      population.add(bb);
 
 
       Genome _genome3 = creatureSynthesizer.encode(_creature3);
@@ -144,7 +144,7 @@ public class Environment extends AbstractApplication
       bb4.setGenotype(_genome4);
       population.add(bb4);
 
-      for (int x = 0; x < 70; x++)
+      for (int x = 0; x < 5; x++)
       {
         Being _randBeing = new Being();
         _randBeing.setGenotype(generator.generateGenome());

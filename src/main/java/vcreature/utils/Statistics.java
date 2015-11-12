@@ -152,7 +152,7 @@ public class Statistics implements Savable
       _current = getFitnessSumTotal();
       _past = (_past + _current)/timesCalled;
     }
-    if (tenMinCounter >= 600000.0f)
+    if (tenMinCounter >= 600.0f)
     {
       statsLogger.export(this);
       populationLogger.setFileName("genomes" + formatter.format(LocalDateTime.now())+".txt");
