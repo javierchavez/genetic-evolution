@@ -30,6 +30,7 @@ import vcreature.translations.GenomeSynthesizer;
 public class MainSim extends AbstractApplication implements ActionListener
 {
 
+  private static int INDEX = 0;
   private float cameraAngle = (float) (Math.PI / 2.0);
   private float elapsedSimulationTime = 0.0f;
 
@@ -44,7 +45,7 @@ public class MainSim extends AbstractApplication implements ActionListener
   @Override
   public void simpleInitApp()
   {
-<<<<<<< HEAD
+
     super.simpleInitApp();
 
     hudText = new BitmapText(guiFont, false);
@@ -55,58 +56,6 @@ public class MainSim extends AbstractApplication implements ActionListener
 
     genomeSynthesizer = new GenomeSynthesizer(getPhysicsSpace(), getRootNode());
 
-=======
-    /**
-     * Set up Physics
-     */
-    bulletAppState = new BulletAppState();
-    stateManager.attach(bulletAppState);
-    physicsSpace = bulletAppState.getPhysicsSpace();
-    //bulletAppState.setDebugEnabled(true);
-    
-    physicsSpace.setGravity(PhysicsConstants.GRAVITY);
-    physicsSpace.setAccuracy(PhysicsConstants.PHYSICS_UPDATE_RATE);
-    physicsSpace.setMaxSubSteps(4);
-
-    //Set up inmovable floor
-    Box floor = new Box(50f, 0.1f, 50f);
-    Material floor_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-    Texture floorTexture = assetManager.loadTexture("Textures/FloorTile.png");
-
-    floorTexture.setWrap(Texture.WrapMode.Repeat);
-    floor_mat.setTexture("ColorMap", floorTexture);
-
-    floor.scaleTextureCoordinates(new Vector2f(50, 50));
-    Geometry floor_geo = new Geometry("Floor", floor);
-    floor_geo.setMaterial(floor_mat);
-    floor_geo.setShadowMode(ShadowMode.Receive);
-    floor_geo.setLocalTranslation(0, -0.11f, 0);
-    rootNode.attachChild(floor_geo);
-
-    /* Make the floor physical with mass 0.0f */
-    RigidBodyControl floor_phy = new RigidBodyControl(0.0f);
-    floor_geo.addControl(floor_phy);
-    physicsSpace.add(floor_phy);
-    floor_phy.setFriction(PhysicsConstants.GROUND_SLIDING_FRICTION);
-    floor_phy.setRestitution(PhysicsConstants.GROUND_BOUNCINESS);
-    floor_phy.setDamping(PhysicsConstants.GROUND_LINEAR_DAMPINING, 
-            PhysicsConstants.GROUND_ANGULAR_DAMPINING);
-
-    Block.initStaticMaterials(assetManager);
-
-    //logger = new Logger("flappybird.txt");
-    textSynthesizer = new TextSynthesizer();
-    creatureSynthesizer = new CreatureSynthesizer();
-    genomeSynthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
-
-    //myCreature = new FlappyBird(physicsSpace, rootNode);
-    //logger.export(creatureSynthesizer.encode(myCreature));
-    //myCreature.remove();
-    myCreature = genomeSynthesizer.encode(textSynthesizer.encode(new File("best.txt")));
-    //myCreature = new Tigger(physicsSpace, rootNode);
-
-    initLighting();
->>>>>>> d85fda4ee7b59fa429a2e64c72f8c77ee2184cc8
     initKeys();
 
     flyCam.setDragToRotate(true);
@@ -119,18 +68,45 @@ public class MainSim extends AbstractApplication implements ActionListener
     inputManager.addMapping("Quit", new KeyTrigger(KeyInput.KEY_Q));
     inputManager.addMapping("Toggle Camera Rotation", new KeyTrigger(KeyInput.KEY_P));
     inputManager.addMapping("Change Creature", new KeyTrigger(KeyInput.KEY_C));
+    inputManager.addMapping("Iterate", new KeyTrigger(KeyInput.KEY_N));
 
     // Add the names to the action listener.
     inputManager.addListener(this, "Quit");
     inputManager.addListener(this, "Toggle Camera Rotation");
     inputManager.addListener(this, "Change Creature");
+    inputManager.addListener(this, "Iterate");
   }
 
   public void onAction(String name, boolean isPressed, float timePerFrame)
   {
+
     if (isPressed && name.equals("Toggle Camera Rotation"))
     {
       isCameraRotating = !isCameraRotating;
+    }
+    else if(isPressed && name.equals("Iterate"))
+    {
+      if (myCreature != null)
+      {
+        System.out.format("Creature Fitness (Maximium height of lowest point) = %.3f meters]\n", myCreature.getFitness());
+        myCreature.remove();
+      }
+
+      INDEX++;
+      if (INDEX == environment.getPopulation().getBeings().size()-1)
+      {
+        INDEX =0;
+      }
+      hudText.setText("Best Being hasn't been found");
+      Genome genome = environment.getPopulation().getBeings().get(INDEX).getGenotype();
+      if (genome != null)
+      {
+        myCreature = genomeSynthesizer.encode(genome);
+      }
+
+
+      cameraAngle = (float) (Math.PI / 2.0);
+      elapsedSimulationTime = 0.0f;
     }
     else if (isPressed && name.equals("Change Creature"))
     {
@@ -142,9 +118,20 @@ public class MainSim extends AbstractApplication implements ActionListener
 
       if (environment.getStats().getBestBeing() != null)
       {
+
         Genome genome = environment.getStats().getBestBeing().getGenotype().clone();
         myCreature = genomeSynthesizer.encode(genome);
         hudText.setText("Current best fitness " + environment.getStats().getBestFitness());
+      }
+      else
+      {
+        INDEX++;
+        hudText.setText("Best Being hasn't been found");
+        Genome genome = environment.getPopulation().getBeings().get(INDEX).getGenotype();
+        if(genome != null)
+        {
+          myCreature = genomeSynthesizer.encode(genome);
+        }
       }
 
       cameraAngle = (float) (Math.PI / 2.0);

@@ -20,8 +20,7 @@ import vcreature.genotype.Genome;
 import vcreature.genotype.GenomeGenerator;
 import vcreature.morphology.GeneticAlgorithm;
 import vcreature.morphology.HillClimb;
-import vcreature.phenotype.Block;
-import vcreature.phenotype.Creature;
+import vcreature.phenotype.*;
 import vcreature.translations.CreatureSynthesizer;
 import vcreature.translations.GenomeSynthesizer;
 import vcreature.utils.Logger;
@@ -120,53 +119,7 @@ public class Environment extends AbstractApplication
     for (int i = 0; i < 5; i++)
     {
 
-<<<<<<< HEAD
-//      FlappyBird _creature = new FlappyBird(getPhysicsSpace(), rootNode);
-//      FlappyBird6 _creature2 = new FlappyBird6(getPhysicsSpace(), rootNode);
-//      FlappyBird3 _creature3 = new FlappyBird3(getPhysicsSpace(), rootNode);
-//      FlappyBird4 _creature4 = new FlappyBird4(getPhysicsSpace(), rootNode);
-//      FlappyBird5 _creature5 = new FlappyBird5(getPhysicsSpace(), rootNode);
-//
-//      Genome _genome = creatureSynthesizer.encode(_creature);
-//      _creature.remove();
-//      Being bb = new Being();
-//      bb.setGenotype(_genome);
-//      population.add(bb);
-//
-//      Genome _genome2 = creatureSynthesizer.encode(_creature2);
-//      _creature2.remove();
-//      Being bb2 = new Being();
-//      bb2.setGenotype(_genome2);
-//      population.add(bb2);
-//
-//      Genome _genome3 = creatureSynthesizer.encode(_creature3);
-//      _creature3.remove();
-//      Being bb3 = new Being();
-//      bb3.setGenotype(_genome3);
-//      population.add(bb3);
-//
-//      Genome _genome4 = creatureSynthesizer.encode(_creature4);
-//      _creature4.remove();
-//      Being bb4 = new Being();
-//      bb4.setGenotype(_genome4);
-//      population.add(bb4);
-//
-//      Genome _genome5 = creatureSynthesizer.encode(_creature5);
-//      _creature5.remove();
-//      Being bb5 = new Being();
-//      bb5.setGenotype(_genome5);
-//      population.add(bb5);
-//
-//      if(i % 2 == 0)
-//      {
-        Being _randBeing = new Being();
-        _randBeing.setGenotype(generator.generateGenome());
-        population.add(_randBeing);
-//      }
-    }
-=======
       FlappyBird _creature = new FlappyBird(getPhysicsSpace(), rootNode);
-      FlappyBird2 _creature2 = new FlappyBird2(getPhysicsSpace(), rootNode);
       FlappyBird3 _creature3 = new FlappyBird3(getPhysicsSpace(), rootNode);
       FlappyBird4 _creature4 = new FlappyBird4(getPhysicsSpace(), rootNode);
       FlappyBird5 _creature5 = new FlappyBird5(getPhysicsSpace(), rootNode);
@@ -177,11 +130,6 @@ public class Environment extends AbstractApplication
       bb.setGenotype(_genome);
       population.add(bb);
 
-      Genome _genome2 = creatureSynthesizer.encode(_creature2);
-      _creature2.remove();
-      Being bb2 = new Being();
-      bb2.setGenotype(_genome2);
-      population.add(bb2);
 
       Genome _genome3 = creatureSynthesizer.encode(_creature3);
       _creature3.remove();
@@ -211,7 +159,6 @@ public class Environment extends AbstractApplication
         population.add(_randBeing);
      // }
       }
->>>>>>> d85fda4ee7b59fa429a2e64c72f8c77ee2184cc8
 
 
     // set the population to a evolution

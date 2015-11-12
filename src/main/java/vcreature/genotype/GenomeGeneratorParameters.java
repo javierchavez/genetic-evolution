@@ -20,24 +20,16 @@ package vcreature.genotype;
 public class GenomeGeneratorParameters
 {
   public static final float MIN_BLOCK_DIM = 1f; // minimum size in any x, y, or z direction
-<<<<<<< HEAD
+
   public static final float MAX_BLOCK_DIM = 6f; // maximum size in any x, y, or z direction
-=======
-  public static final float MAX_BLOCK_DIM = 10f; // maximum size in any x, y, or z direction
->>>>>>> d85fda4ee7b59fa429a2e64c72f8c77ee2184cc8
 
   public static final int MAX_GENERATION_ATTEMPTS = 25; // maximum number of attempts to try and generate a child block
   public static final int MAX_NEURON_RULES = 4; // maximum number of neurons per joint
   public static final int MAX_CHILDREN = 4; // maximum number of children any block can have
   public static final int MAX_DEPTH = 4; // maximum number of children any block can be from root
 
-<<<<<<< HEAD
   public static final float CHILD_SPAWN_CHANCE = 0.35f; // chance that a block will spawn a child block
   public static final float RECURSE_CHANCE = 0.25f; // chance that a block will spawn at depth n+1 from root block
-=======
-  public static final float CHILD_SPAWN_CHANCE = 0.4f; // chance that a block will spawn a child block
-  public static final float RECURSE_CHANCE = 0f;//0.15f; // chance that a block will spawn at depth n+1 from root block
->>>>>>> d85fda4ee7b59fa429a2e64c72f8c77ee2184cc8
 
   public static final int MIN_CONST = 0;
   public static final int MAX_CONST = 100;
