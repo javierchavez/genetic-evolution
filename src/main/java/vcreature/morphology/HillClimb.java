@@ -122,7 +122,7 @@ public class HillClimb
           factor = .30f;
           fails++;
         }
-        currentStrategy.WEIGHT =- factor;
+        currentStrategy.WEIGHT -= factor;
         strategies.add(currentStrategy);
         // if this creature is not improving then escape
         if (tries > 4)
@@ -135,7 +135,7 @@ public class HillClimb
       {
         float factor = .10f;
         // if the being is now the best
-        if (currentOptimizedFitness >= highest)
+        if (currentOptimizedFitness >= stats.getBestFitness())
         {
           factor = .55f;
           stats.setBestBeing(individual);
