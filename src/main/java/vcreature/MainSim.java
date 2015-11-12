@@ -88,16 +88,15 @@ public class MainSim extends AbstractApplication implements ActionListener
     {
       if (myCreature != null)
       {
-        System.out.format("Creature Fitness (Maximium height of lowest point) = %.3f meters]\n", myCreature.getFitness());
         myCreature.remove();
       }
 
       INDEX++;
-      if (INDEX == environment.getPopulation().getBeings().size()-1)
+      if (INDEX == environment.getPopulation().getBeings().size() - 1)
       {
-        INDEX =0;
+        INDEX = 0;
       }
-      hudText.setText("Best Being hasn't been found");
+      hudText.setText("Creature: [" + INDEX + "] out of: " + environment.getPopulation().getBeings().size());
       Genome genome = environment.getPopulation().getBeings().get(INDEX).getGenotype();
       if (genome != null)
       {
@@ -107,12 +106,12 @@ public class MainSim extends AbstractApplication implements ActionListener
 
       cameraAngle = (float) (Math.PI / 2.0);
       elapsedSimulationTime = 0.0f;
+
     }
     else if (isPressed && name.equals("Change Creature"))
     {
       if (myCreature != null)
       {
-        System.out.format("Creature Fitness (Maximium height of lowest point) = %.3f meters]\n", myCreature.getFitness());
         myCreature.remove();
       }
 
@@ -121,17 +120,7 @@ public class MainSim extends AbstractApplication implements ActionListener
 
         Genome genome = environment.getStats().getBestBeing().getGenotype().clone();
         myCreature = genomeSynthesizer.encode(genome);
-        hudText.setText("Current best fitness " + environment.getStats().getBestFitness());
-      }
-      else
-      {
-        INDEX++;
-        hudText.setText("Best Being hasn't been found");
-        Genome genome = environment.getPopulation().getBeings().get(INDEX).getGenotype();
-        if(genome != null)
-        {
-          myCreature = genomeSynthesizer.encode(genome);
-        }
+        hudText.setText("Current Creature's best fitness: " + environment.getStats().getBestFitness());
       }
 
       cameraAngle = (float) (Math.PI / 2.0);
