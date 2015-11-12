@@ -9,6 +9,7 @@ import vcreature.genotype.Effector;
 import vcreature.genotype.Gene;
 import vcreature.genotype.Genome;
 import vcreature.phenotype.Block;
+import vcreature.utils.GenomeHelper;
 
 import java.util.*;
 
@@ -26,8 +27,8 @@ public class GeneticAlgorithm
 
 
   public static final int MAX_ITERATIONS = 50;
-  private int pctMutations = 90;
-  private int pctCrossover = 90;
+  private int pctMutations = 0;
+  private int pctCrossover = 100;
 
   public float getBestFitness()
   {
@@ -268,19 +269,19 @@ public class GeneticAlgorithm
 
     if (eChild.getPivotAxisX() == 1.0)
     {
-      eChild.setParentX(x * (parent.getLengthX() - (rnd.nextFloat() * parent.getLengthX())));
+      eChild.setParentX(x * (parent.getLengthX() - (rnd.nextFloat() * parent.getLengthX()/2f)));
       eChild.setParentY(y * parent.getHeightY() / 2f);
       eChild.setParentZ(z * parent.getWidthZ() / 2f);
     }
     else if (eChild.getPivotAxisY() == 1.0)
     {
-      eChild.setParentY(y * (parent.getHeightY() - (rnd.nextFloat() * parent.getHeightY())));
+      eChild.setParentY(y * (parent.getHeightY() - (rnd.nextFloat() * parent.getHeightY()/2f)));
       eChild.setParentX(x * parent.getLengthX() / 2f);
       eChild.setParentZ(z * parent.getWidthZ() / 2f);
     }
     else if (eChild.getPivotAxisZ() == 1.0)
     {
-      eChild.setParentZ(z * (parent.getWidthZ() - (rnd.nextFloat() * parent.getWidthZ())));
+      eChild.setParentZ(z * (parent.getWidthZ() - (rnd.nextFloat() * parent.getWidthZ()/2f)));
       eChild.setParentY(y * parent.getHeightY() / 2f);
       eChild.setParentX(x * parent.getLengthX() / 2f);
     }
