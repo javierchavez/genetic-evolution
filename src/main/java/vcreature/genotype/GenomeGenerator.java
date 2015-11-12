@@ -108,7 +108,7 @@ public class GenomeGenerator
   private Gene generateGene()
   {
     Random rand = new Random();
-    Gene gene = new Gene(genome.size());
+    Gene gene = new Gene(0);
     gene.setDimensions(genRandSize(rand));
     genome.append(gene);
     return gene;
@@ -117,7 +117,7 @@ public class GenomeGenerator
   private Gene generateGene(Gene parent)
   {
     Random rand = new Random();
-    Gene gene = new Gene(genome.size());
+    Gene gene = new Gene(parent.getPosition()+1);
 
     float[] rotations = {0f, 0f, 0f};
     Vector3f size = genRandSize(rand);

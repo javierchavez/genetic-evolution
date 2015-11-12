@@ -1,4 +1,4 @@
-package vcreature.morphology.strategies;
+package vcreature.morphology;
 
 /**
  * @author Javier Chavez
@@ -25,11 +25,17 @@ import java.util.Random;
  *
  * @param <V> type of gene to mutate
  */
-public class RootGeneDimensionClimbStrategy<V> implements HillClimbStrategy<Genome, V>
+public class RootGeneDimensionClimbStrategy<V> extends AbstractHillClimbStrategy<Genome, V> implements HillClimbStrategy<Genome, V>
 {
   Vector3f vector3f = new Vector3f();
+
+  RootGeneDimensionClimbStrategy(float w)
+  {
+    super(w);
+  }
+
   @Override
-  public V climb(Genome part)
+  public void climb(Genome part, V partHelper)
   {
     Random rand = new Random();
     float scaleFactor = rand.nextBoolean() ? 1.05f : 0.95f;
@@ -42,12 +48,12 @@ public class RootGeneDimensionClimbStrategy<V> implements HillClimbStrategy<Geno
 
     if (Block.min(vector3f) < 0.5f)
     {
-      return null;
+      return ;
     }
 
     if (Block.max(vector3f) > 10*Block.min(vector3f))
     {
-      return null;
+      return;
     }
 
     part.getRoot().setDimensions(vector3f);
@@ -60,6 +66,6 @@ public class RootGeneDimensionClimbStrategy<V> implements HillClimbStrategy<Geno
       vector3f.z *= scaleFactor;
       neighbor.getEffector().setParent(vector3f);
     }
-    return null;
+    return;
   }
 }

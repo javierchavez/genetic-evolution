@@ -22,6 +22,17 @@ public class ConstantInput implements NeuralInput<Float>, EffectorInput, Savable
 {
   private float constant;
 
+  public ConstantInput(float constant)
+  {
+    this.constant = constant;
+  }
+
+  public ConstantInput()
+  {
+    this(1f);
+  }
+
+
   @Override
   public Float getValue()
   {

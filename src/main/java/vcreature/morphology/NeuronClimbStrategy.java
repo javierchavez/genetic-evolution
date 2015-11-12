@@ -1,14 +1,18 @@
-package vcreature.morphology.strategies;
+package vcreature.morphology;
 
 
 import vcreature.genotype.NeuralNode;
 import vcreature.phenotype.EnumOperator;
 
-public class NeuronClimbStrategy<V> implements HillClimbStrategy<NeuralNode, V>
+public class NeuronClimbStrategy extends NeuralNetClimbStrategy
 {
 
-  @Override
-  public V climb(NeuralNode part)
+  NeuronClimbStrategy(float w)
+  {
+    super(w);
+  }
+
+  public void climb(NeuralNode part)
   {
 
     //First Position
@@ -232,6 +236,5 @@ public class NeuronClimbStrategy<V> implements HillClimbStrategy<NeuralNode, V>
       part.getOperators().put(NeuralNode.NeuralOperatorPosition.FOURTH, EnumOperator.ABS);
     }
 
-    return null;
   }
 }

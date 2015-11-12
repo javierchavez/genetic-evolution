@@ -1,19 +1,25 @@
-package vcreature.morphology.strategies;
+package vcreature.morphology;
 
 
 import vcreature.genotype.Genome;
 import vcreature.genotype.NeuralInput;
 import vcreature.genotype.NeuralNode;
 
-public class NeuralNodeInputStrategy<V> implements HillClimbStrategy<NeuralNode, V>
+public class NeuralNodeInputStrategy extends NeuralNetClimbStrategy
 {
-  @Override
-  public V climb(NeuralNode part)
+  public NeuralNodeInputStrategy(float w)
+  {
+    super(w);
+  }
+
+  public void climb(NeuralNode part)
   {
     Genome d = new Genome();
     // change the inputs of the node
     part.getInputs().get(NeuralInput.InputPosition.A);
     part.getInputs().put(NeuralInput.InputPosition.A, d.get(0).getAngleSensor());
-    return null;
+
+
+
   }
 }

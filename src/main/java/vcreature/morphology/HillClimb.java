@@ -16,9 +16,9 @@ package vcreature.morphology;
 
 import vcreature.Being;
 import vcreature.Environment;
-import vcreature.collections.Population;
+import vcreature.collections.EvolveManager;
 import vcreature.genotype.Gene;
-import vcreature.morphology.strategies.*;
+import vcreature.utils.Statistics;
 
 import java.util.*;
 
@@ -26,37 +26,30 @@ import java.util.*;
 public class HillClimb
 {
   private final Environment environment;
-  private Population population;
-  private double amount;
+  private Statistics stats;
+  private long iterations;
 
   private float lowest = 0;
   private float highest = 7;
-  private int fails = 0;
-  private int currentTotal = 0;
+  public static int fails = 0;
 
   private double currentOptimizedFitness, currentFitnessValue;
 
-  private Random rnd = new Random();
 
-  private HashMap<HillClimbStrategy.Strategies, Float> hillClimbMapStrats = new HashMap<>();
-  private int fitness = 0;
   private int lifetimeRuns = 0;
-  private Being bestBeing;
   private ArrayList<Being> kill = new ArrayList<>();
-  private float bestFitness;
-  private float sumFitness=0f;
-  private float lifeTime = 0f;
-  private float genAvgFitness;
+  private PriorityQueue<AbstractHillClimbStrategy> strategies = new PriorityQueue<>();
 
 
   public HillClimb(Environment environment)
   {
     this.environment = environment;
 
-    hillClimbMapStrats.put(HillClimbStrategy.Strategies.EFFECTOR, 1f);
-    hillClimbMapStrats.put(HillClimbStrategy.Strategies.NEURAL_NET, 1f);
-    hillClimbMapStrats.put(HillClimbStrategy.Strategies.ROOT_GENE, 1f);
-    hillClimbMapStrats.put(HillClimbStrategy.Strategies.LIMB_GENE, 1f);
+    strategies.add(new RootGeneDimensionClimbStrategy<>(1f));
+    strategies.add(new LimbGeneDimensionClimbStrategy<>(.80f));
+    strategies.add(new EffectorClimbStrategy(.30f));
+    strategies.add(new NeuralNetClimbStrategy(.20f));
+    strategies.peek();
 
   }
 
@@ -68,60 +61,33 @@ public class HillClimb
 
   private boolean hillClimbingEvaluation(Being individual)
   {
-    HillClimbStrategy.Strategies currentStrategy = HillClimbStrategy.Strategies.ROOT_GENE;
+    AbstractHillClimbStrategy currentStrategy = null;
     float currentFitneesBeing = individual.getFitness();
     int tries = 0;
+
+
     for (int i = 0; i < individual.getGenotype().size(); i++)
     {
-      currentTotal++;
-
+      iterations++;
+      tries++;
       lifetimeRuns++;
       lowest = Math.min(individual.getFitness(), lowest);
       highest = Math.max(individual.getFitness(), highest);
 
+      /*TODO add gene to strategy*/
       Gene gene= individual.getGenotype().get(i);
-      tries++;
-      for (Map.Entry<HillClimbStrategy.Strategies, Float> strategiesFloatEntry : hillClimbMapStrats.entrySet())
-      {
-        currentStrategy = null;
-        if (strategiesFloatEntry.getValue()/lifetimeRuns > .25f)
-        {
-          currentStrategy = strategiesFloatEntry.getKey();
-          break;
-        }
-      }
-      if (currentStrategy == null)
-      {
-        int x = rnd.nextInt(HillClimbStrategy.Strategies.values().length);
-        currentStrategy = HillClimbStrategy.Strategies.values()[x];
-      }
-      switch (currentStrategy)
-      {
-        case EFFECTOR:
-          System.out.println("hill climbing on " + currentStrategy);
-          new EffectorClimbStrategy<>().climb(gene.getEffector());
-          break;
-        case NEURAL_NET:
-          System.out.println("hill climbing on " + currentStrategy);
-          new NeuralNetClimbStrategy<>().climb(gene.getEffector().getNeuralNet());
-          break;
-        case ROOT_GENE:
-          System.out.println("hill climbing on " + currentStrategy);
-          new RootGeneDimensionClimbStrategy<>().climb(individual.getGenotype());
-          break;
-        case LIMB_GENE:
-          System.out.println("hill climbing on " + currentStrategy);
-          new LimbGeneDimensionClimbStrategy<>().climb(individual.getGenotype());
-          break;
-        default:
-          currentStrategy = HillClimbStrategy.Strategies.LIMB_GENE;
-          System.out.println("hill climbing on " + currentStrategy);
-          new LimbGeneDimensionClimbStrategy<>().climb(individual.getGenotype());
-          break;
-      }
+
+      // get a strategy from the queue.
+      currentStrategy = strategies.poll();
+
+      // call the strategy
+      currentStrategy.climb(individual.getGenotype(), gene);
+
+      System.out.println(currentStrategy.toString());
 
       currentFitnessValue = individual.getFitness();
       environment.beginEvaluation(individual);
+      // test it
       while (true)
       {
         if (!individual.isUnderEvaluation())
@@ -130,58 +96,73 @@ public class HillClimb
         }
       }
 
+
       currentOptimizedFitness = individual.getFitness();
-      sumFitness += currentOptimizedFitness;
-      lifeTime +=currentOptimizedFitness;
+
+      stats.addFitneessToSum(((float) currentOptimizedFitness));
+
+      // If the being is still failing to jump, get rid of it.
       if (currentFitnessValue < 1 && currentOptimizedFitness < 1)
       {
-        kill.add(individual);
         if (tries > 4)
         {
-          System.out.println("Killing individual");
-          tries=0;
-          return false;
+          // kill.add(individual);
+          // System.out.println("Killing individual");f
+          break;
         }
       }
 
+      // if this was a bad mutation
       if (currentFitnessValue >= currentOptimizedFitness)
       {
         float factor = .10f;
+        // if it is now worse than the worst being, set the factor higher
         if (currentFitnessValue <= lowest)
         {
           factor = .30f;
           fails++;
         }
-        hillClimbMapStrats.put(currentStrategy, hillClimbMapStrats.get(currentStrategy) - factor);
-        HillClimb.sortValue(hillClimbMapStrats);
-
+        currentStrategy.WEIGHT =- factor;
+        strategies.add(currentStrategy);
+        // if this creature is not improving then escape
+        if (tries > 4)
+        {
+          System.out.println("Local min");
+          break;
+        }
       }
-      else
+      else // this is a good mutation
       {
         float factor = .10f;
+        // if the being is now the best
         if (currentOptimizedFitness >= highest)
         {
           factor = .55f;
-          bestBeing = individual;
-//          population.setBestFitness((float) currentOptimizedFitness);
-//          population.setBestBeing(individual);
-
+          stats.setBestBeing(individual);
         }
-        fitness += currentOptimizedFitness;
-        hillClimbMapStrats.put(currentStrategy, hillClimbMapStrats.get(currentStrategy) + factor);
-        HillClimb.sortValue(hillClimbMapStrats);
-        if (tries > 4)
+
+        currentStrategy.WEIGHT += factor;
+        strategies.add(currentStrategy);
+
+        // if this creature is not improving then escape
+        if (tries > 4 && currentOptimizedFitness <= highest)
         {
           System.out.println("Local max");
-          tries=0;
-          return false;
+          break;
         }
+        // try the mutation again!!!!!
         --i;
       }
 
     }
-    tries=0;
-    System.out.println("Individual done");
+
+
+
+    System.out.println("Individual done improved by " + (currentOptimizedFitness - currentFitneesBeing));
+    if (currentStrategy != null)
+    {
+      strategies.add(currentStrategy);
+    }
     return false;
   }
 
@@ -191,51 +172,29 @@ public class HillClimb
    * @return and evolved population.
    */
 
-  public void evolvePopulation(Population population)
+  public boolean evolve(ArrayList<Being> beings, EvolveManager evolveManager)
   {
-    this.population = population;
-    ArrayList<Being> current = new ArrayList<>();
-    current.addAll(population.getBeings());
-    for (int i = 0; i < current.size(); i++)
+
+    // this is morphing the population straight away.
+    for (int i = 0; i < beings.size(); i++)
     {
+      hillClimbingEvaluation(beings.get(i));
 
-      hillClimbingEvaluation(current.get(i));
-
+      if ( stats.getBestFitness()/(stats.getAverageFitness()/iterations) <=  .15)
+      {
+        System.out.println("Activating GA");
+        stats.addGenerationToSum(1);
+        evolveManager.setMuting(false);
+        return false;
+      }
     }
+    stats.addGenerationToSum(1);
 
-    System.out.println("Hill climbing complete on current individuals");
-
-
-    currentTotal=0;
-    sumFitness = 0;
-
+    return true;
   }
 
-
-  public int getFitness()
+  public void setDataHandler(Statistics dataHandler)
   {
-    return fitness;
-  }
-
-
-  public static void sortValue(HashMap<?, Float> t){
-
-    //Transfer as List and sort it
-    ArrayList<Map.Entry<?, Float>> l = new ArrayList(t.entrySet());
-    Collections.sort(l, new Comparator<Map.Entry<?, Float>>(){
-
-      public int compare(Map.Entry<?, Float> o1, Map.Entry<?, Float> o2) {
-        return o1.getValue().compareTo(o2.getValue());
-      }});
-  }
-
-  public float getBestFitness()
-  {
-    return bestFitness;
-  }
-
-  public float getGenAvgFitness()
-  {
-    return sumFitness/currentTotal;
+    this.stats = dataHandler;
   }
 }

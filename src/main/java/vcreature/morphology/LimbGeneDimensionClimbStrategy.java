@@ -1,4 +1,4 @@
-package vcreature.morphology.strategies;
+package vcreature.morphology;
 
 import com.jme3.math.Vector3f;
 import vcreature.genotype.Gene;
@@ -8,12 +8,17 @@ import vcreature.phenotype.Block;
 import java.util.Random;
 
 
-public class LimbGeneDimensionClimbStrategy<V> implements HillClimbStrategy<Genome, V>
+public class LimbGeneDimensionClimbStrategy<V> extends AbstractHillClimbStrategy<Genome, V> implements HillClimbStrategy<Genome, V>
 {
   Vector3f vector3f = new Vector3f();
 
+  public LimbGeneDimensionClimbStrategy(float v)
+  {
+    super(v);
+  }
+
   @Override
-  public V climb(Genome part)
+  public void climb(Genome part, V partHelper)
   {
     Random rand = new Random();
     float scaleFactor = rand.nextBoolean() ? 1.05f : 0.95f;
@@ -60,7 +65,6 @@ public class LimbGeneDimensionClimbStrategy<V> implements HillClimbStrategy<Geno
       g.getEffector().setChild(vector3f);
 
     }
-    return null;
   }
 
 

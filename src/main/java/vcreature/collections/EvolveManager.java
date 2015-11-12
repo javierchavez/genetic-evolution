@@ -14,6 +14,7 @@ package vcreature.collections;
 
 import vcreature.Being;
 import vcreature.utils.Savable;
+import vcreature.utils.Statistics;
 
 import java.util.Collections;
 
@@ -28,16 +29,23 @@ public class EvolveManager extends Thread implements Savable
   private volatile boolean paused = true;
   private boolean running = true;
   private boolean isEvolving = false;
+  private Boolean mutate = true;
+
   /**
    * Create a evolution given a population
    *
    * @param population population that will be split into SubPopulations
    */
-  public EvolveManager(Population population)
+  public EvolveManager(Population population, Statistics statistics)
   {
     this.population = population;
   }
 
+
+  public boolean isEvolving()
+  {
+    return isEvolving;
+  }
 
   /**
    * Start the next generation in the sub population
@@ -50,19 +58,23 @@ public class EvolveManager extends Thread implements Savable
       {
         isEvolving = true;
 
-        if (true)
+
+        if (mutate)
         {
-          population.getMutating().evolvePopulation(population);
+          population.getMutating().evolve(population, this);
+          interrupt();
+          isEvolving = false;
+          System.out.println("DONE HC");
         }
         else
         {
-          population.getBreeding().evolvePopulation(population);
+          population.getBreeding().evolve(population, this);
+          interrupt();
+          isEvolving = false;
+          System.out.println("DONE Mating");
         }
 
-        isEvolving = false;
       }
-
-
     }
   }
 
@@ -121,4 +133,8 @@ public class EvolveManager extends Thread implements Savable
 
   }
 
+  public void setMuting(boolean mutate)
+  {
+    this.mutate = mutate;
+  }
 }

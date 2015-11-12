@@ -14,10 +14,7 @@ package vcreature.genotype;
 
 import vcreature.utils.Savable;
 
-import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**

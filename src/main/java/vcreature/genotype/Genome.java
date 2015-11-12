@@ -57,10 +57,14 @@ public class Genome implements Savable
    */
   public void append(Gene gene)
   {
-    genes.add(gene);
-    if (gene.getPosition()!= indexOf(gene))
+    // genes.add(gene);
+    genes.add(gene.getPosition(), gene);
+    if (gene.getPosition() > 0)
     {
-      throw new NoSuchElementException();
+      if (gene.getPosition() != genes.indexOf(gene))
+      {
+        throw new NoSuchElementException(gene.getPosition() + " " + genes.indexOf(gene) + " sz" + genes.size());
+      }
     }
   }
 
@@ -69,7 +73,7 @@ public class Genome implements Savable
    *
    * @param gene gene to remove
    */
-  public void remove(Gene gene)
+  public synchronized  void remove(Gene gene)
   {
     for (Gene neighbor : neighbors(gene))
     {
@@ -106,6 +110,11 @@ public class Genome implements Savable
   public void setRoot(Gene root)
   {
     this.rootVertex = root;
+//    if (!genes.contains(root))
+//    {
+//      genes.add(0, root);
+//    }
+
   }
 
   /**
@@ -117,7 +126,7 @@ public class Genome implements Savable
 //  {
 //    return genes;
 //  }
-  public LinkedList<Gene> getGenes()
+  public synchronized LinkedList<Gene> getGenes()
   {
     return genes;
   }
@@ -133,18 +142,51 @@ public class Genome implements Savable
     return g.getPosition();
   }
 
+
+  @Override
+  public boolean equals(Object o)
+  {
+    if (this == o)
+    {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass())
+    {
+      return false;
+    }
+
+    Genome genome = (Genome) o;
+
+    if (genes != null ? !genes.equals(genome.genes) : genome.genes != null)
+    {
+      return false;
+    }
+    return !(rootVertex != null ? !rootVertex.equals(genome.rootVertex) : genome.rootVertex != null);
+
+  }
+
   /**
    * Get a gene from the genome at the given index
    *
    * @param index index of the gene to get
    * @return the gene at the index in the genome
    */
-  public Gene get(int index)
+  public synchronized Gene get(int index)
   {
 
     if (index != genes.get(index).getPosition())
     {
-      throw new NoSuchElementException("Position is not consistent with index!");
+      try
+      {
+         return getGeneByPosition(index);
+      }
+      catch (Exception e)
+      {
+        System.out.println(e.getMessage());
+
+//        throw new NoSuchElementException("Position is not consistent with index! " + index + " actual " + genes.get(index).getPosition() + " len = " + genes.size());
+
+      }
     }
 
     return genes.get(index);
@@ -155,7 +197,7 @@ public class Genome implements Savable
    *
    * @return number of genes
    */
-  public int size()
+  public synchronized  int size()
   {
     return genes.size();
   }
@@ -187,17 +229,18 @@ public class Genome implements Savable
    * @param current the gene to get neighbors around
    * @return List of neighbors (children)
    */
-  public List<Gene> neighbors (Gene current)
+  public synchronized  List<Gene> neighbors (Gene current)
   {
     ArrayList<Integer> edges = current.getEdges();
     ArrayList<Gene> neighbors = new ArrayList<>();
 //    edges.forEach(integer1 -> integer1);
 
+    int i = 0;
     for (Integer integer : edges)
     {
+      i++;
       if (integer >= 0)
       {
-
         neighbors.add(genes.get(integer));
       }
     }
@@ -209,7 +252,7 @@ public class Genome implements Savable
    *
    * @param position of the gene to remove
    */
-  public void remove(int position)
+  public synchronized  void remove(int position)
   {
     remove(getGeneByPosition(position));
   }

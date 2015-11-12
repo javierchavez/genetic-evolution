@@ -1,27 +1,48 @@
 package vcreature.utils;
 
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import vcreature.Being;
+import vcreature.collections.Population;
+import vcreature.genotype.Gene;
 
-public abstract class Statistics
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class Statistics implements Savable
 {
-  float fitnessCurrentEvolingBeing;
-  double fitnessSumTotal;
-  private Being currentGenBestBeing;
-  private float currentGenBestFitness;
-  private int populationSize;
-  private int generationNumber;
-  private float bestFitness;
-  private Being bestBeing;
-  private float currentGenAverageFitness;
-  private long lifetimeOffspring;
-  private long lifetimeHillClimbs;
-  private long currentRejectedCreatures;
-  private long currentFailedHillClimbs;
-  private long lifetimeRejectedCreatures;
-  private long lifetimeFailedHillClimbs;
-  private int generations = 0;
-  private float averageFitness = 1;
+  private volatile Population population;
+  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd-HH:mm");
+  private Logger statsLogger = new Logger("population-"+formatter.format(LocalDateTime.now())+".txt");
+
+  float fitnessCurrentEvolingBeing=0;
+  private volatile double  fitnessSumTotal=0;
+  private volatile Being bestBeing=null;
+  private volatile float currentGenBestFitness = 1;
+  private volatile int populationSize=0;
+  private volatile int generationNumber=1;
+  private volatile float bestFitness=0;
+  private volatile long lifetimeOffspring=0;
+  private volatile long lifetimeHillClimbs=0;
+  private volatile long currentRejectedCreatures=0;
+  private volatile long currentFailedHillClimbs=0;
+  private volatile long lifetimeRejectedCreatures =0;
+  private volatile long lifetimeFailedHillClimbs =0;
+  private volatile int generations = 0;
+  private volatile float averageFitness = 0;
+  private volatile long elapsedTime = 0L;
+  private volatile double sumfitness = 0.0;
+  private volatile int lifetimeCrosses = 0;
+  private volatile double _past = 0;
+  private volatile double _current = 0;
+  private volatile float tenMinCounter = 0;
+  private volatile float minCounter = 0;
+
+  public Statistics(Population population)
+  {
+    this.population = population;
+  }
+
 
   public float getFirstGenAvgFitness()
   {
@@ -33,15 +54,21 @@ public abstract class Statistics
     this.firstGenAvgFitness = firstGenAvgFitness;
   }
 
-  public float getCurrentGenAverageFitness()
-  {
-    return currentGenAverageFitness;
-  }
+//  public float setAverageFitness()
+//  {
+//    float d = 0f;
+//    for (Being o : population)
+//    {
+//      d += o.getFitness();
+//    }
+//    averageFitness = d/population.size();
+//    return averageFitness;
+//  }
 
-  public void setCurrentGenAverageFitness(float currentGenAverageFitness)
-  {
-    this.currentGenAverageFitness = currentGenAverageFitness;
-  }
+//  public void setCurrentGenAverageFitness(float currentGenAverageFitness)
+//  {
+//    this.currentGenAverageFitness = currentGenAverageFitness;
+//  }
 
   public Being getBestBeing()
   {
@@ -51,6 +78,27 @@ public abstract class Statistics
   public void setBestBeing(Being bestBeing)
   {
     this.bestBeing = bestBeing;
+    this.setBestFitness(bestBeing.getFitness());
+  }
+
+  public void addFitneessToSum(float fitness)
+  {
+    fitnessSumTotal += fitness;
+  }
+
+  public void addHillClimbToSum(int hc)
+  {
+    lifetimeHillClimbs += hc;
+  }
+
+  public void addCrossesToSum(int cc)
+  {
+    lifetimeCrosses+= cc;
+  }
+
+  public void addGenerationToSum(int g)
+  {
+    generationNumber+= g;
   }
 
   public float getBestFitness()
@@ -58,10 +106,22 @@ public abstract class Statistics
     return bestFitness;
   }
 
-  public void setBestFitness(float bestFitness)
+  private void setBestFitness(float bestFitness)
   {
     this.bestFitness = bestFitness;
   }
+
+  public double getAverageFitness()
+  {
+        float d = 0f;
+        for (Being o : population)
+        {
+          d += o.getFitness();
+        }
+        averageFitness = d/population.size();
+        return averageFitness;
+  }
+
 
   public int getGenerationNumber()
   {
@@ -75,54 +135,64 @@ public abstract class Statistics
 
   public int getPopulationSize()
   {
-    return populationSize;
+    return population.size();
   }
 
-  public void setPopulationSize(int populationSize)
-  {
-    this.populationSize = populationSize;
-  }
-
-  public float getCurrentGenBestFitness()
-  {
-    return currentGenBestFitness;
-  }
-
-  public void setCurrentGenBestFitness(float currentGenBestFitness)
-  {
-    this.currentGenBestFitness = currentGenBestFitness;
-  }
-
-  public Being getCurrentGenBestBeing()
-  {
-    return currentGenBestBeing;
-  }
-
-  public void setCurrentGenBestBeing(Being currentGenBestBeing)
-  {
-    this.currentGenBestBeing = currentGenBestBeing;
-  }
 
   public double getFitnessSumTotal()
   {
     return fitnessSumTotal;
   }
 
-  public void setFitnessSumTotal(double fitnessSumTotal)
-  {
-    this.fitnessSumTotal = fitnessSumTotal;
-  }
-
-  public float getFitnessCurrentEvolingBeing()
-  {
-    return fitnessCurrentEvolingBeing;
-  }
-
-  public void setFitnessCurrentEvolingBeing(float fitnessCurrentEvolingBeing)
-  {
-    this.fitnessCurrentEvolingBeing = fitnessCurrentEvolingBeing;
-  }
 
   private float firstGenAvgFitness;
 
+  public void update(float delta)
+  {
+    elapsedTime += delta;
+    tenMinCounter += delta;
+    minCounter += delta;
+
+    if (minCounter >= 60)
+    {
+      if (_past == 0)
+      {
+        _past = getBestFitness();
+      }
+      _current = getBestFitness();
+      _past = _past / _current;
+    }
+    if (tenMinCounter >= 60)
+    {
+      statsLogger.export(this);
+      tenMinCounter = 0;
+    }
+  }
+
+  public double getAverageFitnessMin()
+  {
+    return _past;
+  }
+
+  @Override
+  public void write(StringBuilder s)
+  {
+    s.append("-------- Generation "+ getGenerationNumber() +" ---------\n");
+    s.append("Time (elapsed min):\t" + ((float)elapsedTime/60.0f/60.0f)).append("\n");
+    s.append("Population:\t" + populationSize).append("\n");
+    s.append("Genes:\t" + Gene.TOTAL).append("\n");
+    s.append("Beings:\t" + Being.TOTAL).append("\n");
+    s.append("Average fitness:\t" + getAverageFitness()).append("\n");
+    s.append("Best fitness:\t" + getBestFitness()).append("\n");
+    s.append("Lifetime HillClimbs:\t" + lifetimeHillClimbs).append("\n");
+    s.append("Lifetime Crossovers:\t" + lifetimeCrosses).append("\n");
+    s.append("Average fitness/min:\t" + _past).append("\n\n");
+    s.append("Diversity:\t" + (Being.TOTAL/getGenerationNumber())*Gene.TOTAL ).append("\n");
+  }
+
+  @Override
+  public void read(StringBuilder s)
+  {
+    throw new NotImplementedException();
+  }
 }
