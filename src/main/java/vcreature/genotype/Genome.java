@@ -247,6 +247,38 @@ public class Genome implements Savable
     return neighbors;
   }
 
+  public synchronized List<Gene> leafs()
+  {
+    ArrayList<Gene> leafs = new ArrayList<>();
+
+    Queue<Gene> frontier = new LinkedList<>();
+    frontier.add(getRoot());
+
+    HashMap<Gene, Gene> cameFrom = new HashMap<>();
+    cameFrom.put(getRoot(), null);
+
+    while (!frontier.isEmpty())
+    {
+      Gene current = frontier.remove();
+      List<Gene> neighbors = neighbors(current);
+
+      if (neighbors(current).size() == 0)
+      {
+        leafs.add(current);
+      }
+
+      for (Gene next : neighbors)
+      {
+        if (!cameFrom.containsKey(next))
+        {
+          frontier.add(next);
+          cameFrom.put(next, current);
+        }
+      }
+    }
+    return leafs;
+  }
+
   /**
    * remove the gene at the given position in the genome
    *

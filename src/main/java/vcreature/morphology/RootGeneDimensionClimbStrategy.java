@@ -39,7 +39,7 @@ public class RootGeneDimensionClimbStrategy<V> extends AbstractHillClimbStrategy
   {
     Random rand = new Random();
     float scaleFactor = rand.nextBoolean() ? 1.05f : 0.95f;
-    // only mutate diminution
+    // only mutate dimensions
     part.getRoot().getDimensions(vector3f);
 
     vector3f.x *= scaleFactor;
@@ -48,7 +48,7 @@ public class RootGeneDimensionClimbStrategy<V> extends AbstractHillClimbStrategy
 
     if (Block.min(vector3f) < 0.5f)
     {
-      return ;
+      return;
     }
 
     if (Block.max(vector3f) > 10*Block.min(vector3f))
