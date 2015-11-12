@@ -14,11 +14,10 @@ package vcreature.genotype;
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Vector3f;
-import vcreature.translations.GenomeSynthesizer;
+import com.jme3.scene.Node;
 import vcreature.phenotype.EnumNeuronInput;
 import vcreature.phenotype.EnumOperator;
-
-import com.jme3.scene.Node;
+import vcreature.translations.GenomeSynthesizer;
 import vcreature.utils.GenomeHelper;
 
 import java.util.*;
@@ -84,24 +83,25 @@ public class GenomeGenerator
       return;
     }
 
-    while (attempts <= params.MAX_GENERATION_ATTEMPTS)
+    while (attempts < params.MAX_GENERATION_ATTEMPTS)
     {
-      if (rand.nextFloat() <= params.CHILD_SPAWN_CHANCE && genome.neighbors(parent).size() <= params.MAX_CHILDREN)
+      if (rand.nextFloat() <= params.CHILD_SPAWN_CHANCE && genome.neighbors(parent).size() < params.MAX_CHILDREN)
       {
         gene = generateGene(parent);
-        if (GenomeHelper.isValid(physicsSpace, rootNode, genome))
-        {
-          if (rand.nextFloat() <= params.RECURSE_CHANCE)
-          {
-            addGenes(gene);
-          }
-        }
-        else
+        if (!GenomeHelper.isValid(physicsSpace, rootNode, genome))
         {
           genome.remove(gene);
         }
       }
       attempts += 1;
+    }
+
+    for (Gene child : genome.neighbors(parent))
+    {
+      if (rand.nextFloat() <= params.RECURSE_CHANCE)
+      {
+        addGenes(child);
+      }
     }
   }
 
@@ -117,7 +117,7 @@ public class GenomeGenerator
   private Gene generateGene(Gene parent)
   {
     Random rand = new Random();
-    Gene gene = new Gene(parent.getPosition()+1);
+    Gene gene = new Gene(genome.size());
 
     float[] rotations = {0f, 0f, 0f};
     Vector3f size = genRandSize(rand);
