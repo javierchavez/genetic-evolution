@@ -37,7 +37,6 @@ public class TouchSensor extends Sensor<TouchSensor, Float>
   @Override
   public void read(StringBuilder s)
   {
-    String value = s.substring(0, s.indexOf(","));
-    setValue(Float.parseFloat(s.toString()));
+    //setValue(Float.parseFloat(s.toString()));
   }
 }

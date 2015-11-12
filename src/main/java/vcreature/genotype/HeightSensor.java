@@ -36,6 +36,6 @@ public class HeightSensor extends Sensor<HeightSensor, Float>
   @Override
   public void read(StringBuilder s)
   {
-    setValue(Float.parseFloat(s.toString()));
+    // setValue(Float.parseFloat(s.toString()));
   }
 }

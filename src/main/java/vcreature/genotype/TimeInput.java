@@ -46,6 +46,6 @@ public class TimeInput implements NeuralInput<Float>, Savable
   @Override
   public void read(StringBuilder s)
   {
-    setValue(Float.parseFloat(s.toString()));
+    // setValue(Float.parseFloat(s.toString()));
   }
 }

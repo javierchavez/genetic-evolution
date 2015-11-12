@@ -30,7 +30,6 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
-import com.jme3.texture.Texture;
 import vcreature.phenotype.*;
 import vcreature.translations.CreatureSynthesizer;
 import vcreature.translations.GenomeSynthesizer;
@@ -56,9 +55,9 @@ public class MainSim extends SimpleApplication implements ActionListener
   private boolean isCameraRotating = true;
 
 
-//  private TextSynthesizer textSynthesizer;
-//  private GenomeSynthesizer genomeSynthesizer;
-//  private CreatureSynthesizer creatureSynthesizer;
+  private TextSynthesizer textSynthesizer;
+  private GenomeSynthesizer genomeSynthesizer;
+  private CreatureSynthesizer creatureSynthesizer;
 
   @Override
   public void simpleInitApp()
@@ -99,7 +98,7 @@ public class MainSim extends SimpleApplication implements ActionListener
     Block.initStaticMaterials(assetManager);
 
 
-//    logger = new Logger("flappybird.txt");
+//    logger = new Logger("best.txt");
 //    textSynthesizer = new TextSynthesizer();
 //    creatureSynthesizer = new CreatureSynthesizer();
 //    genomeSynthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
@@ -107,13 +106,13 @@ public class MainSim extends SimpleApplication implements ActionListener
 //    myCreature = new FlappyBird(physicsSpace, rootNode);
 //    logger.export(creatureSynthesizer.encode(myCreature));
 //    myCreature.remove();
-//    myCreature = genomeSynthesizer.encode(textSynthesizer.encode(new File("flappybird.txt")));
-//
-//    textSynthesizer = new TextSynthesizer();
-//    creatureSynthesizer = new CreatureSynthesizer();
-//    genomeSynthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
-//
 //    myCreature = genomeSynthesizer.encode(textSynthesizer.encode(new File("best.txt")));
+
+    textSynthesizer = new TextSynthesizer();
+    creatureSynthesizer = new CreatureSynthesizer();
+    genomeSynthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
+
+    myCreature = genomeSynthesizer.encode(textSynthesizer.encode(new File("best.txt")));
 
     initLighting();
     initKeys();
@@ -213,7 +212,7 @@ public class MainSim extends SimpleApplication implements ActionListener
     else if (isPressed && name.equals("Best"))
     {
       myCreature.remove();
-//      myCreature = genomeSynthesizer.encode(textSynthesizer.encode(new File("best.txt")));
+      myCreature = genomeSynthesizer.encode(textSynthesizer.encode(new File("best.txt")));
 
       cameraAngle = (float)(Math.PI/2.0);
       elapsedSimulationTime = 0.0f;
