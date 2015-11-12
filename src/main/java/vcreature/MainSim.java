@@ -30,8 +30,13 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
-
+import com.jme3.texture.Texture;
 import vcreature.phenotype.*;
+import vcreature.translations.CreatureSynthesizer;
+import vcreature.translations.GenomeSynthesizer;
+import vcreature.translations.TextSynthesizer;
+
+import java.io.File;
 
 
 
@@ -50,6 +55,10 @@ public class MainSim extends SimpleApplication implements ActionListener
   private Creature myCreature;
   private boolean isCameraRotating = true;
 
+
+//  private TextSynthesizer textSynthesizer;
+//  private GenomeSynthesizer genomeSynthesizer;
+//  private CreatureSynthesizer creatureSynthesizer;
 
   @Override
   public void simpleInitApp()
@@ -89,6 +98,7 @@ public class MainSim extends SimpleApplication implements ActionListener
 
     Block.initStaticMaterials(assetManager);
 
+
 //    logger = new Logger("flappybird.txt");
 //    textSynthesizer = new TextSynthesizer();
 //    creatureSynthesizer = new CreatureSynthesizer();
@@ -98,7 +108,12 @@ public class MainSim extends SimpleApplication implements ActionListener
 //    logger.export(creatureSynthesizer.encode(myCreature));
 //    myCreature.remove();
 //    myCreature = genomeSynthesizer.encode(textSynthesizer.encode(new File("flappybird.txt")));
-    //myCreature = new Tigger(physicsSpace, rootNode);
+//
+//    textSynthesizer = new TextSynthesizer();
+//    creatureSynthesizer = new CreatureSynthesizer();
+//    genomeSynthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
+//
+//    myCreature = genomeSynthesizer.encode(textSynthesizer.encode(new File("best.txt")));
 
     initLighting();
     initKeys();
@@ -135,6 +150,8 @@ public class MainSim extends SimpleApplication implements ActionListener
     inputManager.addMapping("FlappyBird3",  new KeyTrigger(KeyInput.KEY_3));
     inputManager.addMapping("FlappyBird4",  new KeyTrigger(KeyInput.KEY_4));
     inputManager.addMapping("FlappyBird5",  new KeyTrigger(KeyInput.KEY_4));
+    inputManager.addMapping("Best",  new KeyTrigger(KeyInput.KEY_B));
+
 
     // Add the names to the action listener.
     inputManager.addListener(this,"Quit");
@@ -144,6 +161,7 @@ public class MainSim extends SimpleApplication implements ActionListener
     inputManager.addListener(this,"FlappyBird3");
     inputManager.addListener(this,"FlappyBird4");
     inputManager.addListener(this,"FlappyBird5");
+    inputManager.addListener(this,"Best");
   }
   
   public void onAction(String name, boolean isPressed, float timePerFrame) 
@@ -188,6 +206,14 @@ public class MainSim extends SimpleApplication implements ActionListener
     {
       myCreature.remove();
       myCreature = new FlappyBird5(physicsSpace, rootNode);
+
+      cameraAngle = (float)(Math.PI/2.0);
+      elapsedSimulationTime = 0.0f;
+    }
+    else if (isPressed && name.equals("Best"))
+    {
+      myCreature.remove();
+//      myCreature = genomeSynthesizer.encode(textSynthesizer.encode(new File("best.txt")));
 
       cameraAngle = (float)(Math.PI/2.0);
       elapsedSimulationTime = 0.0f;
