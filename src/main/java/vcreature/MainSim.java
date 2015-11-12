@@ -18,7 +18,6 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
 import vcreature.genotype.Genome;
@@ -50,12 +49,9 @@ public class MainSim extends AbstractApplication implements ActionListener
     super.simpleInitApp();
 
     hudText = new BitmapText(guiFont, false);
-    hudText.setQueueBucket(RenderQueue.Bucket.Transparent);
-    hudText.setSize(guiFont.getCharSet().getRenderedSize());
-    hudText.setSize(settings.getHeight()/45);
-    hudText.setLocalTranslation(settings.getWidth()/45,settings.getHeight()-settings.getHeight()/45, 0); //
-
+    hudText.setSize(guiFont.getCharSet().getRenderedSize());      // font size
     hudText.setColor(ColorRGBA.Green);// font color
+    hudText.setLocalTranslation(20, hudText.getLineHeight() * 36, 0); // position
     guiNode.attachChild(hudText);
 
     genomeSynthesizer = new GenomeSynthesizer(getPhysicsSpace(), getRootNode());
@@ -198,15 +194,13 @@ public class MainSim extends AbstractApplication implements ActionListener
 
   public static void main(String[] args)
   {
-    Environment env = new Environment(2);
     AppSettings settings = new AppSettings(true);
+    Environment env = new Environment(2);
     env.setSettings(settings);
     env.start(JmeContext.Type.Headless);
 
-
-     settings.setResolution(1024, 768);
-     settings.setSamples(4); //activate antialising (softer edges, may be slower.)
-
+    settings.setResolution(1024, 768);
+    settings.setSamples(4); //activate antialising (softer edges, may be slower.)
     settings.setVSync(true);
     settings.setFrequency(60);//Frames per second
 
