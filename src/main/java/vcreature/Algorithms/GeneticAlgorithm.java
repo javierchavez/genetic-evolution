@@ -269,19 +269,19 @@ public class GeneticAlgorithm
 
     if (eChild.getPivotAxisX() == 1.0)
     {
-      eChild.setParentX(x * (parent.getLengthX() - (rnd.nextFloat() * parent.getLengthX()/2f)));
+      eChild.setParentX(rnd.nextFloat() * parent.getLengthX()/2f);
       eChild.setParentY(y * parent.getHeightY() / 2f);
       eChild.setParentZ(z * parent.getWidthZ() / 2f);
     }
     else if (eChild.getPivotAxisY() == 1.0)
     {
-      eChild.setParentY(y * (parent.getHeightY() - (rnd.nextFloat() * parent.getHeightY()/2f)));
+      eChild.setParentY(rnd.nextFloat() * parent.getHeightY()/2f);
       eChild.setParentX(x * parent.getLengthX() / 2f);
       eChild.setParentZ(z * parent.getWidthZ() / 2f);
     }
     else if (eChild.getPivotAxisZ() == 1.0)
     {
-      eChild.setParentZ(z * (parent.getWidthZ() - (rnd.nextFloat() * parent.getWidthZ()/2f)));
+      eChild.setParentZ(rnd.nextFloat() * parent.getWidthZ()/2f);
       eChild.setParentY(y * parent.getHeightY() / 2f);
       eChild.setParentX(x * parent.getLengthX() / 2f);
     }
