@@ -185,7 +185,7 @@ public class HillClimb
 
       if (iterations > beings.size() -1)
       {
-        if ((stats.getBestFitness() - initialBest) / stats.getBestFitness() <= .35)
+        if ((stats.getBestFitness() - initialBest) / stats.getBestFitness() >= .35)
         {
           System.out.println("Activating GA");
           stats.addGenerationToSum(1);

@@ -43,7 +43,7 @@ public class GeneticAlgorithm
     this.environment = environment;
     ga = new CrossoverStrategy();
     gam = new CrossoverMutation();
-    select = new TournamentSelect(statistics);
+    select = new TournamentSelect(environment.getStats());
   }
 
 

@@ -88,7 +88,7 @@ public class Environment extends AbstractApplication
   public Environment(int i)
   {
     super();
-    speed = 2;
+    speed = 4;
   }
 
   public Environment()
