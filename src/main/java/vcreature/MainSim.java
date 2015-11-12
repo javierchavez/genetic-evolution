@@ -204,8 +204,8 @@ public class MainSim extends AbstractApplication implements ActionListener
     env.start(JmeContext.Type.Headless);
 
 
-    // settings.setResolution(1024, 768);
-    // settings.setSamples(4); //activate antialising (softer edges, may be slower.)
+     settings.setResolution(1024, 768);
+     settings.setSamples(4); //activate antialising (softer edges, may be slower.)
 
     settings.setVSync(true);
     settings.setFrequency(60);//Frames per second
