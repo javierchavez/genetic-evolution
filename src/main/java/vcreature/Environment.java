@@ -12,7 +12,6 @@ package vcreature;
  */
 
 
-import com.jme3.font.BitmapText;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext;
 import vcreature.collections.EvolveManager;
@@ -84,7 +83,7 @@ public class Environment extends AbstractApplication
    private Logger evoLogger = new Logger("population-"+ formatter.format(LocalDateTime.now())+".txt");
 
   float tempbestFitness = 0f;
-  BitmapText hudText;
+
   private boolean pauseEvaluation = false;
 
   public Statistics getStats()
@@ -175,43 +174,7 @@ public class Environment extends AbstractApplication
 
 
 
-  @Override
-  public void onAction(String name, boolean isPressed, float timePerFrame)
-  {
-    if (isPressed && name.equals("Next"))
-    {
 
-    }
-    else if (isPressed && name.equals("Best"))
-    {
-
-      if (!pauseEvaluation)
-      {
-        pauseEvaluation=true;
-        if (creature!=null)
-        {
-          creature.remove();
-          creature = null;
-        }
-        creature = genomeSynthesizer.encode(evolution.getBest().getGenotype());
-
-      }
-      else if (pauseEvaluation)
-      {
-
-        pauseEvaluation = false;
-        creature.remove();
-        creature = null;
-      }
-
-      elapsedSimulationTime = 0.0f;
-    }
-    else if (isPressed && name.equals("Quit"))
-    {
-      //System.out.format("Creature Fitness (Maximum height of lowest point) = %.3f meters]\n", creature.getFitness());
-      System.exit(0);
-    }
-  }
 
   /* Use the main event loop to trigger repeating actions. */
   @Override
@@ -220,6 +183,9 @@ public class Environment extends AbstractApplication
     super.simpleUpdate(deltaSeconds);
 
     elapsedSimulationTime += deltaSeconds;
+    stats.update(deltaSeconds);
+    totalSimTime += deltaSeconds;
+
 
     if (!pauseEvaluation)
     {
@@ -262,23 +228,16 @@ public class Environment extends AbstractApplication
     {
       creature.updateBrain(elapsedSimulationTime);
     }
-    stats.update(deltaSeconds);
 
-
-    totalSimTime += deltaSeconds;
     if(totalSimTime >= 60f)
     {
       System.out.println(stats.getAverageFitnessMin());
-//      float newBest = 1;// evolution.getBestFitness();
-//      fitnessChangePerMinute= tempbestFitness - newBest;
-//      tempbestFitness =  newBest;
       totalSimTime = 0;
     }
 
 
     if ((System.currentTimeMillis() - logStartTime) > Attributes.LOG_INTERVAL)
     {
-      // evoLogger.export(evolution);
       logStartTime = System.currentTimeMillis();
     }
   }
@@ -303,15 +262,6 @@ public class Environment extends AbstractApplication
     return population;
   }
 
-  /**
-   * Set whether to spawn a new generation
-   *
-   * @param generationSpawn true | false
-   */
-  public void setGenerationSpawn(boolean generationSpawn)
-  {
-    this.newGenerationSpwan = generationSpawn;
-  }
 
   private int genRandDim(int max)
   {
@@ -329,10 +279,7 @@ public class Environment extends AbstractApplication
     //   Your application will have more work to do than to spend cycles rendering faster than the
     //   capture rate of the RED Camera used to shoot Lord of the Rings.
     settings.setVSync(true);
-    settings.setFrequency(60);//Frames per second
-    settings.setTitle("Flappy Bird Creature");
-
-    System.out.println("Starting App");
+    settings.setFrequency(60); //Frames per second
 
     Environment app = new Environment();
     app.setShowSettings(false);

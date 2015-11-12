@@ -90,11 +90,14 @@ public class GeneticAlgorithm
 
         // printBeing(individual);
         float fitness = individual.getFitness();
+        statistics.addFitnessToSum((fitness));
+        if (fitness >= statistics.getBestFitness())
+        {
+          statistics.setBestBeing(individual);
+        }
         System.out.println("Evaluation complete...");
 
-
-        summedFitness = summedFitness + fitness;
-
+        //summedFitness = summedFitness + fitness;
       }
     }
     while (generationNumber < 50);

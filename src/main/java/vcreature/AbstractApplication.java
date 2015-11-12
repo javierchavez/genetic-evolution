@@ -16,7 +16,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.input.controls.ActionListener;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
@@ -36,7 +35,7 @@ import vcreature.phenotype.PhysicsConstants;
  * Class for defining an application to run the genetic algorithm in.
  * Can run headless.
  */
-public abstract class AbstractApplication extends SimpleApplication implements ActionListener
+public abstract class AbstractApplication extends SimpleApplication
 {
   private BulletAppState bulletAppState;
   private PhysicsSpace physicsSpace;
@@ -124,10 +123,10 @@ public abstract class AbstractApplication extends SimpleApplication implements A
       //Move camera continously in circle of radius 25 meters centered 10 meters
       //  above the origin.
       cameraAngle += tpf * 2.0 * Math.PI / 60.0; //rotate full circle every minute
-      float x = (float) (25.0 * Math.cos(cameraAngle));
-      float z = (float) (25.0 * Math.sin(cameraAngle));
+      float x = (float) (75.0 * Math.cos(cameraAngle));
+      float z = (float) (75.0 * Math.sin(cameraAngle));
 
-      tmpVec3 = new Vector3f(x, 10.0f, z);
+      tmpVec3 = new Vector3f(x, 40.0f, z);
       cam.setLocation(tmpVec3);
       cam.lookAt(Vector3f.ZERO, Vector3f.UNIT_Y);
     }
