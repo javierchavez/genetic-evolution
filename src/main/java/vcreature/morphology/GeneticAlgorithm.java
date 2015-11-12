@@ -106,7 +106,6 @@ public class GeneticAlgorithm
     Being parent2;
     nextGeneration = new ArrayList<>();
 
-    // TODO determine what type of selection
     ArrayList<Being> newParents = select.select(beings);
 
 

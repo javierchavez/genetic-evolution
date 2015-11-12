@@ -25,7 +25,6 @@ import vcreature.translations.CreatureSynthesizer;
 import vcreature.translations.GenomeSynthesizer;
 import vcreature.utils.Statistics;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 
@@ -34,14 +33,8 @@ import java.util.Random;
  */
 public class Environment extends AbstractApplication
 {
-
-  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd-HH:mm");
-
   private float elapsedSimulationTime = 0.0f;
   private float totalSimTime = 0.0f;
-  private float fitnessChangePerMinute = 0;
-
-
 
   // Main population
   private Population population;
@@ -125,13 +118,12 @@ public class Environment extends AbstractApplication
     generator = new GenomeGenerator(getPhysicsSpace(), rootNode);
 
     // Fill up the population
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 100; i++)
     {
 
       FlappyBird _creature = new FlappyBird(getPhysicsSpace(), rootNode);
       FlappyBird3 _creature3 = new FlappyBird3(getPhysicsSpace(), rootNode);
       FlappyBird4 _creature4 = new FlappyBird4(getPhysicsSpace(), rootNode);
-      FlappyBird5 _creature5 = new FlappyBird5(getPhysicsSpace(), rootNode);
 
       Genome _genome = creatureSynthesizer.encode(_creature);
       _creature.remove();
@@ -152,23 +144,14 @@ public class Environment extends AbstractApplication
       bb4.setGenotype(_genome4);
       population.add(bb4);
 
-      Genome _genome5 = creatureSynthesizer.encode(_creature5);
-      _creature5.remove();
-      Being bb5 = new Being();
-      bb5.setGenotype(_genome5);
-      population.add(bb5);
-
-      //if(i % 2 == 0)
-      // {
-    }
-    for (int i = 0; i < 5; i++)
+      for (int x = 0; x < 70; x++)
       {
         Being _randBeing = new Being();
         _randBeing.setGenotype(generator.generateGenome());
         population.add(_randBeing);
-     // }
-      }
 
+      }
+    }
 
     // set the population to a evolution
     evolution = new EvolveManager(population, stats);
@@ -286,7 +269,7 @@ public class Environment extends AbstractApplication
     settings.setVSync(true);
     settings.setFrequency(60); //Frames per second
 
-    Environment app = new Environment();
+    Environment app = new Environment(1);
     app.setShowSettings(false);
     app.setSettings(settings);
 
