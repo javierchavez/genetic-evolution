@@ -174,18 +174,22 @@ public class HillClimb
 
   public boolean evolve(ArrayList<Being> beings, EvolveManager evolveManager)
   {
-
+    double initialBest = stats.getBestFitness();
     // this is morphing the population straight away.
     for (int i = 0; i < beings.size(); i++)
     {
       hillClimbingEvaluation(beings.get(i));
 
-      if ( stats.getBestFitness()/(stats.getAverageFitness()/iterations) <=  .15)
+      //if ( stats.getBestFitness()/(stats.getAverageFitness()/iterations) <=  .15)
+      if (iterations > beings.size() -1)
       {
-        System.out.println("Activating GA");
-        stats.addGenerationToSum(1);
-        evolveManager.setMuting(false);
-        return false;
+        if ((stats.getBestFitness() - initialBest) / stats.getBestFitness() <= .35)
+        {
+          System.out.println("Activating GA");
+          stats.addGenerationToSum(1);
+          evolveManager.setMuting(false);
+          return false;
+        }
       }
     }
     stats.addGenerationToSum(1);
