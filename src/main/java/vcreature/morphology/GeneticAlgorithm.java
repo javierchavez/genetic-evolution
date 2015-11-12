@@ -92,8 +92,8 @@ public class GeneticAlgorithm
       }
 
     }
-    while (localGenerations < 50);
-
+    while (localGenerations < 2);
+    evolveManager.setMuting(true);
     return false;
   }
 

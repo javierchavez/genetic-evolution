@@ -17,7 +17,6 @@ import vcreature.morphology.GeneticAlgorithm;
 import vcreature.morphology.HillClimb;
 import vcreature.utils.Savable;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -137,8 +136,11 @@ public class Population extends ArrayList<Being> implements Savable
   @Override
   public void write(StringBuilder s)
   {
-    s.append(LocalDateTime.now()).append(",");
-    s.append(this.size());
+    for (Being being : beings)
+    {
+      being.getGenotype().write(s);
+    }
+
   }
 
   @Override

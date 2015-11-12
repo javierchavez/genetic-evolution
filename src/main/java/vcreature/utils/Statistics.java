@@ -14,12 +14,17 @@ public class Statistics implements Savable
   private volatile Population population;
   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd-HH:mm");
   private Logger statsLogger = new Logger("population-"+formatter.format(LocalDateTime.now())+".txt");
+  private Logger populationLogger = new Logger();
+
 
   float fitnessCurrentEvolingBeing=0;
   private volatile double  fitnessSumTotal=0;
   private volatile Being bestBeing=null;
   private volatile float currentGenBestFitness = 1;
   private volatile int populationSize=0;
+  private int initPopulation = 0;
+  private int initGene = 0;
+  private int initBeing = 0;
   private volatile int generationNumber=1;
   private volatile float bestFitness=0;
   private volatile long lifetimeOffspring=0;
@@ -42,6 +47,9 @@ public class Statistics implements Savable
   public Statistics(Population population)
   {
     this.population = population;
+    initPopulation = population.size();
+    initGene = Gene.TOTAL;
+    initBeing = Being.TOTAL;
   }
 
 
@@ -144,11 +152,14 @@ public class Statistics implements Savable
       _current = getFitnessSumTotal();
       _past = (_past + _current)/timesCalled;
     }
-    if (tenMinCounter >= 60)
+    if (tenMinCounter >= 60000)
     {
       statsLogger.export(this);
+      populationLogger.setFileName("genomes" + formatter.format(LocalDateTime.now())+".txt");
+      populationLogger.export(population);
       tenMinCounter = 0;
     }
+
   }
 
   public double getAverageFitnessMin()
@@ -160,7 +171,11 @@ public class Statistics implements Savable
   public void write(StringBuilder s)
   {
     s.append("-------- Generation "+ getGenerationNumber() +" ---------\n");
-    s.append("Time (elapsed min):\t" + ((float)elapsedTime/60.0f)).append("\n");
+
+    s.append("Time:\t" + System.currentTimeMillis()).append("\n");
+    s.append("Init Being:\t" + initBeing).append("\n");
+    s.append("Init Genes:\t" + initGene).append("\n");
+    s.append("Init Population:\t" + initPopulation).append("\n");
     s.append("Population:\t" + getPopulationSize()).append("\n");
     s.append("Genes:\t" + Gene.TOTAL).append("\n");
     s.append("Beings:\t" + Being.TOTAL).append("\n");

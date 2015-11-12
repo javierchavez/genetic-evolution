@@ -23,10 +23,8 @@ import vcreature.morphology.HillClimb;
 import vcreature.phenotype.*;
 import vcreature.translations.CreatureSynthesizer;
 import vcreature.translations.GenomeSynthesizer;
-import vcreature.utils.Logger;
 import vcreature.utils.Statistics;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
@@ -42,6 +40,8 @@ public class Environment extends AbstractApplication
   private float elapsedSimulationTime = 0.0f;
   private float totalSimTime = 0.0f;
   private float fitnessChangePerMinute = 0;
+
+
 
   // Main population
   private Population population;
@@ -78,8 +78,6 @@ public class Environment extends AbstractApplication
   private boolean beingAdded;
 
   private double logStartTime = 0.0;
-
-   private Logger evoLogger = new Logger("population-"+ formatter.format(LocalDateTime.now())+".txt");
 
   float tempbestFitness = 0f;
 

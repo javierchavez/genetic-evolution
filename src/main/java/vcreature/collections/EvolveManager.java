@@ -79,11 +79,14 @@ public class EvolveManager extends Thread implements Savable
         Collections.sort(population);
         double avg = statistics.getAverageFitness();
 
-        for (int i = 0; i < population.size(); i++)
+        if (population.size() > 2000)
         {
-          if ( (avg - population.get(i).getFitness())/ avg >= .65)
+          for (int i = 0; i < population.size(); i++)
           {
-            population.remove(i);
+            if (population.get(i).getFitness() < avg / 4)
+            {
+              population.remove(i);
+            }
           }
         }
 
