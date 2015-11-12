@@ -49,7 +49,8 @@ public class TextSynthesizer extends Synthesizer<File, Genome>
               genome.read(sb);
 
               sb.delete(0, sb.toString().length());
-              break;
+              //break;
+              return genome;
             }
           }
         }

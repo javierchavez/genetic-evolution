@@ -41,6 +41,7 @@ import java.util.Random;
  */
 public class Environment extends AbstractApplication
 {
+
   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd-HH:mm");
 
   private float elapsedSimulationTime = 0.0f;
@@ -260,6 +261,7 @@ public class Environment extends AbstractApplication
         being.setUnderEvaluation(false);
 
         creature.remove();
+        getPhysicsSpace().distributeEvents();
         creature = null;
       }
 
@@ -352,7 +354,6 @@ public class Environment extends AbstractApplication
 
     if (args.length > 0)
     {
-
       if (args[0].equalsIgnoreCase("headless"))
       {
         app.start(JmeContext.Type.Headless);
@@ -367,6 +368,4 @@ public class Environment extends AbstractApplication
       app.start();
     }
   }
-
-
 }

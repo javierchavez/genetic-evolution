@@ -81,7 +81,7 @@ public class Statistics implements Savable
     this.setBestFitness(bestBeing.getFitness());
   }
 
-  public void addFitneessToSum(float fitness)
+  public void addFitnessToSum(float fitness)
   {
     fitnessSumTotal += fitness;
   }
@@ -160,7 +160,7 @@ public class Statistics implements Savable
         _past = getBestFitness();
       }
       _current = getBestFitness();
-      _past = _past / _current;
+      _past = (_past + _current)/2;
     }
     if (tenMinCounter >= 60)
     {
@@ -187,7 +187,7 @@ public class Statistics implements Savable
     s.append("Lifetime HillClimbs:\t" + lifetimeHillClimbs).append("\n");
     s.append("Lifetime Crossovers:\t" + lifetimeCrosses).append("\n");
     s.append("Average fitness/min:\t" + _past).append("\n\n");
-    s.append("Diversity:\t" + (Being.TOTAL/getGenerationNumber())*Gene.TOTAL ).append("\n");
+    s.append("Diversity:\t" + (Being.TOTAL*getGenerationNumber())/Gene.TOTAL ).append("\n");
   }
 
   @Override

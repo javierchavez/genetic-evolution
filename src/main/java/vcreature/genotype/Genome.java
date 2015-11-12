@@ -328,7 +328,7 @@ public class Genome implements Savable
     Scanner scanner = new Scanner(str);
     if (scanner.hasNextLine() && scanner.nextLine().equals("START"))
     {
-      genes.clear();
+      //genes.clear();
       while (scanner.hasNextLine() && !(line = scanner.nextLine()).equals("END"))
       {
         Gene gene = new Gene(genes.size());

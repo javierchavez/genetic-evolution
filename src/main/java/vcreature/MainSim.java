@@ -16,23 +16,23 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
+import com.jme3.light.AmbientLight;
+import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
-import com.jme3.texture.Texture;
-import com.jme3.renderer.queue.RenderQueue.ShadowMode;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.light.DirectionalLight;
-import com.jme3.math.ColorRGBA;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
-import com.jme3.light.AmbientLight;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.KeyTrigger;
 import com.jme3.system.AppSettings;
 
 import vcreature.phenotype.*;
+
 
 
 /**
@@ -49,6 +49,7 @@ public class MainSim extends SimpleApplication implements ActionListener
   private Vector3f tmpVec3; //
   private Creature myCreature;
   private boolean isCameraRotating = true;
+
 
   @Override
   public void simpleInitApp()
@@ -68,10 +69,7 @@ public class MainSim extends SimpleApplication implements ActionListener
     //Set up inmovable floor
     Box floor = new Box(50f, 0.1f, 50f);
     Material floor_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-    Texture floorTexture = assetManager.loadTexture("Textures/FloorTile.png");
 
-    floorTexture.setWrap(Texture.WrapMode.Repeat);
-    floor_mat.setTexture("ColorMap", floorTexture);
 
     floor.scaleTextureCoordinates(new Vector2f(50, 50));
     Geometry floor_geo = new Geometry("Floor", floor);
@@ -90,7 +88,16 @@ public class MainSim extends SimpleApplication implements ActionListener
             PhysicsConstants.GROUND_ANGULAR_DAMPINING);
 
     Block.initStaticMaterials(assetManager);
-    myCreature = new FlappyBird(physicsSpace, rootNode);
+
+//    logger = new Logger("flappybird.txt");
+//    textSynthesizer = new TextSynthesizer();
+//    creatureSynthesizer = new CreatureSynthesizer();
+//    genomeSynthesizer = new GenomeSynthesizer(physicsSpace, rootNode);
+//
+//    myCreature = new FlappyBird(physicsSpace, rootNode);
+//    logger.export(creatureSynthesizer.encode(myCreature));
+//    myCreature.remove();
+//    myCreature = genomeSynthesizer.encode(textSynthesizer.encode(new File("flappybird.txt")));
     //myCreature = new Tigger(physicsSpace, rootNode);
 
     initLighting();

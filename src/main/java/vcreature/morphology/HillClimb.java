@@ -99,7 +99,7 @@ public class HillClimb
 
       currentOptimizedFitness = individual.getFitness();
 
-      stats.addFitneessToSum(((float) currentOptimizedFitness));
+      stats.addFitnessToSum(((float) currentOptimizedFitness));
 
       // If the being is still failing to jump, get rid of it.
       if (currentFitnessValue < 1 && currentOptimizedFitness < 1)
