@@ -269,7 +269,7 @@ public class Environment extends AbstractApplication
     settings.setVSync(true);
     settings.setFrequency(60); //Frames per second
 
-    Environment app = new Environment(1);
+    Environment app = new Environment();
     app.setShowSettings(false);
     app.setSettings(settings);
 
@@ -278,6 +278,7 @@ public class Environment extends AbstractApplication
       if (args[0].equalsIgnoreCase("headless"))
       {
         app.start(JmeContext.Type.Headless);
+        app.speed = 4;
       }
       else
       {
