@@ -100,7 +100,7 @@ public class Statistics implements Savable
   public double getAverageFitness()
   {
         float d = 0f;
-        for (Being o : population)
+        for (Being o : population.getBeings())
         {
           d += o.getFitness();
         }
