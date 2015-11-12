@@ -191,4 +191,25 @@ public class Statistics implements Savable
   {
     throw new NotImplementedException();
   }
+
+  @Override
+  public String toString()
+  {
+    StringBuilder s = new StringBuilder();
+    s.append("-------- Generation "+ getGenerationNumber() +" ---------\n");
+    s.append("Time:\t" + System.currentTimeMillis()).append("\n");
+    s.append("Init Being:\t" + initBeing).append("\n");
+    s.append("Init Genes:\t" + initGene).append("\n");
+    s.append("Init Population:\t" + initPopulation).append("\n");
+    s.append("Population:\t" + getPopulationSize()).append("\n");
+    s.append("Genes:\t" + Gene.TOTAL).append("\n");
+    s.append("Beings:\t" + Being.TOTAL).append("\n");
+    s.append("Average fitness:\t" + getAverageFitness()).append("\n");
+    s.append("Best fitness:\t" + getBestFitness()).append("\n");
+    s.append("Lifetime HillClimbs:\t" + lifetimeHillClimbs).append("\n");
+    s.append("Lifetime Crossovers:\t" + lifetimeCrosses).append("\n");
+    s.append("Average fitness/min:\t" + _past).append("\n");
+    s.append("Diversity:\t" + (((lifetimeCrosses) / Gene.TOTAL) * Math.log((lifetimeCrosses) / Gene.TOTAL))/Being.TOTAL ).append("\n\n");
+    return s.toString();
+  }
 }

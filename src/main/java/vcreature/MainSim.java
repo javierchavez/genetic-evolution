@@ -23,6 +23,7 @@ import com.jme3.system.JmeContext;
 import vcreature.genotype.Genome;
 import vcreature.phenotype.Creature;
 import vcreature.translations.GenomeSynthesizer;
+import vcreature.utils.Statistics;
 
 /**
  * Environment housing all the applications main functionality.
@@ -41,17 +42,23 @@ public class MainSim extends AbstractApplication implements ActionListener
   private Environment environment;
   private GenomeSynthesizer genomeSynthesizer;
   private BitmapText hudText;
+  private BitmapText statsText;
+  private boolean showStats = false;
+
 
   @Override
   public void simpleInitApp()
   {
 
     super.simpleInitApp();
-
     hudText = new BitmapText(guiFont, false);
+    statsText = new BitmapText(guiFont, false);
     hudText.setSize(guiFont.getCharSet().getRenderedSize());      // font size
+    statsText.setSize(guiFont.getCharSet().getRenderedSize());      // font size
     hudText.setColor(ColorRGBA.Green);// font color
-    hudText.setLocalTranslation(20, hudText.getLineHeight() * 36, 0); // position
+    statsText.setColor(ColorRGBA.LightGray);
+    hudText.setLocalTranslation(settings.getWidth()*.80f, hudText.getLineHeight() * 36, 0); // position
+    statsText.setLocalTranslation(settings.getWidth()*.05f, hudText.getLineHeight() * 36, 0); // position
     guiNode.attachChild(hudText);
 
     genomeSynthesizer = new GenomeSynthesizer(getPhysicsSpace(), getRootNode());
@@ -70,6 +77,7 @@ public class MainSim extends AbstractApplication implements ActionListener
     inputManager.addMapping("Change Creature", new KeyTrigger(KeyInput.KEY_C));
     inputManager.addMapping("Iterate", new KeyTrigger(KeyInput.KEY_N));
     inputManager.addMapping("Evaluation", new KeyTrigger(KeyInput.KEY_E));
+    inputManager.addMapping("Stats", new KeyTrigger(KeyInput.KEY_S));
 
     // Add the names to the action listener.
     inputManager.addListener(this, "Quit");
@@ -77,6 +85,7 @@ public class MainSim extends AbstractApplication implements ActionListener
     inputManager.addListener(this, "Change Creature");
     inputManager.addListener(this, "Iterate");
     inputManager.addListener(this, "Evaluation");
+    inputManager.addListener(this, "Stats");
   }
 
   public void onAction(String name, boolean isPressed, float timePerFrame)
@@ -85,6 +94,21 @@ public class MainSim extends AbstractApplication implements ActionListener
     if (isPressed && name.equals("Toggle Camera Rotation"))
     {
       isCameraRotating = !isCameraRotating;
+    }
+    else if (isPressed && name.equals("Stats"))
+    {
+      if (environment.getStats() != null && !showStats)
+      {
+        hudText.removeFromParent();
+        guiNode.attachChild(statsText);
+      }
+      else
+      {
+
+        statsText.removeFromParent();
+        guiNode.attachChild(hudText);
+      }
+      showStats = !showStats;
     }
     else if(isPressed && name.equals("Iterate"))
     {
@@ -185,7 +209,13 @@ public class MainSim extends AbstractApplication implements ActionListener
     {
       myCreature.updateBrain(elapsedSimulationTime);
     }
+    if (showStats)
+    {
+      Statistics stats = environment.getStats();
+      statsText.setText(stats.toString());
+    }
   }
+
 
   public void setPopulation(Environment environment)
   {
@@ -206,8 +236,9 @@ public class MainSim extends AbstractApplication implements ActionListener
 
 
 
-
     MainSim app = new MainSim();
+    app.setDisplayFps(false);       // to hide the FPS
+    app.setDisplayStatView(false);
     app.setPopulation(env);
     app.setShowSettings(false);
     app.setSettings(settings);
