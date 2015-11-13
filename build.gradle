@@ -43,15 +43,4 @@ task server(type: JavaExec) {
     args = ["headless"]
 }
 
-task load_headless(type: JavaExec) {
-    main = "vcreature.Environment"
-    classpath = sourceSets.main.runtimeClasspath
-    args = ["headless", ""]
-}
-
-task load(type: JavaExec) {
-    main = "vcreature.Environment"
-    classpath = sourceSets.main.runtimeClasspath
-    args = ["headless"]
-}
 

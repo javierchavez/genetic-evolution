@@ -69,20 +69,22 @@ public class EvolveManager extends Thread implements Savable
           {
             if (HILL_CLIMB)
             {
+              System.out.println("[BEGIN]: HC");
               population.getMutating().evolve(population, this);
               interrupt();
               isEvolving = false;
-              System.out.println("DONE HC");
+              System.out.println("[END]: HC");
             }
           }
           else
           {
             if (GA)
             {
+              System.out.println("[START]: CROSS");
               population.getBreeding().evolve(population, this);
               interrupt();
               isEvolving = false;
-              System.out.println("DONE Mating");
+              System.out.println("[END]: CROSS");
             }
           }
         }
@@ -91,6 +93,7 @@ public class EvolveManager extends Thread implements Savable
 
         if (population.size() > 300)
         {
+          System.out.println("[TRIM]:  population.");
           for (int i = 0; i < population.size(); i++)
           {
             if (population.get(i).getFitness() < .10f)

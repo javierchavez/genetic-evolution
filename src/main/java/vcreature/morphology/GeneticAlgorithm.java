@@ -58,11 +58,6 @@ public class GeneticAlgorithm
   public boolean evolve(Population beings, EvolveManager evolveManager)
   {
     int localGenerations = 0;
-    for (Being being : beings)
-    {
-      being.setAge(0);
-      being.setChildren(0);
-    }
 
     do
     {

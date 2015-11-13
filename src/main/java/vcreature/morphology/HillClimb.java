@@ -180,8 +180,9 @@ public class HillClimb
 
       if (iterations > beings.size() -1)
       {
-        if (stats.getDiversity() > .0001)
+        if (stats.getDiversity() > .0100)
         {
+          System.out.println("Ending hill climbing due to diversity.");
           stats.addGenerationToSum(1);
           evolveManager.setMuting(false);
           return false;
