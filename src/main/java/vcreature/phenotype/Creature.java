@@ -400,7 +400,6 @@ public class Creature
     { 
       physicsSpace.update(0);
       maxHeightOfLowestPoint = 0;
-      System.out.println("Creature.updateBrain() start");
       this.elapsedSimulationTime = elapsedSimulationTime;
       return 0;
     }

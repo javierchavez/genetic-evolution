@@ -138,7 +138,7 @@ public class Population extends ArrayList<Being> implements Savable
   {
     for (Being being : beings)
     {
-      being.getGenotype().write(s);
+      being.write(s);
     }
 
   }

@@ -12,14 +12,16 @@ package vcreature;
  */
 
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import vcreature.genotype.Genome;
+import vcreature.utils.Savable;
 
 
 /**
  * Mainly to house the Genome and data about the Being.
  * This class describes an object which gets evolved in GA
  */
-public class Being implements Comparable<Being>
+public class Being implements Comparable<Being>, Savable
 {
   public static int TOTAL = 0;
 
@@ -77,8 +79,8 @@ public class Being implements Comparable<Being>
    */
   public Being(Genome bird)
   {
+    this();
     this.genotype = bird;
-    TOTAL++;
   }
 
   /**
@@ -217,5 +219,21 @@ public class Being implements Comparable<Being>
 
 
     return 0;
+  }
+
+  @Override
+  public void write(StringBuilder s)
+  {
+    s.append("START\n");
+    s.append(getFitness()).append("\n");
+    s.append(getAge()).append("\n");
+    s.append(getTimesHillClimbed()).append("\n");
+    getGenotype().write(s);
+  }
+
+  @Override
+  public void read(StringBuilder s)
+  {
+    throw new NotImplementedException();
   }
 }

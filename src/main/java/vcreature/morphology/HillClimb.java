@@ -44,13 +44,6 @@ public class HillClimb
   public HillClimb(Environment environment)
   {
     this.environment = environment;
-
-    strategies.add(new RootGeneDimensionClimbStrategy<>(1f));
-    strategies.add(new LimbGeneDimensionClimbStrategy<>(.80f));
-    strategies.add(new EffectorClimbStrategy(.30f));
-    strategies.add(new NeuralNetClimbStrategy(.20f));
-    strategies.peek();
-
   }
 
   /**
@@ -75,7 +68,6 @@ public class HillClimb
       lowest = Math.min(individual.getFitness(), lowest);
       highest = Math.max(individual.getFitness(), highest);
 
-      /*TODO add gene to strategy*/
       Gene gene= individual.getGenotype().get(i);
 
       // get a strategy from the queue.
@@ -84,7 +76,6 @@ public class HillClimb
       // call the strategy
       currentStrategy.climb(individual.getGenotype(), gene);
 
-      System.out.println(currentStrategy.toString());
 
       currentFitnessValue = individual.getFitness();
       environment.beginEvaluation(individual);
@@ -116,7 +107,7 @@ public class HillClimb
       // if this was a bad mutation
       if (currentFitnessValue >= currentOptimizedFitness)
       {
-        float factor = .10f;
+        float factor = .20f;
         // if it is now worse than the worst being, set the factor higher
         if (currentFitnessValue <= lowest)
         {
@@ -128,7 +119,6 @@ public class HillClimb
         // if this creature is not improving then escape
         if (tries > 4)
         {
-          System.out.println("Local min");
           break;
         }
       }
@@ -148,7 +138,6 @@ public class HillClimb
         // if this creature is not improving then escape
         if (tries > 4 && currentOptimizedFitness <= highest)
         {
-          System.out.println("Local max");
           break;
         }
         // try the mutation again!!!!!
@@ -159,7 +148,7 @@ public class HillClimb
 
 
 
-    System.out.println("Individual done improved by " + (currentOptimizedFitness - currentFitneesBeing));
+    System.out.println("HC results: " + (currentOptimizedFitness - currentFitneesBeing));
     if (currentStrategy != null)
     {
       strategies.add(currentStrategy);
@@ -176,6 +165,12 @@ public class HillClimb
   public boolean evolve(ArrayList<Being> beings, EvolveManager evolveManager)
   {
     double initialBest = stats.getBestFitness();
+    strategies.clear();
+    strategies.add(new RootGeneDimensionIncreaseStrategey<>(1f));
+    strategies.add(new RootGeneDimensionDecreaseStrategy<>(1f));
+    strategies.add(new LimbGeneDimensionClimbStrategy<>(1f));
+    strategies.add(new EffectorClimbStrategy(1f));
+    strategies.add(new NeuralNetClimbStrategy(1f));
 
     // this is morphing the population straight away.
     for (int i = 0; i < beings.size(); i++)
@@ -185,15 +180,15 @@ public class HillClimb
 
       if (iterations > beings.size() -1)
       {
-        if ((stats.getBestFitness() - initialBest) / stats.getBestFitness() >= .35)
+        if (stats.getDiversity() > .0001)
         {
-          System.out.println("Activating GA");
           stats.addGenerationToSum(1);
           evolveManager.setMuting(false);
           return false;
         }
       }
     }
+    evolveManager.setMuting(false);
     stats.addGenerationToSum(1);
 
     return true;

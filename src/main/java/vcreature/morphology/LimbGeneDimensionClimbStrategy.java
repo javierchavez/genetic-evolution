@@ -5,8 +5,6 @@ import vcreature.genotype.Gene;
 import vcreature.genotype.Genome;
 import vcreature.phenotype.Block;
 
-import java.util.Random;
-
 
 public class LimbGeneDimensionClimbStrategy<V> extends AbstractHillClimbStrategy<Genome, V> implements HillClimbStrategy<Genome, V>
 {
@@ -20,8 +18,7 @@ public class LimbGeneDimensionClimbStrategy<V> extends AbstractHillClimbStrategy
   @Override
   public void climb(Genome part, V partHelper)
   {
-    Random rand = new Random();
-    float scaleFactor = rand.nextBoolean() ? 1.05f : 0.95f;
+    float scaleFactor = 0.95f;
     // only mutate dimensions
 
     for (Gene g : part.leafs())

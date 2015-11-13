@@ -35,9 +35,21 @@ sourceSets {
 }
 
 
-mainClassName = "vcreature.Environment"
+mainClassName = "vcreature.MainSim"
 
 task server(type: JavaExec) {
+    main = "vcreature.Environment"
+    classpath = sourceSets.main.runtimeClasspath
+    args = ["headless"]
+}
+
+task load_headless(type: JavaExec) {
+    main = "vcreature.Environment"
+    classpath = sourceSets.main.runtimeClasspath
+    args = ["headless", ""]
+}
+
+task load(type: JavaExec) {
     main = "vcreature.Environment"
     classpath = sourceSets.main.runtimeClasspath
     args = ["headless"]

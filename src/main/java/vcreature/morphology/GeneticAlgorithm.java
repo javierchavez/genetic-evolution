@@ -12,6 +12,7 @@ import vcreature.utils.Statistics;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static vcreature.morphology.GeneticAlgorithmParams.*;
 import static vcreature.morphology.GeneticStrategy.GA_TYPE;
 
 /**
@@ -31,8 +32,8 @@ public class GeneticAlgorithm
   private ArrayList<Being> nextGeneration;
   private Statistics statistics;
   private TournamentSelect select;
-  private int pctMutations = 90;
-  private int pctCrossover = 90;
+  private Random random = new Random();
+
 
 
   /**
@@ -89,10 +90,18 @@ public class GeneticAlgorithm
         {
           statistics.setBestBeing(individual);
         }
+
+        if (fitness < statistics.getAverageFitness())
+        {
+          if (random.nextBoolean())
+          {
+            beings.remove(individual);
+          }
+        }
       }
 
     }
-    while (localGenerations < 2);
+    while (localGenerations < GENERATIONS_TO_CREATE);
     evolveManager.setMuting(true);
     return false;
   }
@@ -139,10 +148,10 @@ public class GeneticAlgorithm
 
       //Perform crossover on selected parents (pctCrossover percent of the time) and replace parents with children;
       //crossover produces 2 children per set of parents
-      if (rnd.nextInt(100) < this.pctCrossover)
+      if (rnd.nextInt(100) < PERCENT_CROSSOVER)
       {
         ArrayList<Being> children;
-        if (GeneticAlgorithmParams.CROSSOVER == GA_TYPE.CROSSOVER)
+        if (CROSSOVER == GA_TYPE.CROSSOVER)
         {
           children = ga.run(parent1, parent2);  // use crossover2 method for simpler, but fast-growing crossover
 
@@ -166,13 +175,13 @@ public class GeneticAlgorithm
 
       }
       //Perform mutation operation on parent1 pctMutation percent of the time
-      if (rnd.nextInt(100) < this.pctMutations)
+      if (rnd.nextInt(100) < PERCENT_MUTATION)
       {
         mutation(parent1);
       }
 
       //Perform mutation operation on parent2 pctMutation percent of the time
-      if (rnd.nextInt(100) < this.pctMutations)
+      if (rnd.nextInt(100) < PERCENT_MUTATION)
       {
         mutation(parent2);
       }

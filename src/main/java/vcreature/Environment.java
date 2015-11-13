@@ -79,7 +79,7 @@ public class Environment extends AbstractApplication
   public Environment(int i)
   {
     super();
-    speed = 4;
+    speed = i;
   }
 
   public Environment()
@@ -118,18 +118,19 @@ public class Environment extends AbstractApplication
     generator = new GenomeGenerator(getPhysicsSpace(), rootNode);
 
     // Fill up the population
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 30; i++)
     {
 
-//      FlappyBird _creature = new FlappyBird(getPhysicsSpace(), rootNode);
+      FlappyBird _creature = new FlappyBird(getPhysicsSpace(), rootNode);
       FlappyBird3 _creature3 = new FlappyBird3(getPhysicsSpace(), rootNode);
       FlappyBird4 _creature4 = new FlappyBird4(getPhysicsSpace(), rootNode);
+      FlappyBird5 _creature5 = new FlappyBird5(getPhysicsSpace(), rootNode);
 
-//      Genome _genome = creatureSynthesizer.encode(_creature);
-//      _creature.remove();
-//      Being bb = new Being();
-//      bb.setGenotype(_genome);
-//      population.add(bb);
+      Genome _genome = creatureSynthesizer.encode(_creature);
+      _creature.remove();
+      Being bb = new Being();
+      bb.setGenotype(_genome);
+      population.add(bb);
 
 
       Genome _genome3 = creatureSynthesizer.encode(_creature3);
@@ -138,11 +139,7 @@ public class Environment extends AbstractApplication
       bb3.setGenotype(_genome3);
       population.add(bb3);
 
-      Genome _genome4 = creatureSynthesizer.encode(_creature4);
-      _creature4.remove();
-      Being bb4 = new Being();
-      bb4.setGenotype(_genome4);
-      population.add(bb4);
+
 
       for (int x = 0; x < 5; x++)
       {
@@ -151,6 +148,19 @@ public class Environment extends AbstractApplication
         population.add(_randBeing);
 
       }
+
+      Genome _genome4 = creatureSynthesizer.encode(_creature4);
+      _creature4.remove();
+      Being bb4 = new Being();
+      bb4.setGenotype(_genome4);
+      population.add(bb4);
+
+      Genome _genome5 = creatureSynthesizer.encode(_creature5);
+      _creature5.remove();
+      Being bb5 = new Being();
+      bb5.setGenotype(_genome5);
+      population.add(bb5);
+
     }
 
     // set the population to a evolution
@@ -158,9 +168,8 @@ public class Environment extends AbstractApplication
     logStartTime = System.currentTimeMillis();
 
     evolution.start();
+    stats.init();
   }
-
-
 
 
 
@@ -204,7 +213,7 @@ public class Environment extends AbstractApplication
       // avoid adding more than more to engine
       if (!evolution.isEvolving())
       {
-        System.out.println("New generation kicked off");
+        System.out.println("New thread.");
         newGenerationSpwan = true;
         new Thread(() -> {
           evolution.interrupt();
@@ -217,17 +226,12 @@ public class Environment extends AbstractApplication
       creature.updateBrain(elapsedSimulationTime);
     }
 
-    if(totalSimTime >= 60f)
+    if(totalSimTime >= 120f)
     {
-      System.out.println(stats.getAverageFitnessMin());
+      System.out.println(stats.toString());
       totalSimTime = 0;
     }
 
-
-    if ((System.currentTimeMillis() - logStartTime) > Attributes.LOG_INTERVAL)
-    {
-      logStartTime = System.currentTimeMillis();
-    }
   }
 
   /**
@@ -237,8 +241,6 @@ public class Environment extends AbstractApplication
    */
   public void beginEvaluation(Being v)
   {
-    System.out.println("Creature being evaluated.");
-
     this.being = v;
     being.setUnderEvaluation(true);
     beingAdded = true;
