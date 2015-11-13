@@ -6,7 +6,7 @@ import static vcreature.morphology.GeneticStrategy.GA_TYPE;
 public final class GeneticAlgorithmParams
 {
 
-  public static final int SELECTION = 3; // selection 2 or 3
+  public static final int SELECTION = 2; // selection 2 or 3
   public static final GA_TYPE CROSSOVER = GA_TYPE.CROSSOVER_MUTATION;
   public static final float PERCENT_MUTATION = 60f;
   public static final float PERCENT_CROSSOVER = 90f;

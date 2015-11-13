@@ -148,7 +148,7 @@ public class HillClimb
 
 
 
-    System.out.println("HC results: " + (currentOptimizedFitness - currentFitneesBeing));
+
     if (currentStrategy != null)
     {
       strategies.add(currentStrategy);

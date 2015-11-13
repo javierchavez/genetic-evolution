@@ -226,12 +226,6 @@ public class Environment extends AbstractApplication
       creature.updateBrain(elapsedSimulationTime);
     }
 
-    if(totalSimTime >= 120f)
-    {
-      System.out.println(stats.toString());
-      totalSimTime = 0;
-    }
-
   }
 
   /**
