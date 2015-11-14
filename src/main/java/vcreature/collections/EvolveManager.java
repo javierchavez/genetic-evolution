@@ -64,17 +64,16 @@ public class EvolveManager extends Thread implements Savable
 
         if (GA || HILL_CLIMB)
         {
-          if (mutate)
+          if (mutate && HILL_CLIMB)
           {
-            if (HILL_CLIMB)
-            {
-              System.out.println("[BEGIN]: HC");
-              statistics.setProcess("HC");
-              population.getMutating().evolve(population, this);
-              interrupt();
-              isEvolving = false;
-              System.out.println("[END]: HC");
-            }
+
+            System.out.println("[BEGIN]: HC");
+            statistics.setProcess("HC");
+            population.getMutating().evolve(population, this);
+            interrupt();
+            isEvolving = false;
+            System.out.println("[END]: HC");
+
           }
           else
           {
