@@ -183,11 +183,17 @@ public class CrossoverStrategy implements GeneticStrategy <Being, ArrayList<Bein
     //remove all children of the gene at crossoverPoint1 from genotype1 and remove all edges to those nodes
     if (genesToSwap1.size() > 1)
     {
-      for (int k = genesToSwap1.size() - 1; k >= 1; k--)
+      for (int k = Math.min(genesToSwap1.size(),swapParents1.size()) - 1; k >= 1; k--)
       {
-        int parentIdx = swapParents1.get(( genesToSwap1.get(k)));
-        genotype1.getGenes().get(parentIdx).removeEdge(genesToSwap1.get(k));
-        genotype1.getGenes().remove((int) genesToSwap1.get(k));
+        try
+        {
+          int parentIdx = swapParents1.get((genesToSwap1.get(k)));
+          genotype1.getGenes().get(parentIdx).removeEdge(genesToSwap1.get(k));
+          genotype1.getGenes().remove((int) genesToSwap1.get(k));
+        }catch (Exception e)
+        {
+          System.out.println("idx error");
+        }
 
       }
 

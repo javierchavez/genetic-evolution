@@ -166,4 +166,11 @@ public class Population extends ArrayList<Being> implements Savable
     Collections.sort(beings);
     return beings.get(0);
   }
+
+
+  @Override
+  public void clear()
+  {
+    beings.clear();
+  }
 }

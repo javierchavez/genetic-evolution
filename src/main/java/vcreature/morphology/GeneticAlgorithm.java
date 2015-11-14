@@ -58,18 +58,24 @@ public class GeneticAlgorithm
   public boolean evolve(Population beings, EvolveManager evolveManager)
   {
     int localGenerations = 0;
+    ArrayList<Being> currentGeneration = new ArrayList<>();
+    // copy all the beings to be evolved
+    currentGeneration.addAll(beings.getBeings());
+    // clear the beings from main pop
+    beings.clear();
 
     do
     {
       localGenerations++;
       statistics.addGenerationToSum(1);
-      nextGeneration = helper(beings);
+      nextGeneration = helper(currentGeneration);
 
 
       for (Being individual : nextGeneration)
       {
-
+        // add the being (children) back into the population
         beings.add(individual);
+
         environment.beginEvaluation(individual);
         while (true)
         {
@@ -88,6 +94,8 @@ public class GeneticAlgorithm
 
         if (fitness < statistics.getAverageFitness())
         {
+          // if the being is really bad and remove there is a 50% chance it'll
+          // be removed
           if (random.nextBoolean())
           {
             beings.remove(individual);
@@ -103,7 +111,7 @@ public class GeneticAlgorithm
 
 
 
-  private ArrayList<Being> helper(Population beings)
+  private ArrayList<Being> helper(ArrayList<Being> beings)
   {
     Random rnd = new Random();
     Being parent1;

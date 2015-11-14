@@ -225,7 +225,7 @@ public class MainSim extends AbstractApplication implements ActionListener
   public static void main(String[] args)
   {
     AppSettings settings = new AppSettings(true);
-    Environment env = new Environment(4);
+    Environment env = new Environment(5);
     env.setSettings(settings);
     env.start(JmeContext.Type.Headless);
 
@@ -242,7 +242,23 @@ public class MainSim extends AbstractApplication implements ActionListener
     app.setPopulation(env);
     app.setShowSettings(false);
     app.setSettings(settings);
-    app.start();
+
+    if (args.length > 0)
+    {
+      if (args[0].equalsIgnoreCase("headless"))
+      {
+        app.start(JmeContext.Type.Headless);
+      }
+      else
+      {
+        app.start();
+      }
+    }
+    else
+    {
+      app.start();
+    }
+
   }
 
 }

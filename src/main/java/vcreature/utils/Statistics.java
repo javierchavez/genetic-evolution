@@ -5,6 +5,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import vcreature.Being;
 import vcreature.collections.Population;
 import vcreature.genotype.Gene;
+import vcreature.morphology.GeneticAlgorithmParams;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -183,7 +184,10 @@ public class Statistics implements Savable
   public String toString()
   {
     StringBuilder s = new StringBuilder();
-    s.append("-------- Generation " + getGenerationNumber() + " ---------\n");
+    s.append("-------- Generation " + getGenerationNumber() + "\n");
+    s.append("Hill Climb:\t" + GeneticAlgorithmParams.HILL_CLIMB + "\n");
+    s.append("Selection:\t" + GeneticAlgorithmParams.SELECTION + "\n");
+    s.append("Cross:\t" + GeneticAlgorithmParams.CROSSOVER + "\n");
     s.append("Time:\t" + TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis()- startTime)).append("\n");
     s.append("Init Being:\t" + initBeing).append("\n");
     s.append("Init Genes:\t" + initGene).append("\n");
@@ -226,7 +230,7 @@ public class Statistics implements Savable
     {
       if (anInt > 0)
       {
-        change += ((double) anInt) * ((double) anInt);
+        change += (((double)anInt/population.size()) * ((double)anInt/population.size()));
       }
     }
 

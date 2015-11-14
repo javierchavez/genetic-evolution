@@ -18,6 +18,7 @@ import vcreature.Being;
 import vcreature.Environment;
 import vcreature.collections.EvolveManager;
 import vcreature.genotype.Gene;
+import vcreature.genotype.Genome;
 import vcreature.utils.Statistics;
 
 import java.util.*;
@@ -57,7 +58,8 @@ public class HillClimb
     AbstractHillClimbStrategy currentStrategy = null;
     float currentFitneesBeing = individual.getFitness();
     int tries = 0;
-
+    Genome _gene = individual.getGenotype().clone();
+    individual.setAge(individual.getAge()+1);
 
     for (int i = 0; i < individual.getGenotype().size(); i++)
     {
@@ -94,11 +96,11 @@ public class HillClimb
       stats.addFitnessToSum(((float) currentOptimizedFitness));
 
       // If the being is still failing to jump, get rid of it.
-      if (currentFitnessValue < 1 && currentOptimizedFitness < 1)
+      if (currentFitnessValue < 1 && currentOptimizedFitness < 0.001)
       {
         if (tries > 4)
         {
-          // kill.add(individual);
+           kill.add(individual);
           // System.out.println("Killing individual");
           break;
         }
@@ -120,7 +122,11 @@ public class HillClimb
         if (tries > 4)
         {
           break;
+
         }
+        // undo
+        individual.setGenotype(_gene);
+        individual.setFitness((float)currentFitnessValue);
       }
       else // this is a good mutation
       {
@@ -180,19 +186,33 @@ public class HillClimb
 
       if (iterations > beings.size() -1)
       {
-        if (stats.getDiversity() > .0100)
+        if (stats.getDiversity() > 4.0100)
         {
           System.out.println("Ending hill climbing due to diversity.");
+          cleanUp(beings);
           stats.addGenerationToSum(1);
           evolveManager.setMuting(false);
           return false;
         }
       }
     }
+    cleanUp(beings);
     evolveManager.setMuting(false);
     stats.addGenerationToSum(1);
 
+
     return true;
+  }
+
+
+  public void cleanUp(ArrayList<Being> beings)
+  {
+    int i= 0;
+    while(kill.size() < i)
+    {
+      beings.remove(kill.get(i));
+      i ++;
+    }
   }
 
   public void setDataHandler(Statistics dataHandler)

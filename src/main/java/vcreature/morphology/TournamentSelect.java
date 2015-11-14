@@ -1,14 +1,13 @@
 package vcreature.morphology;
 
 import vcreature.Being;
-import vcreature.collections.Population;
 import vcreature.utils.Statistics;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 
-public class TournamentSelect implements SelectionStrategy<Population, ArrayList<Being>>
+public class TournamentSelect implements SelectionStrategy<ArrayList<Being>, ArrayList<Being>>
 {
 
   private final Statistics statistics;
@@ -23,7 +22,7 @@ public class TournamentSelect implements SelectionStrategy<Population, ArrayList
 
 
   @Override
-  public ArrayList<Being> select(Population collection)
+  public ArrayList<Being> select(ArrayList<Being> collection)
   {
     // choose what whatone to use???? probably in constructor or as a setter
     //TODO choose what type of selection
@@ -40,7 +39,7 @@ public class TournamentSelect implements SelectionStrategy<Population, ArrayList
 
   }
 
-  private ArrayList<Being> select2(Population collection)
+  private ArrayList<Being> select2(ArrayList<Being> collection)
   {
     helper(collection);
 
@@ -74,7 +73,7 @@ public class TournamentSelect implements SelectionStrategy<Population, ArrayList
   }
 
   //Takes a population of Beings as an argument; uses tournament selection (tournament size 3)
-  private ArrayList<Being> selection3(Population collection)
+  private ArrayList<Being> selection3(ArrayList<Being> collection)
   {
 
     helper(collection);
@@ -116,7 +115,7 @@ public class TournamentSelect implements SelectionStrategy<Population, ArrayList
     return newParents;
   }
 
-  private void helper(Population collection)
+  private void helper(ArrayList<Being> collection)
   {
     newParents = new ArrayList<>();
     float currentGenBestFitness = 0f;
