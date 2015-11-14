@@ -86,6 +86,12 @@ public class EvolveManager extends Thread implements Savable
               isEvolving = false;
               System.out.println("[END]: CROSS");
             }
+            else
+            {
+              mutate = true;
+              isEvolving = false;
+              interrupt();
+            }
           }
         }
 
