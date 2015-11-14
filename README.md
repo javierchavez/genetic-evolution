@@ -6,6 +6,34 @@ is a little different in that we are not evolving based on a environment but rat
 a fitness. This means we have to evaluate after every crossover to decide how to
 handle the offspring.
 
+###Running
+Run via the command line
+```bash
+# gui
+gradle run
+
+# headless
+gradle server
+```
+
+###Building
+```bash
+gradle build
+```
+
+#Keyboard
+######e
+show the current creature under evaluation
+######c
+show the current best
+######n
+iterate through the population
+######s
+toggle stats
+
+
+
+
 
 #Contributing
 How to set up your env
@@ -41,20 +69,6 @@ Make sure these are installed in your system (brew is great for this).
 *    Gradle
 *    Java 1.8
 
-###Running
-Running via the command line
-```bash
-# gui
-gradle run
-
-# headless
-gradle server
-```
-
-###Building
-```bash
-gradle build
-```
 
 
 ---
