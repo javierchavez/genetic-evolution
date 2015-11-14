@@ -12,7 +12,6 @@ package vcreature.collections;
  */
 
 
-import vcreature.Being;
 import vcreature.utils.Savable;
 import vcreature.utils.Statistics;
 
@@ -70,6 +69,7 @@ public class EvolveManager extends Thread implements Savable
             if (HILL_CLIMB)
             {
               System.out.println("[BEGIN]: HC");
+              statistics.setProcess("HC");
               population.getMutating().evolve(population, this);
               interrupt();
               isEvolving = false;
@@ -80,6 +80,7 @@ public class EvolveManager extends Thread implements Savable
           {
             if (GA)
             {
+              statistics.setProcess("GA");
               System.out.println("[START]: CROSS");
               population.getBreeding().evolve(population, this);
               interrupt();
@@ -142,10 +143,6 @@ public class EvolveManager extends Thread implements Savable
   @Override
   public void write(StringBuilder s)
   {
-    for (Being being : population.getBeings())
-    {
-      being.getGenotype().write(s);
-    }
   }
 
   @Override

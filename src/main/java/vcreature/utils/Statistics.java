@@ -39,6 +39,7 @@ public class Statistics implements Savable
   private volatile long timesCalled;
   private float elapsedTime=0;
   private long startTime=0;
+  private String process;
 
 
   public Statistics(Population population)
@@ -188,6 +189,7 @@ public class Statistics implements Savable
     s.append("Hill Climb:\t" + GeneticAlgorithmParams.HILL_CLIMB + "\n");
     s.append("Selection:\t" + GeneticAlgorithmParams.SELECTION + "\n");
     s.append("Cross:\t" + GeneticAlgorithmParams.CROSSOVER + "\n");
+    s.append("Currently on:\t" + process + "\n");
     s.append("Time:\t" + TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis()- startTime)).append("\n");
     s.append("Init Being:\t" + initBeing).append("\n");
     s.append("Init Genes:\t" + initGene).append("\n");
@@ -235,5 +237,10 @@ public class Statistics implements Savable
     }
 
     return 1 / change;
+  }
+
+  public void setProcess(String process)
+  {
+    this.process = process;
   }
 }
