@@ -21,7 +21,7 @@ gradle server
 gradle build
 ```
 
-#Keyboard
+#GUI Keyboard 
 ######e
 show the current creature under evaluation
 ######c
