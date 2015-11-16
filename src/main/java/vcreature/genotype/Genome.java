@@ -317,7 +317,7 @@ public class Genome implements Savable
       gene.write(s);
       s.append("\n");
     }
-    s.append("END\n");
+
   }
 
   @Override
@@ -326,9 +326,9 @@ public class Genome implements Savable
     String line;
     String str = s.toString();
     Scanner scanner = new Scanner(str);
-    if (scanner.hasNextLine() && scanner.nextLine().equals("START"))
+    if (scanner.hasNextLine())
     {
-      //genes.clear();
+//      //genes.clear();
       while (scanner.hasNextLine() && !(line = scanner.nextLine()).equals("END"))
       {
         Gene gene = new Gene(genes.size());

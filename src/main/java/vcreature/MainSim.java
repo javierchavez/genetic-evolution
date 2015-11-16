@@ -44,6 +44,7 @@ public class MainSim extends AbstractApplication implements ActionListener
   private BitmapText hudText;
   private BitmapText statsText;
   private boolean showStats = false;
+  private boolean nurons = false;
 
 
   @Override
@@ -78,6 +79,8 @@ public class MainSim extends AbstractApplication implements ActionListener
     inputManager.addMapping("Iterate", new KeyTrigger(KeyInput.KEY_N));
     inputManager.addMapping("Evaluation", new KeyTrigger(KeyInput.KEY_E));
     inputManager.addMapping("Stats", new KeyTrigger(KeyInput.KEY_S));
+    inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_W));
+    inputManager.addMapping("Neuron", new KeyTrigger(KeyInput.KEY_Y));
 
     // Add the names to the action listener.
     inputManager.addListener(this, "Quit");
@@ -86,6 +89,8 @@ public class MainSim extends AbstractApplication implements ActionListener
     inputManager.addListener(this, "Iterate");
     inputManager.addListener(this, "Evaluation");
     inputManager.addListener(this, "Stats");
+    inputManager.addListener(this, "Pause");
+    inputManager.addListener(this, "Neuron");
   }
 
   public void onAction(String name, boolean isPressed, float timePerFrame)
@@ -94,6 +99,14 @@ public class MainSim extends AbstractApplication implements ActionListener
     if (isPressed && name.equals("Toggle Camera Rotation"))
     {
       isCameraRotating = !isCameraRotating;
+    }
+    else if (isPressed && name.equals("Pause"))
+    {
+      environment.togglePause();
+    }
+    else if (isPressed && name.equals("Neuron"))
+    {
+      nurons = !nurons;
     }
     else if (isPressed && name.equals("Stats"))
     {
@@ -117,17 +130,17 @@ public class MainSim extends AbstractApplication implements ActionListener
         myCreature.remove();
       }
 
-      INDEX++;
-      if (INDEX == environment.getPopulation().getBeings().size() - 1)
+      if (INDEX >= environment.getPopulation().getBeings().size() - 1)
       {
         INDEX = 0;
       }
-      hudText.setText("Creature: [" + INDEX + "] out of: " + environment.getPopulation().getBeings().size());
+      hudText.setText("Creature: [" + (INDEX+1) + "] out of: " + environment.getPopulation().getBeings().size());
       Genome genome = environment.getPopulation().getBeings().get(INDEX).getGenotype();
       if (genome != null)
       {
         myCreature = genomeSynthesizer.encode(genome);
       }
+      INDEX++;
 
 
       cameraAngle = (float) (Math.PI / 2.0);
@@ -135,13 +148,13 @@ public class MainSim extends AbstractApplication implements ActionListener
 
     }
     else if (isPressed && name.equals("Evaluation"))
-    {
+        {
       if (myCreature != null)
       {
         myCreature.remove();
       }
 
-      if (environment.getPopulation() != null)
+          if (environment.getPopulation() != null)
       {
 
         Being being = environment.getPopulation().getActive();
@@ -205,7 +218,7 @@ public class MainSim extends AbstractApplication implements ActionListener
     super.simpleUpdate(deltaSeconds);
     elapsedSimulationTime += deltaSeconds;
 
-    if (myCreature != null)
+    if (myCreature != null && nurons)
     {
       myCreature.updateBrain(elapsedSimulationTime);
     }
@@ -226,6 +239,7 @@ public class MainSim extends AbstractApplication implements ActionListener
   {
     AppSettings settings = new AppSettings(true);
     Environment env = new Environment(5);
+    env.togglePause();
     env.setSettings(settings);
     env.start(JmeContext.Type.Headless);
 
@@ -243,22 +257,15 @@ public class MainSim extends AbstractApplication implements ActionListener
     app.setShowSettings(false);
     app.setSettings(settings);
 
+
     if (args.length > 0)
     {
-      if (args[0].equalsIgnoreCase("headless"))
+      if (args[0].contains("genome"))
       {
-        app.start(JmeContext.Type.Headless);
-      }
-      else
-      {
-        app.start();
+        env.setFile(args[0]);
       }
     }
-    else
-    {
-      app.start();
-    }
-
+    app.start();
   }
 
 }

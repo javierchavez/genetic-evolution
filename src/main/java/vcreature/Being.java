@@ -12,7 +12,6 @@ package vcreature;
  */
 
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import vcreature.genotype.Genome;
 import vcreature.utils.Savable;
 
@@ -229,11 +228,27 @@ public class Being implements Comparable<Being>, Savable
     s.append(getAge()).append("\n");
     s.append(getTimesHillClimbed()).append("\n");
     getGenotype().write(s);
+    s.append("END\n");
   }
 
   @Override
   public void read(StringBuilder s)
   {
-    throw new NotImplementedException();
+    String str = s.toString();
+    String[] split = str.split("\n");
+
+    s.delete(0, split[0].length()+1);
+
+    setFitness(Float.parseFloat(split[1]));
+    s.delete(0, split[1].length() + 1);
+
+    setAge(Integer.parseInt(split[2]));
+    s.delete(0, split[2].length() + 1);
+
+    setTimesHillClimbed(Integer.parseInt(split[3]));
+    s.delete(0, split[3].length()+1);
+
+    genotype = new Genome();
+    genotype.read(s);
   }
 }

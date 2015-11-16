@@ -13,6 +13,7 @@ package vcreature.collections;
 
 
 import vcreature.Being;
+import vcreature.genotype.Gene;
 import vcreature.morphology.GeneticAlgorithm;
 import vcreature.morphology.HillClimb;
 import vcreature.utils.Savable;
@@ -99,7 +100,7 @@ public class Population extends ArrayList<Being> implements Savable
    */
   public synchronized void replace(int i, Being being)
   {
-    this.beings.remove(i);
+    remove(i);
     this.beings.add(i, being);
   }
 
@@ -112,6 +113,8 @@ public class Population extends ArrayList<Being> implements Savable
   @Override
   public synchronized Being remove(int index)
   {
+    int i = beings.get(index).getGenotype().size();
+    Gene.TOTAL -= i;
     return beings.remove(index);
   }
 
@@ -130,6 +133,7 @@ public class Population extends ArrayList<Being> implements Savable
   @Override
   public synchronized boolean add(Being being)
   {
+    Gene.TOTAL += being.getGenotype().size();
     return this.beings.add(being);
   }
 
@@ -172,5 +176,6 @@ public class Population extends ArrayList<Being> implements Savable
   public void clear()
   {
     beings.clear();
+    Gene.TOTAL = 0;
   }
 }

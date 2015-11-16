@@ -23,8 +23,12 @@ import vcreature.morphology.HillClimb;
 import vcreature.phenotype.*;
 import vcreature.translations.CreatureSynthesizer;
 import vcreature.translations.GenomeSynthesizer;
+import vcreature.translations.TextSynthesizer;
 import vcreature.utils.Statistics;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 
@@ -61,7 +65,8 @@ public class Environment extends AbstractApplication
   // Generation currently spawning
   boolean newGenerationSpwan = false;
 
-  static boolean creaturePresent = false;
+  private TextSynthesizer synthesizer;
+
 
   // Amount of time creatures are left in environment
   private static int EVALUATION_TIME = 6; // seconds
@@ -70,11 +75,8 @@ public class Environment extends AbstractApplication
   private Random random = new Random();
   private boolean beingAdded;
 
-  private double logStartTime = 0.0;
-
-  float tempbestFitness = 0f;
-
   private boolean pauseEvaluation = false;
+  private String file;
 
   public Environment(int i)
   {
@@ -117,55 +119,12 @@ public class Environment extends AbstractApplication
     // initialize population
     generator = new GenomeGenerator(getPhysicsSpace(), rootNode);
 
-    // Fill up the population
-    for (int i = 0; i < 20; i++)
-    {
+    synthesizer = new TextSynthesizer();
 
-      FlappyBird _creature = new FlappyBird(getPhysicsSpace(), rootNode);
-//      FlappyBird3 _creature3 = new FlappyBird3(getPhysicsSpace(), rootNode);
-//      FlappyBird4 _creature4 = new FlappyBird4(getPhysicsSpace(), rootNode);
-//      FlappyBird5 _creature5 = new FlappyBird5(getPhysicsSpace(), rootNode);
-
-      Genome _genome = creatureSynthesizer.encode(_creature);
-      _creature.remove();
-      Being bb = new Being();
-      bb.setGenotype(_genome);
-      population.add(bb);
-
-
-//      Genome _genome3 = creatureSynthesizer.encode(_creature3);
-//      _creature3.remove();
-//      Being bb3 = new Being();
-//      bb3.setGenotype(_genome3);
-//      population.add(bb3);
-
-
-
-      for (int x = 0; x < 5; x++)
-      {
-        Being _randBeing = new Being();
-        _randBeing.setGenotype(generator.generateGenome());
-        population.add(_randBeing);
-
-      }
-//
-//      Genome _genome4 = creatureSynthesizer.encode(_creature4);
-//      _creature4.remove();
-//      Being bb4 = new Being();
-//      bb4.setGenotype(_genome4);
-//      population.add(bb4);
-//
-//      Genome _genome5 = creatureSynthesizer.encode(_creature5);
-//      _creature5.remove();
-//      Being bb5 = new Being();
-//      bb5.setGenotype(_genome5);
-//      population.add(bb5);
-
-    }
+    initPopulation();
 
     // set the population to a evolution
     evolution = new EvolveManager(population, stats);
-    logStartTime = System.currentTimeMillis();
 
     evolution.start();
     stats.init();
@@ -276,14 +235,79 @@ public class Environment extends AbstractApplication
         app.start(JmeContext.Type.Headless);
         app.speed = 4;
       }
-      else
+    }
+    //app.start();
+  }
+
+  public void setFile(String file)
+  {
+    this.file = file;
+  }
+
+  private void initPopulation()
+  {
+    if (file !=null && !file.equals(""))
+    {
+      ArrayList<Being> readin = synthesizer.encode(new File(file));
+      for (Being being1 : readin)
       {
-        app.start();
+        population.add(being1);
       }
+      Collections.sort(population);
     }
     else
     {
-      app.start();
+      // Fill up the population
+      // for (int i = 0; i < 5; i++)
+      // {
+
+        // FlappyBird _creature = new FlappyBird(getPhysicsSpace(), rootNode);
+        //      FlappyBird3 _creature3 = new FlappyBird3(getPhysicsSpace(), rootNode);
+        //      FlappyBird4 _creature4 = new FlappyBird4(getPhysicsSpace(), rootNode);
+        //      FlappyBird5 _creature5 = new FlappyBird5(getPhysicsSpace(), rootNode);
+
+//        Genome _genome = creatureSynthesizer.encode(_creature);
+//        _creature.remove();
+//        Being bb = new Being();
+//        bb.setGenotype(_genome);
+//        population.add(bb);
+
+
+        //      Genome _genome3 = creatureSynthesizer.encode(_creature3);
+        //      _creature3.remove();
+        //      Being bb3 = new Being();
+        //      bb3.setGenotype(_genome3);
+        //      population.add(bb3);
+
+
+
+        for (int x = 0; x < 40; x++)
+        {
+          Being _randBeing = new Being();
+          _randBeing.setGenotype(generator.generateGenome());
+          population.add(_randBeing);
+
+        }
+        //
+        //      Genome _genome4 = creatureSynthesizer.encode(_creature4);
+        //      _creature4.remove();
+        //      Being bb4 = new Being();
+        //      bb4.setGenotype(_genome4);
+        //      population.add(bb4);
+        //
+        //      Genome _genome5 = creatureSynthesizer.encode(_creature5);
+        //      _creature5.remove();
+        //      Being bb5 = new Being();
+        //      bb5.setGenotype(_genome5);
+        //      population.add(bb5);
+
+      // }
+
     }
+  }
+
+  public void togglePause()
+  {
+    pauseEvaluation = !pauseEvaluation;
   }
 }

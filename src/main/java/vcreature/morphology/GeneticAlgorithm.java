@@ -59,6 +59,7 @@ public class GeneticAlgorithm
   {
     int localGenerations = 0;
     ArrayList<Being> currentGeneration = new ArrayList<>();
+    ArrayList<Being> nextGenerationHelper = new ArrayList<>();
     // copy all the beings to be evolved
     currentGeneration.addAll(beings.getBeings());
     // clear the beings from main pop
@@ -68,10 +69,10 @@ public class GeneticAlgorithm
     {
       localGenerations++;
       statistics.addGenerationToSum(1);
-      nextGeneration = helper(currentGeneration);
+      nextGenerationHelper = helper(currentGeneration);
 
 
-      for (Being individual : nextGeneration)
+      for (Being individual : nextGenerationHelper)
       {
         // add the being (children) back into the population
         beings.add(individual);

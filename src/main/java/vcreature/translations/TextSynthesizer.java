@@ -13,7 +13,6 @@ package vcreature.translations;
 
 
 import vcreature.Being;
-import vcreature.genotype.Genome;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -45,14 +44,20 @@ public class TextSynthesizer extends Synthesizer<File, ArrayList<Being>>
           while (true)
           {
             line = br.readLine();
+            if (line == null)
+            {
+              break;
+            }
             sb.append(line).append("\n");
 
             if (line.equalsIgnoreCase("END"))
             {
-              Genome genome = new Genome();
+
               Being being = new Being();
-              genome.read(sb);
-              being.setGenotype(genome);
+
+
+              being.read(sb);
+
               population.add(being);
 
               sb.delete(0, sb.toString().length());
@@ -73,17 +78,17 @@ public class TextSynthesizer extends Synthesizer<File, ArrayList<Being>>
     {
       e.printStackTrace();
     }
-    finally
-    {
-      try
-      {
-        br.close();
-      }
-      catch (IOException e)
-      {
-        e.printStackTrace();
-      }
-    }
+//    finally
+//    {
+//      try
+//      {
+//         br.close();
+//      }
+//      catch (IOException e)
+//      {
+//        e.printStackTrace();
+//      }
+//    }
 
     return population;
   }
